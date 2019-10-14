@@ -12,12 +12,8 @@
     flex-direction: column;
     position: relative;
     padding-bottom: 10rem;
-    background-image: linear-gradient(
-      89.87deg,
-      rgba(4, 120, 208, 0.8) -2.53%,
-      rgba(4, 125, 217, 0.8) 112.27%
-    );
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+    background-size: cover;
   }
   .topBar {
     width: 100%;
@@ -29,15 +25,6 @@
       #047dd9 112.27%
     );
   }
-
-  .bgImg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-  }
-
   h1,
   p {
     font-family: var(--font-primary);
@@ -83,7 +70,10 @@
   }
 </style>
 
-<header class="hero">
+<header
+  class="hero"
+  style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
+  -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')">
   <div class="topBar" />
   <div class="title">
     <h1>city grill</h1>
@@ -98,5 +88,4 @@
       <p>Konstanz</p>
     </div>
   </div>
-  <img src={bgImage} alt="Will get this from API later!" class="bgImg" />
 </header>
