@@ -2,8 +2,6 @@
   export let width;
   export let height;
   export let fill;
-
-  console.log(width, height, fill);
 </script>
 
 <svg

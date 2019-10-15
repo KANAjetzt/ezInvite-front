@@ -1,6 +1,11 @@
 <script>
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
+  import Date from "./Date.svelte";
+
+  export let name;
+  export let locationName;
+  export let startDate;
 
   let bgImage =
     "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
@@ -76,16 +81,18 @@
   -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')">
   <div class="topBar" />
   <div class="title">
-    <h1>city grill</h1>
+    <h1>{name}</h1>
   </div>
   <div class="info">
     <div class="box">
       <CalendarIcon width={16} height={16} fill={'#f9fafb'} />
-      <p>12.12.2019</p>
+      <p>
+        <Date timeStamp={startDate} />
+      </p>
     </div>
     <div class="box">
       <LocationPinIcon width={16} height={16} fill={'#f9fafb'} />
-      <p>Konstanz</p>
+      <p>{locationName}</p>
     </div>
   </div>
 </header>
