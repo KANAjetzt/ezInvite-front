@@ -6,6 +6,8 @@
   import { eventDataStore } from "../stores.js";
   import Hero from "./Hero.svelte";
   import QuickFacts from "./QuickFacts.svelte";
+  import Description from "./Description.svelte";
+  import ImageStripe from "./ImageStripe.svelte";
 
   const client = new ApolloClient({
     uri: "http://localhost:3000/graphql",
@@ -25,6 +27,7 @@
         startDate
         startTime
         endTime
+        description
         location {
           name
         }
@@ -47,9 +50,8 @@
 {#await eventData}
   <p>loading</p>
 {:then event}
-  <Hero
-    name={event.name}
-    locationName={event.location.name}
-    startDate={event.startDate} />
+  <Hero />
   <QuickFacts />
+  <Description />
+  <ImageStripe />
 {/await}

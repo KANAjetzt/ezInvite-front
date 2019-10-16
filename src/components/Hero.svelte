@@ -1,14 +1,10 @@
 <script>
-  import { eventDataStore } from "../stores";
+  import { getEventData } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
 
-  let eventData;
-
-  eventDataStore.subscribe(value => {
-    eventData = value.data.event;
-  });
+  let eventData = getEventData();
 
   let bgImage =
     "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
@@ -62,7 +58,7 @@
   }
 
   p {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     margin-left: 0.5rem;
   }
 
