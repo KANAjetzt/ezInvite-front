@@ -28,6 +28,7 @@
         startTime
         endTime
         description
+        imgs
         location {
           name
         }

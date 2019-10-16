@@ -7,10 +7,10 @@
 <style>
   .box {
     padding: 3rem 2rem;
-    margin: 0 auto;
   }
 
   .description {
+    margin: 0 auto;
     font-family: var(--font-primary);
     font-weight: 300;
     font-size: 1.6rem;
