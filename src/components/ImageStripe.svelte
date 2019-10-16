@@ -1,29 +1,12 @@
 <script>
-  //TODO: Maybe add something to adjust heigh of box when Browser size changes
-  import { beforeUpdate, afterUpdate } from "svelte";
-
   import { getEventData } from "../stores";
+  import Rotate from "./Rotate.svelte";
 
   let eventData = getEventData();
-  let imageStripeHeight;
-  let ready = false;
-
-  // Sets the height of the Image Stripe parent Box
-  // ready is used to animate the Image Stripe in when the with is set
-  // The Timeout is required - images need to load bevor the height can be acquired
-  afterUpdate(() => {
-    setTimeout(() => {
-      imageStripeHeight = document
-        .querySelector(".imageStripe")
-        .getBoundingClientRect().height;
-      console.log(imageStripeHeight);
-      ready = true;
-    }, 10);
-  });
 </script>
 
 <style>
-  .box {
+  .rotateBox {
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -46,7 +29,7 @@
   }
 </style>
 
-<div class="box" style="height:{imageStripeHeight}px; opacity:{ready ? 1 : 0}">
+<Rotate child={'.imageStripe'}>
   <section class="imageStripe">
     {#each eventData.imgs as img}
       <div class="imgBox">
@@ -57,4 +40,4 @@
       </div>
     {/each}
   </section>
-</div>
+</Rotate>

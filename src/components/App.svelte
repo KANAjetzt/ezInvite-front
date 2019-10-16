@@ -8,6 +8,7 @@
   import QuickFacts from "./QuickFacts.svelte";
   import Description from "./Description.svelte";
   import ImageStripe from "./ImageStripe.svelte";
+  import Map from "./Map.svelte";
 
   const client = new ApolloClient({
     uri: "http://localhost:3000/graphql",
@@ -55,4 +56,5 @@
   <QuickFacts />
   <Description />
   <ImageStripe />
+  <Map />
 {/await}

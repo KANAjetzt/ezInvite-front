@@ -14,6 +14,7 @@
   "dependencies": {
     "apollo-boost": "^0.4.4",
     "graphql": "^14.5.8",
+    "mapbox-gl": "^1.4.1",
     "sirv-cli": "^0.4.4",
     "svelte-apollo": "^0.3.0"
   },
