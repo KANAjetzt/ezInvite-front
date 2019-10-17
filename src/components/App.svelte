@@ -38,6 +38,9 @@
         users {
           accepted
         }
+        widgets {
+          id
+        }
       }
     }
   `;

@@ -10,6 +10,7 @@ html {
 
 :root {
   --color-primary: #022c4d;
+  --color-primary-light: #035696;
   --color-text-primary: #f9fafb;
   --font-primary: "Montserrat", sans-serif;
 }
