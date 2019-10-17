@@ -32,6 +32,7 @@
         imgs
         location {
           name
+          coordinates
         }
         users {
           accepted
