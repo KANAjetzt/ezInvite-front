@@ -1,5 +1,5 @@
 <script>
-  export let photo = "default.jpg";
+  export let photo = "http://localhost:3000/img/user/default.jpg";
   export let name = "unknown user";
 </script>
 
@@ -21,8 +21,5 @@
 </style>
 
 <div class="imgBox">
-  <img
-    class="img"
-    src="http://localhost:3000/img/user/{photo}"
-    alt={`Profile image of ${name}`} />
+  <img class="img" src={photo} alt={`Profile image of ${photo}`} />
 </div>

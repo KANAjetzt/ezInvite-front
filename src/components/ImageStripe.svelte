@@ -35,7 +35,7 @@
       <div class="imgBox">
         <img
           class="img"
-          src="http://localhost:3000/img/{img}"
+          src={`http://localhost:3000/img/${img}`}
           alt="Will be added later via API" />
       </div>
     {/each}
