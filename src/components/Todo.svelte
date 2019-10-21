@@ -3,12 +3,13 @@
   import PersonAddBtn from "./PersonAddBtn.svelte";
 
   export let data;
-  console.log(data);
 </script>
 
 <style>
   .todo {
+    grid-column: 2 / 3;
     display: flex;
+    align-items: center;
   }
   .text {
     background-color: var(--color-primary-light);

@@ -4,6 +4,8 @@
 
   export let photo = "default.jpg";
   export let name = "unknown user";
+  export let iconStyle =
+    "z-index: 20; transform: translateX(135%); opacity: 0.7;";
 
   // OnClickAddPersonToTodo
 </script>
@@ -19,10 +21,11 @@
     background: transparent;
     cursor: pointer;
     text-align: center;
+    z-index: 20;
   }
 </style>
 
 <button class="addBtn">
-  <PlusIcon width={10} height={10} fill={'#f9fafb'} />
+  <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
   <PersonImg />
 </button>

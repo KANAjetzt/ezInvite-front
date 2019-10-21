@@ -35,13 +35,12 @@
 </script>
 
 <style>
-  ul {
-    display: inline-block;
-    list-style: none;
-  }
-
   .todoList {
-    margin: 0 auto;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1.5rem 1fr 1.5rem;
+    list-style: none;
   }
 </style>
 
@@ -52,7 +51,7 @@
     {#each todos as todo}
       <Todo data={todo} />
     {/each}
+    <AddTodoInput />
   </ul>
 
-  <AddTodoInput />
 {/await}

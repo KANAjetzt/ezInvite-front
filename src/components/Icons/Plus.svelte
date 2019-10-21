@@ -1,6 +1,7 @@
 <script>
   import Icon from "./Icon.svelte";
 
+  export let style = "";
   export let width;
   export let height;
   export let fill;
@@ -9,6 +10,7 @@
 
 <Icon {width} {height} {bg}>
   <svg
+    {style}
     {width}
     {height}
     viewBox="0 0 16 15"
