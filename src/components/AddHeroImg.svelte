@@ -1,10 +1,9 @@
 <script>
-  let bgImage =
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
+  import ImgAddIcon from "./Icons/ImgAdd.svelte";
 </script>
 
 <style>
-  .hero {
+  .heroImg {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -16,7 +15,18 @@
       #047dd9 88.27%
     );
     background-size: cover;
+    cursor: pointer;
   }
+
+  .imgUpload {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
   .topBar {
     width: 100%;
     height: 0.5rem;
@@ -27,8 +37,44 @@
       #047dd9 112.27%
     );
   }
+
+  .imgUploadBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 5rem 0 8rem 0;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+    background-image: linear-gradient(
+      130.02deg,
+      #0476d0 12.41%,
+      #047dd9 88.27%
+    );
+    background-size: cover;
+    cursor: pointer;
+  }
+
+  .imgUploadBtn span {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    margin-top: 2rem;
+    border-radius: 24px;
+    background-color: var(--color-primary-light);
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: var(--color-text-primary);
+  }
 </style>
 
-<header class="hero">
-  <div class="topBar" />
-</header>
+<input
+  class="imgUpload"
+  type="file"
+  accept="image/*"
+  id="heroImg"
+  name="heroImg" />
+
+<label class="imgUploadBtn" for="heroImg">
+  <ImgAddIcon height={80} width={80} fill={'#f9fafb'} />
+  <span>Add a hero image</span>
+</label>

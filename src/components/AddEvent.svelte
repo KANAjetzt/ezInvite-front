@@ -2,4 +2,6 @@
   import AddHeroImg from "./AddHeroImg.svelte";
 </script>
 
-<AddHeroImg />
+<form>
+  <AddHeroImg />
+</form>
