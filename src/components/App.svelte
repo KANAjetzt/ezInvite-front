@@ -10,6 +10,7 @@
   import ImageStripe from "./ImageStripe.svelte";
   import Map from "./Map.svelte";
   import Widget from "./Widget.svelte";
+  import Answers from "./Answers.svelte";
 
   const client = new ApolloClient({
     uri: "http://localhost:3000/graphql",
@@ -36,6 +37,8 @@
           coordinates
         }
         users {
+          name
+          photo
           accepted
         }
         widgets {
@@ -63,4 +66,5 @@
   <ImageStripe />
   <Map />
   <Widget />
+  <Answers />
 {/await}
