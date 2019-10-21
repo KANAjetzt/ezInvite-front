@@ -1,7 +1,7 @@
 <script>
   /*
-   3 States:
-    - Accepted true / False / undefined
+   TODO:
+      - Make Section without people not apear!
 */
 
   import { getEventData } from "../stores";
@@ -19,8 +19,6 @@
     if (user.accepted === false) canceledUsers.push(user);
     if (user.accepted === null) pendingUsers.push(user);
   });
-
-  console.log(acceptedUsers, canceledUsers, pendingUsers);
 </script>
 
 <style>

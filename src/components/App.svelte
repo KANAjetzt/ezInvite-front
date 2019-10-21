@@ -1,16 +1,10 @@
 <script>
   import ApolloClient from "apollo-boost";
   import { setClient } from "svelte-apollo";
-  import { gql } from "apollo-boost";
+  import { Router, Link, Route } from "svelte-routing";
 
-  import { eventDataStore } from "../stores.js";
-  import Hero from "./Hero.svelte";
-  import QuickFacts from "./QuickFacts.svelte";
-  import Description from "./Description.svelte";
-  import ImageStripe from "./ImageStripe.svelte";
-  import Map from "./Map.svelte";
-  import Widget from "./Widget.svelte";
-  import Answers from "./Answers.svelte";
+  import Event from "./Event.svelte";
+  import AddEvent from "./AddEvent.svelte";
 
   const client = new ApolloClient({
     uri: "http://localhost:3000/graphql",
@@ -22,49 +16,6 @@
   });
 
   setClient(client);
-
-  const GETEVENT = gql`
-    {
-      event(id: "5d9f25cc4f5859672464ef42") {
-        name
-        startDate
-        startTime
-        endTime
-        description
-        imgs
-        location {
-          name
-          coordinates
-        }
-        users {
-          name
-          photo
-          accepted
-        }
-        widgets {
-          id
-        }
-      }
-    }
-  `;
-
-  export const queryEventData = async () => {
-    const data = await client.query({ query: GETEVENT });
-    eventDataStore.update(d => (d = data));
-    eventData = data.data.event;
-  };
-
-  let eventData = queryEventData();
 </script>
 
-{#await eventData}
-  <p>loading</p>
-{:then event}
-  <Hero />
-  <QuickFacts />
-  <Description />
-  <ImageStripe />
-  <Map />
-  <Widget />
-  <Answers />
-{/await}
+<AddEvent />
