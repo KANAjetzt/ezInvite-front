@@ -8,8 +8,8 @@
 
   const UPLOADFILE = gql`
     mutation($file: Upload!) {
-      singleUpload(file: $file) {
-        filename
+      uploadHeroImg(file: $file) {
+        heroImg
       }
     }
   `;
@@ -23,17 +23,6 @@
       variables: { file }
     });
   };
-
-  //   async function imgUpload() {
-  //   try {
-  // await mutate(client, {
-  //   mutation: singleUpload,
-  //   variables: { file }
-  // });
-  //   } catch(error) {
-  //     // TODO
-  //   }
-  // }
 </script>
 
 <style>
@@ -60,18 +49,6 @@
     position: absolute;
     z-index: -1;
   }
-
-  .topBar {
-    width: 100%;
-    height: 0.5rem;
-    margin-bottom: 4rem;
-    background-image: linear-gradient(
-      89.87deg,
-      #0476d0 -2.53%,
-      #047dd9 112.27%
-    );
-  }
-
   .imgUploadBtn {
     display: flex;
     flex-direction: column;
