@@ -3,6 +3,16 @@
   import SimpleField from "./SimpleField.svelte";
   import Rotate from "./Rotate.svelte";
   import BtnPanel from "./BtnPanel.svelte";
+  import NormalBtn from "./NormalBtn.svelte";
+  import AddStartEndTime from "./AddStartEndTime.svelte";
+
+  let moreVisible = false;
+
+  // Render all Form Fields not shown by default
+  const handleNormalBtnClick = e => {
+    e.detail.preventDefault();
+    moreVisible = true;
+  };
 </script>
 
 <style>
@@ -19,7 +29,8 @@
   .form {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* With fields over one Page space-between doesen't work well */
+    /* justify-content: space-between; */
     min-height: 100vh;
   }
 
@@ -59,9 +70,20 @@
         placeholder={'When does it start?'} />
     </div>
   </div>
-  <Rotate child={'.btnPanel'}>
-    <div class="btnPanel">
-      <BtnPanel />
-    </div>
-  </Rotate>
+  <!-- {#if !moreVisible}
+    <Rotate child={'.btnPanel'}>
+      <div class="btnPanel">
+        <BtnPanel>
+          <NormalBtn
+            text={'Add more'}
+            type={'normal'}
+            on:normalbtnclick={handleNormalBtnClick} />
+          <NormalBtn text={'GO !'} type={'cta'} />
+        </BtnPanel>
+      </div>
+    </Rotate>
+  {:else} -->
+  <AddStartEndTime />
+  <!-- {/if} -->
+
 </form>
