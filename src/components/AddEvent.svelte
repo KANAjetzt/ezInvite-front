@@ -5,6 +5,7 @@
   import BtnPanel from "./BtnPanel.svelte";
   import NormalBtn from "./NormalBtn.svelte";
   import AddStartEndTime from "./AddStartEndTime.svelte";
+  import AddDescription from "./AddDescription.svelte";
 
   let moreVisible = false;
 
@@ -84,6 +85,7 @@
     </Rotate>
   {:else} -->
   <AddStartEndTime />
+  <AddDescription />
   <!-- {/if} -->
 
 </form>
