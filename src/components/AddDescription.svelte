@@ -13,6 +13,7 @@
 
   .input {
     width: calc(100% - 3rem);
+    height: 15rem;
     padding: 0 1.5rem 1rem 1.5rem;
     font-family: var(--font-primary);
     font-weight: 300;
