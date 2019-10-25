@@ -26,21 +26,6 @@
 </script>
 
 <style>
-  .heroImg {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding-bottom: 10rem;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
-    background-image: linear-gradient(
-      130.02deg,
-      #0476d0 12.41%,
-      #047dd9 88.27%
-    );
-    background-size: cover;
-    cursor: pointer;
-  }
-
   .imgUpload {
     width: 0.1px;
     height: 0.1px;

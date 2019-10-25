@@ -6,6 +6,7 @@
   import NormalBtn from "./NormalBtn.svelte";
   import AddStartEndTime from "./AddStartEndTime.svelte";
   import AddDescription from "./AddDescription.svelte";
+  import AddImgs from "./AddImgs.svelte";
 
   let moreVisible = false;
 
@@ -50,6 +51,10 @@
     width: 100vw;
     transform: rotate(-9deg) scale(1.2);
   }
+
+  .ImgsUpload {
+    margin-top: 2rem;
+  }
 </style>
 
 <div class="topBar" />
@@ -86,6 +91,9 @@
   {:else} -->
   <AddStartEndTime />
   <AddDescription />
+  <section class="ImgsUpload">
+    <AddImgs />
+  </section>
   <!-- {/if} -->
 
 </form>
