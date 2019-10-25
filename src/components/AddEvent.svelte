@@ -7,6 +7,8 @@
   import AddStartEndTime from "./AddStartEndTime.svelte";
   import AddDescription from "./AddDescription.svelte";
   import AddImgs from "./AddImgs.svelte";
+  import LocationSearch from "./AddLocationSearch.svelte";
+  import LocationPicker from "./AddLocationPicker.svelte";
 
   let moreVisible = false;
 
@@ -94,6 +96,8 @@
   <section class="ImgsUpload">
     <AddImgs />
   </section>
+  <LocationSearch />
+  <!-- <LocationPicker /> -->
   <!-- {/if} -->
 
 </form>
