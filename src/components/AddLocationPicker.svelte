@@ -61,6 +61,105 @@
     height: 21px;
     cursor: pointer;
   }
+
+  :global(.mapboxgl-ctrl-geocoder) {
+    display: grid;
+    grid-template-rows: min-content min-content;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 0 1.5rem;
+    border-top: solid 1px var(--color-secondary);
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--icon) {
+    fill: #eee;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--icon-search) {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--pin-right) {
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--icon-loading) {
+    display: none;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--button) {
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    line-height: 1;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--button):focus {
+    outline: none;
+    fill: hsl(0, 0%, 80%);
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--input) {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    width: calc(100% - 3rem);
+    padding: 1rem 0 1rem 0.7rem;
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--color-text-primary);
+    background-color: transparent;
+    border: none;
+    transition: all 0.05s ease-in-out;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--input)::placeholder {
+    color: var(--color-text-primary);
+    opacity: 0.95;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--input):focus {
+    outline: none;
+    border-bottom: solid 3px var(--color-secondary);
+    box-shadow: 3px 7px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  :global(.suggestions-wrapper) {
+    grid-row: 2 / 3;
+    grid-column: 1 / 4;
+  }
+
+  :global(.suggestions) {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1.5rem 1fr 1.5rem;
+    list-style: none;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--suggestion) {
+    padding: 1rem 2rem;
+  }
+
+  :global(.mapboxgl-ctrl-geocoder--suggestion-title) {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--color-text-primary);
+  }
+  :global(.mapboxgl-ctrl-geocoder--suggestion-address) {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 1.6rem;
+    color: var(--color-text-primary);
+  }
 </style>
 
 <div id="geocoder" class="geocoder" />
