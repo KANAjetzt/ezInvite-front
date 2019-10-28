@@ -4,12 +4,13 @@
 
   import { onMount } from "svelte";
   import mapboxgl from "mapbox-gl/dist/mapbox-gl.js";
+  import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
   import Rotate from "./Rotate.svelte";
 
   onMount(async () => {
     mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjbHE1ZjBmZ3UzY3FpeHdieTR6cmEifQ.P4335T1qsOc_NhjN_Mfd-g";
+      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjcmxmeDM2eGkzY3BrNHFtZDJtZncifQ.y_6ulnsUXBO36UyjTWmzlA";
     var map = new mapboxgl.Map({
       container: "mapbox",
       style: "mapbox://styles/kanajetzt/ck06cxang246d1dpirijqxubs",
@@ -25,6 +26,14 @@
       }),
       "bottom-left"
     );
+
+    // Add location search
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: map
+    });
+
+    document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
   });
 </script>
 
@@ -54,4 +63,5 @@
   }
 </style>
 
+<div id="geocoder" class="geocoder" />
 <div id="mapbox" class="mapbox" />

@@ -4,17 +4,20 @@ import commonjs from "rollup-plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import builtins from "rollup-plugin-node-builtins";
-import globals from "rollup-plugin-node-globals";
 
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
   input: "src/main.js",
+  // external: ["MapboxGeocoder"],
   output: {
     sourcemap: true,
     format: "iife",
     name: "app",
     file: "public/bundle.js"
+    // globals: {
+    //   MapboxGeocoder: "MapboxGeocoder"
+    // }
   },
   plugins: [
     svelte({
@@ -32,14 +35,12 @@ export default {
     // some cases you'll need additional configuration —
     // consult the documentation for details:
     // https://github.com/rollup/rollup-plugin-commonjs
-
+    builtins(),
     resolve({
       browser: true,
       dedupe: importee =>
         importee === "svelte" || importee.startsWith("svelte/")
     }),
-    globals(),
-    builtins(),
     commonjs(),
 
     // Watch the `public` directory and refresh the
