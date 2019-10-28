@@ -48,10 +48,21 @@
 
   #mapbox {
     width: 100vw;
-    height: 20rem;
+    height: 30rem;
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
+  }
+
+  .overlay {
+    margin-bottom: -7rem;
+  }
+  .geocoderBG {
+    width: 100vw;
+    height: 12rem;
+    background: var(--color-primary);
+    z-index: 20;
+    transform: rotate(-9deg) scale(1.1);
   }
 
   :global(.marker) {
@@ -62,14 +73,23 @@
     cursor: pointer;
   }
 
+  :global(.mapboxgl-ctrl-logo),
+  :global(.mapboxgl-ctrl-attrib) {
+    display: none !important;
+  }
+
+  :global(.geocoder) {
+    margin-top: -7rem;
+    z-index: 20;
+  }
+
   :global(.mapboxgl-ctrl-geocoder) {
     display: grid;
     grid-template-rows: min-content min-content;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
     margin-top: 2rem;
-    padding: 0 1.5rem;
-    border-top: solid 1px var(--color-secondary);
+    border-bottom: solid 1px var(--color-secondary);
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon) {
@@ -81,11 +101,13 @@
   :global(.mapboxgl-ctrl-geocoder--icon-search) {
     grid-row: 1 / 2;
     grid-column: 1 / 2;
+    padding-left: 1.5rem;
   }
 
   :global(.mapboxgl-ctrl-geocoder--pin-right) {
     grid-row: 1 / 2;
     grid-column: 3 / 4;
+    padding-right: 1.5rem;
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon-loading) {
@@ -127,8 +149,6 @@
 
   :global(.mapboxgl-ctrl-geocoder--input):focus {
     outline: none;
-    border-bottom: solid 3px var(--color-secondary);
-    box-shadow: 3px 7px 5px rgba(0, 0, 0, 0.2);
   }
 
   :global(.suggestions-wrapper) {
@@ -142,6 +162,9 @@
     display: grid;
     grid-template-columns: 1.5rem 1fr 1.5rem;
     list-style: none;
+    position: absolute;
+    width: 100vw;
+    background: var(--color-primary);
   }
 
   :global(.mapboxgl-ctrl-geocoder--suggestion) {
@@ -161,6 +184,12 @@
     color: var(--color-text-primary);
   }
 </style>
+
+<div class="overlay">
+  <Rotate child={'.geocoderBG'}>
+    <div class="geocoderBG" />
+  </Rotate>
+</div>
 
 <div id="geocoder" class="geocoder" />
 <div id="mapbox" class="mapbox" />
