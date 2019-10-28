@@ -30,7 +30,8 @@
     // Add location search
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
-      mapboxgl: map
+      mapboxgl: map,
+      placeholder: "Where is your event?"
     });
 
     document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
@@ -52,6 +53,15 @@
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
+  }
+
+  .title {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    color: var(--color-text-primary);
+    padding-left: 1.5rem;
   }
 
   .overlay {
@@ -88,7 +98,7 @@
     grid-template-rows: min-content min-content;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 0.75rem;
     border-bottom: solid 1px var(--color-secondary);
   }
 
@@ -99,19 +109,22 @@
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon-search) {
-    grid-row: 1 / 2;
+    /* grid-row: 1 / 2;
     grid-column: 1 / 2;
-    padding-left: 1.5rem;
+    padding-left: 1.5rem; */
+
+    display: none;
   }
 
   :global(.mapboxgl-ctrl-geocoder--pin-right) {
     grid-row: 1 / 2;
     grid-column: 3 / 4;
     padding-right: 1.5rem;
+    padding-bottom: 1rem;
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon-loading) {
-    display: none;
+    display: none !important;
   }
 
   :global(.mapboxgl-ctrl-geocoder--button) {
@@ -132,7 +145,7 @@
     grid-row: 1 / 2;
     grid-column: 2 / 3;
     width: calc(100% - 3rem);
-    padding: 1rem 0 1rem 0.7rem;
+    padding: 0 1.5rem 1rem 1.5rem;
     font-family: var(--font-primary);
     font-weight: 300;
     font-size: 1.8rem;
@@ -191,5 +204,7 @@
   </Rotate>
 </div>
 
-<div id="geocoder" class="geocoder" />
+<div id="geocoder" class="geocoder">
+  <span class="title">Location</span>
+</div>
 <div id="mapbox" class="mapbox" />
