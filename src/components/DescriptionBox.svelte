@@ -9,7 +9,7 @@
     display: inline-block;
     background: var(--color-tertiary);
     box-shadow: 4px 2px 2px rgba(0, 0, 0, 0.25);
-    z-index: 20;
+    z-index: 10;
   }
 
   .title {

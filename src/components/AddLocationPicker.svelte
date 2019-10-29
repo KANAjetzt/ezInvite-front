@@ -49,10 +49,11 @@
 
   #mapbox {
     width: 100vw;
-    height: 30rem;
+    height: 40rem;
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
+    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0% 100%);
   }
 
   .title {
@@ -64,15 +65,13 @@
     padding-left: 1.5rem;
   }
 
-  .overlay {
-    margin-bottom: -7rem;
-  }
-  .geocoderBG {
+  .geocoder {
+    position: relative;
     width: 100vw;
-    height: 12rem;
+    margin-top: 1.5rem;
     background: var(--color-primary);
+    border-bottom: solid 1px var(--color-secondary);
     z-index: 20;
-    transform: rotate(-9deg) scale(1.1);
   }
 
   :global(.marker) {
@@ -88,18 +87,14 @@
     display: none !important;
   }
 
-  :global(.geocoder) {
-    margin-top: -7rem;
-    z-index: 20;
-  }
-
   :global(.mapboxgl-ctrl-geocoder) {
+    position: relative;
     display: grid;
     grid-template-rows: min-content min-content;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
     margin-top: 0.75rem;
-    border-bottom: solid 1px var(--color-secondary);
+    z-index: 25;
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon) {
@@ -117,10 +112,11 @@
   }
 
   :global(.mapboxgl-ctrl-geocoder--pin-right) {
-    grid-row: 1 / 2;
+    display: none !important;
+    /* grid-row: 1 / 2;
     grid-column: 3 / 4;
     padding-right: 1.5rem;
-    padding-bottom: 1rem;
+    padding-bottom: 1rem; */
   }
 
   :global(.mapboxgl-ctrl-geocoder--icon-loading) {
@@ -198,13 +194,7 @@
   }
 </style>
 
-<div class="overlay">
-  <Rotate child={'.geocoderBG'}>
-    <div class="geocoderBG" />
-  </Rotate>
-</div>
-
+<div id="mapbox" class="mapbox" />
 <div id="geocoder" class="geocoder">
   <span class="title">Location</span>
 </div>
-<div id="mapbox" class="mapbox" />
