@@ -8,6 +8,7 @@
   import AddDescription from "./AddDescription.svelte";
   import AddImgs from "./AddImgs.svelte";
   import LocationPicker from "./AddLocationPicker.svelte";
+  import WidgetPicker from "./AddSelectWidget.svelte";
 
   let moreVisible = false;
 
@@ -53,30 +54,38 @@
     transform: rotate(-9deg) scale(1.2);
   }
 
-  .ImgsUpload {
+  .imgsUpload {
+    margin-top: 2rem;
+  }
+
+  .widgetPicker {
     margin-top: 2rem;
   }
 </style>
 
 <div class="topBar" />
 <form class="form">
-  <AddHeroImg />
-  <div class="FormFields">
-    <div class="title">
-      <SimpleField
-        type={'text'}
-        name={'Title'}
-        heading={'Title'}
-        placeholder={'What are you planing?'} />
+  <section class="heroImg">
+    <AddHeroImg />
+  </section>
+  <section class="simpleFields">
+    <div class="FormFields">
+      <div class="title">
+        <SimpleField
+          type={'text'}
+          name={'Title'}
+          heading={'Title'}
+          placeholder={'What are you planing?'} />
+      </div>
+      <div class="date">
+        <SimpleField
+          type={'text'}
+          name={'Date'}
+          heading={'Date'}
+          placeholder={'When does it start?'} />
+      </div>
     </div>
-    <div class="date">
-      <SimpleField
-        type={'text'}
-        name={'Date'}
-        heading={'Date'}
-        placeholder={'When does it start?'} />
-    </div>
-  </div>
+  </section>
   <!-- {#if !moreVisible}
     <Rotate child={'.btnPanel'}>
       <div class="btnPanel">
@@ -90,12 +99,22 @@
       </div>
     </Rotate>
   {:else} -->
-  <AddStartEndTime />
-  <AddDescription />
-  <section class="ImgsUpload">
+  <section class="startEndTime">
+
+    <AddStartEndTime />
+  </section>
+  <section class="description">
+    <AddDescription />
+  </section>
+  <section class="imgsUpload">
     <AddImgs />
   </section>
-  <LocationPicker />
+  <section class="locationPicker">
+    <LocationPicker />
+  </section>
+  <section class="widgetPicker">
+    <WidgetPicker />
+  </section>
   <!-- {/if} -->
 
 </form>
