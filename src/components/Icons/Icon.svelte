@@ -22,7 +22,7 @@
 {#if bg}
   <div
     class="bg"
-    style="width: {width < 50 ? width + 10 : width + 20}px; height: {width < 50 ? width + 10 : width + 20}px;">
+    style="width: {width < 25 ? width + 10 : width + 20}px; height: {width < 25 ? width + 10 : width + 20}px;">
     <slot />
   </div>
 {:else}

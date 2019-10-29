@@ -9,6 +9,7 @@
   import AddImgs from "./AddImgs.svelte";
   import LocationPicker from "./AddLocationPicker.svelte";
   import WidgetPicker from "./AddSelectWidget.svelte";
+  import AddWidgets from "./AddWidget.svelte";
 
   let moreVisible = false;
 
@@ -114,6 +115,9 @@
   </section>
   <section class="widgetPicker">
     <WidgetPicker />
+  </section>
+  <section class="widgets">
+    <AddWidgets />
   </section>
   <!-- {/if} -->
 
