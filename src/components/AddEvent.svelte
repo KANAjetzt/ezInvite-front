@@ -1,4 +1,7 @@
 <script>
+  import { getClient, mutate } from "svelte-apollo";
+  import { gql } from "apollo-boost";
+
   import AddHeroImg from "./AddHeroImg.svelte";
   import SimpleField from "./SimpleField.svelte";
   import Rotate from "./Rotate.svelte";
@@ -14,10 +17,40 @@
 
   let moreVisible = false;
 
+  let eventData = {};
+
+  const client = getClient();
+
+  const CREATEEVENT = gql`
+    mutation($input: CreateEventInput!) {
+      createEvent(input: $input) {
+        event {
+          id
+          name
+          startDate
+        }
+      }
+    }
+  `;
+
   // Render all Form Fields not shown by default
   const handleNormalBtnClick = e => {
     e.detail.preventDefault();
     moreVisible = true;
+  };
+
+  const handleCTABtnClick = async e => {
+    e.detail.preventDefault();
+
+    const input = { ...eventData };
+
+    console.log(input);
+
+    // Send tilte and date to backend
+    await mutate(client, {
+      mutation: CREATEEVENT,
+      variables: { input }
+    });
   };
 </script>
 
@@ -80,17 +113,17 @@
     <div class="FormFields">
       <div class="title">
         <SimpleField
-          type={'text'}
           name={'Title'}
           heading={'Title'}
-          placeholder={'What are you planing?'} />
+          placeholder={'What are you planing?'}
+          bind:value={eventData.name} />
       </div>
       <div class="date">
         <SimpleField
-          type={'text'}
           name={'Date'}
           heading={'Date'}
-          placeholder={'When does it start?'} />
+          placeholder={'When does it start?'}
+          bind:value={eventData.startDate} />
       </div>
     </div>
   </section>
@@ -101,7 +134,10 @@
           text={'Add more'}
           type={'normal'}
           on:normalbtnclick={handleNormalBtnClick} />
-        <NormalBtn text={'GO !'} type={'cta'} />
+        <NormalBtn
+          text={'GO !'}
+          type={'cta'}
+          on:ctabtnclick={handleCTABtnClick} />
       </BtnPanel>
     </section>
   {:else}

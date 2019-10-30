@@ -1,5 +1,4 @@
 <script>
-  export let type;
   export let value = "";
   export let name;
   export let placeholder;
@@ -44,4 +43,4 @@
 </style>
 
 <label for={name} class="label">{heading}</label>
-<input id={name} class="input" {type} {value} {placeholder} {name} />
+<input id={name} class="input" type="text" bind:value {placeholder} {name} />
