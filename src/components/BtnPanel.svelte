@@ -1,3 +1,9 @@
+<script>
+  import Rotate from "./Rotate.svelte";
+
+  export let minusMargin;
+</script>
+
 <style>
   .pannel {
     display: flex;
@@ -8,6 +14,7 @@
     margin-bottom: -3rem;
     background: linear-gradient(112.82deg, #0364af 7.85%, #0d8ff2 96.54%);
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    transform: rotate(-9deg) scale(1.1);
   }
 
   .btnWrapper {
@@ -19,8 +26,10 @@
   }
 </style>
 
-<div class="pannel">
-  <div class="btnWrapper">
-    <slot />
+<Rotate child={'.pannel'} {minusMargin}>
+  <div class="pannel">
+    <div class="btnWrapper">
+      <slot />
+    </div>
   </div>
-</div>
+</Rotate>

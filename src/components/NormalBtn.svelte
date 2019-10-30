@@ -16,7 +16,6 @@
     margin: 0;
     border: none;
     text-decoration: none;
-    background: transparent;
     cursor: pointer;
     text-align: center;
     z-index: 20;

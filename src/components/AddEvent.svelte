@@ -10,6 +10,7 @@
   import LocationPicker from "./AddLocationPicker.svelte";
   import WidgetPicker from "./AddSelectWidget.svelte";
   import AddWidgets from "./AddWidget.svelte";
+  import BtnBig from "./BtnBig.svelte";
 
   let moreVisible = false;
 
@@ -50,9 +51,11 @@
     margin-top: 2rem;
   }
 
-  .btnPanel {
+  .selectBtns {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     width: 100vw;
-    transform: rotate(-9deg) scale(1.2);
   }
 
   .imgsUpload {
@@ -91,38 +94,39 @@
       </div>
     </div>
   </section>
-  <!-- {#if !moreVisible}
-    <Rotate child={'.btnPanel'}>
-      <div class="btnPanel">
-        <BtnPanel>
-          <NormalBtn
-            text={'Add more'}
-            type={'normal'}
-            on:normalbtnclick={handleNormalBtnClick} />
-          <NormalBtn text={'GO !'} type={'cta'} />
-        </BtnPanel>
-      </div>
-    </Rotate>
-  {:else} -->
-  <section class="startEndTime">
+  {#if !moreVisible}
+    <section class="selectBtns">
+      <BtnPanel minusMargin={2.5}>
+        <NormalBtn
+          text={'Add more'}
+          type={'normal'}
+          on:normalbtnclick={handleNormalBtnClick} />
+        <NormalBtn text={'GO !'} type={'cta'} />
+      </BtnPanel>
+    </section>
+  {:else}
+    <section class="startEndTime">
 
-    <AddStartEndTime />
-  </section>
-  <section class="description">
-    <AddDescription />
-  </section>
-  <section class="imgsUpload">
-    <AddImgs />
-  </section>
-  <section class="locationPicker">
-    <LocationPicker />
-  </section>
-  <section class="widgetPicker">
-    <WidgetPicker />
-  </section>
-  <section class="widgets">
-    <AddWidgets />
-  </section>
-  <!-- {/if} -->
+      <AddStartEndTime />
+    </section>
+    <section class="description">
+      <AddDescription />
+    </section>
+    <section class="imgsUpload">
+      <AddImgs />
+    </section>
+    <section class="locationPicker">
+      <LocationPicker />
+    </section>
+    <section class="widgetPicker">
+      <WidgetPicker />
+    </section>
+    <section class="widgets">
+      <AddWidgets />
+    </section>
+    <section>
+      <BtnBig text={'GO !'} />
+    </section>
+  {/if}
 
 </form>

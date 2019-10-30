@@ -6,6 +6,7 @@
   import { afterUpdate } from "svelte";
 
   export let child;
+  export let minusMargin = 0;
   let childHeight;
   let ready = false;
 
@@ -31,6 +32,8 @@
   }
 </style>
 
-<div class="rotateBox" style="height:{childHeight}px; opacity:{ready ? 1 : 0}">
+<div
+  class="rotateBox"
+  style="height:{childHeight}px; opacity:{ready ? 1 : 0}; margin-bottom: {`-${minusMargin}rem`}">
   <slot />
 </div>
