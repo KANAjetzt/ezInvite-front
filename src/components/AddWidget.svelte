@@ -1,9 +1,14 @@
 <script>
   import Rotate from "./Rotate.svelte";
   import AddTodoList from "./AddTodoList.svelte";
+  import DescriptionBox from "./DescriptionBox.svelte";
 </script>
 
 <style>
+  .widget {
+    margin-top: -6.5rem;
+  }
+
   .bar {
     width: 120vw;
     height: 0.5rem;
@@ -13,6 +18,7 @@
   }
 </style>
 
+<DescriptionBox title={'List'} text={'Add things you need for your event.'} />
 <section class="widget">
   <Rotate child={'.bar'}>
     <div class="bar" />

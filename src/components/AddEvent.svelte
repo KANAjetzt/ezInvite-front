@@ -62,6 +62,10 @@
   .widgetPicker {
     margin-top: 2rem;
   }
+
+  .widgets {
+    margin-top: 2rem;
+  }
 </style>
 
 <div class="topBar" />

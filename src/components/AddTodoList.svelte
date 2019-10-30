@@ -1,7 +1,6 @@
 <script>
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
-
   let todos = [];
 </script>
 

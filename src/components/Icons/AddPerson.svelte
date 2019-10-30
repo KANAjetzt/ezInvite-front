@@ -5,9 +5,10 @@
   export let height;
   export let fill;
   export let bg = false;
+  export let border = false;
 </script>
 
-<Icon {width} {height} {bg}>
+<Icon {width} {height} {bg} {border}>
   <svg
     {width}
     {height}
