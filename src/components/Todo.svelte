@@ -7,7 +7,6 @@
 
 <style>
   .todo {
-    grid-column: 2 / 3;
     display: flex;
     align-items: center;
   }

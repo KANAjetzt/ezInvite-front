@@ -4,6 +4,6 @@ export const eventDataStore = writable({});
 
 export const getEventData = () => {
   let eventData;
-  eventDataStore.subscribe(value => (eventData = value.data.event));
+  eventDataStore.subscribe(value => (eventData = value));
   return eventData;
 };
