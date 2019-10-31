@@ -89,7 +89,7 @@
         <Date timeStamp={eventData.startDate} />
       </p>
     </div>
-    {#if eventData.location.name}
+    {#if eventData.location}
       <div class="box">
         <LocationPinIcon width={16} height={16} fill={'#f9fafb'} />
         <p>{eventData.location.name}</p>

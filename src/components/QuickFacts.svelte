@@ -48,10 +48,14 @@
   <Item heading="Time" content={`${eventData.startTime} Uhr`}>
     <WatchIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
-  <Item heading="Invited" content={`${eventData.users.length} people`}>
+  <Item
+    heading="Invited"
+    content={`${eventData.users ? eventData.users.length : 0} people`}>
     <EnvelopeIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
-  <Item heading="Accepted" content={`${getacceptedUsers()} people`}>
+  <Item
+    heading="Accepted"
+    content={`${eventData.users ? getacceptedUsers() : 0} people`}>
     <DoneIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
 </div>

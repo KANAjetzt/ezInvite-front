@@ -10,6 +10,7 @@
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
 
+  console.log(getEventData());
   //! widgets[0] only a quick fix - later loop widgets and get all with type === todo
   const GETTODOS = gql`
     {
