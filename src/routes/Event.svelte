@@ -51,20 +51,19 @@
     const data = await client.query({ query: GETEVENT, variables: { id } });
 
     // Update Event Data Store with queryed event Data
-    eventDataStore.update(d => (d = data));
+    eventDataStore.set(data.data.event);
     eventData = data.data.event;
   };
 
   //TODO: Check if if something is in store otherwise query event id
   eventData = getEventData();
-  eventData = queryEventData();
+  // eventData = queryEventData();
 </script>
 
 <Router>
   {#await eventData}
     <p>loading</p>
   {:then event}
-    {console.log(eventData)}
     <Hero />
     <QuickFacts />
     {#if eventData.description}
@@ -73,13 +72,13 @@
     {#if eventData.imgs}
       <ImageStripe />
     {/if}
-    {#if eventData.location.coordinates[0]}
+    {#if eventData.location && eventData.location.coordinates[0]}
       <Map />
     {/if}
-    {#if eventData.widgets[0]}
+    {#if eventData.widgets && eventData.widgets[0]}
       <Widget />
     {/if}
-    {#if eventData.users[0]}
+    {#if eventData.users && eventData.users[0]}
       <Answers />
     {/if}
   {/await}

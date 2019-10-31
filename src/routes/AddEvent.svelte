@@ -54,11 +54,10 @@
       variables: { input }
     });
 
-    console.log(newEventData);
+    console.log(newEventData.data.createEvent.event);
 
     // Update Event Data store
-    await eventDataStore.update(d => (d = newEventData.data.createEvent.event));
-    console.log(getEventData());
+    eventDataStore.set(newEventData.data.createEvent.event);
 
     navigate("/event");
   };

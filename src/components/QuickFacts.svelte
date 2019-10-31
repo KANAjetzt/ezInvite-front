@@ -45,9 +45,11 @@
   <Item heading="Date" content={formatDate(eventData.startDate * 1)}>
     <CalendarIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
-  <Item heading="Time" content={`${eventData.startTime} Uhr`}>
-    <WatchIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
-  </Item>
+  {#if eventData.startTime}
+    <Item heading="Time" content={`${eventData.startTime} Uhr`}>
+      <WatchIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
+    </Item>
+  {/if}
   <Item
     heading="Invited"
     content={`${eventData.users ? eventData.users.length : 0} people`}>
