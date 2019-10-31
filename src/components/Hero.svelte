@@ -1,10 +1,11 @@
 <script>
-  import { getEventData } from "../stores";
+  import { eventDataStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
 
-  let eventData = getEventData();
+  let eventData;
+  eventDataStore.subscribe(value => (eventData = value));
 
   let bgImage =
     "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";

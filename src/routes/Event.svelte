@@ -45,7 +45,7 @@
     console.log("querying event data");
 
     //! I need to get the id from somewhere when the event is not just created (URL params?!)
-    const id = "5dba882e576cb85f4c3ea3d1";
+    const id = "5d9f25cc4f5859672464ef42";
 
     // Query  for event with specific id
     const data = await client.query({ query: GETEVENT, variables: { id } });
@@ -57,7 +57,10 @@
 
   //TODO: Check if if something is in store otherwise query event id
   eventData = getEventData();
-  // eventData = queryEventData();
+  console.log(eventData);
+  if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
+    queryEventData();
+  }
 </script>
 
 <Router>
