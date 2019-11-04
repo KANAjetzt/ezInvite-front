@@ -21,7 +21,7 @@
     color: var(--color-text-primary);
     background-color: transparent;
     border: none;
-    border-bottom: solid 1px var(--color-secondary);
+    box-shadow: 0 1px 0 var(--color-secondary);
     transition: all 0.05s ease-in-out;
   }
 
@@ -32,8 +32,7 @@
 
   .input:focus {
     outline: none;
-    border-bottom: solid 3px var(--color-secondary);
-    box-shadow: 3px 7px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 0 var(--color-secondary);
   }
 </style>
 

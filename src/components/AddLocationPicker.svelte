@@ -70,7 +70,6 @@
     width: 100vw;
     margin-top: 1.5rem;
     background: var(--color-primary);
-    border-bottom: solid 1px var(--color-secondary);
     z-index: 20;
   }
 
@@ -148,6 +147,7 @@
     color: var(--color-text-primary);
     background-color: transparent;
     border: none;
+    box-shadow: 0 1px 0 var(--color-secondary);
     transition: all 0.05s ease-in-out;
   }
 
@@ -158,6 +158,7 @@
 
   :global(.mapboxgl-ctrl-geocoder--input):focus {
     outline: none;
+    box-shadow: 0 3px 0 var(--color-secondary);
   }
 
   :global(.suggestions-wrapper) {
