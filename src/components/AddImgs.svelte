@@ -8,8 +8,8 @@
   const client = getClient();
 
   const UPLOADFILE = gql`
-    mutation($file: Upload!) {
-      uploadImgs(file: $file) {
+    mutation($files: Upload!) {
+      uploadImgs(files: $files) {
         imgs
       }
     }
@@ -17,24 +17,19 @@
 
   const handleImgUpload = async () => {
     const files = [...document.getElementById("imgs").files];
+    console.log(files);
 
     // ! I definitely should change this at some point, so I dont have 1 request for every Img 🥶 !
-    await files.forEach(async file => {
-      await mutate(client, {
-        mutation: UPLOADFILE,
-        variables: { file }
-      });
+    const upload = await mutate(client, {
+      mutation: UPLOADFILE,
+      variables: { files }
     });
+
+    console.log(upload);
   };
 </script>
 
 <style>
-  /* .rotator {
-    width: 100vw;
-    transform: rotate(-9deg) scale(1.1);
-    overflow: hidden;
-  }
-*/
   .wrapper {
     display: flex;
     flex-direction: column;
