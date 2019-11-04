@@ -1,3 +1,7 @@
+<script>
+  export let value = undefined;
+</script>
+
 <style>
   .label {
     display: block;
@@ -43,4 +47,5 @@
   class="input"
   cols="30"
   rows="10"
-  placeholder="Describe what you are planing..." />
+  placeholder="Describe what you are planing..."
+  bind:value />

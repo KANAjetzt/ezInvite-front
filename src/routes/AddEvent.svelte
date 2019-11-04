@@ -32,6 +32,7 @@
           startDate
           startTime
           endTime
+          description
         }
       }
     }
@@ -53,8 +54,11 @@
       name: currentInput.name,
       startDate: currentInput.startDate,
       startTime: `${currentInput.startHoure}:${currentInput.startMinute}`,
-      endTime: `${currentInput.endHoure}:${currentInput.endMinute}`
+      endTime: `${currentInput.endHoure}:${currentInput.endMinute}`,
+      description: currentInput.description
     };
+
+    console.log(input);
 
     // Send tilte and date to backend
     const newEventData = await mutate(client, {
@@ -165,7 +169,7 @@
           bind:endMinute={eventData.endMinute} />
       </section>
       <section class="description">
-        <AddDescription />
+        <AddDescription bind:value={eventData.description} />
       </section>
       <section class="imgsUpload">
         <AddImgs />
