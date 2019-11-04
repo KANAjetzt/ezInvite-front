@@ -1,5 +1,5 @@
 <script>
-  import { getEventData } from "../stores";
+  import { eventDataStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import WatchIcon from "./Icons/Watch.svelte";
   import EnvelopeIcon from "./Icons/Envelope.svelte";
@@ -7,7 +7,11 @@
   import { formatDate } from "../utils/date.js";
   import Item from "./QuickFactsItem.svelte";
 
-  let eventData = getEventData();
+  let eventData;
+
+  eventDataStore.subscribe(newValue => {
+    eventData = newValue;
+  });
 
   const getacceptedUsers = () => {
     const acceptedUsers = eventData.users.filter(user => user.accepted);
@@ -46,7 +50,9 @@
     <CalendarIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
   {#if eventData.startTime}
-    <Item heading="Time" content={`${eventData.startTime} Uhr`}>
+    <Item
+      heading="Time"
+      content={eventData.endTime ? `${eventData.startTime} - ${eventData.endTime} Uhr` : `${eventData.startTime} Uhr`}>
       <WatchIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
     </Item>
   {/if}

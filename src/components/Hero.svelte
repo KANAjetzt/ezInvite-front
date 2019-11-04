@@ -5,7 +5,10 @@
   import Date from "./Date.svelte";
 
   let eventData;
-  eventDataStore.subscribe(value => (eventData = value));
+
+  eventDataStore.subscribe(newValue => {
+    eventData = newValue;
+  });
 
   let bgImage =
     "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
@@ -86,9 +89,11 @@
   <div class="info">
     <div class="box">
       <CalendarIcon width={16} height={16} fill={'#f9fafb'} />
-      <p>
-        <Date timeStamp={eventData.startDate} />
-      </p>
+      {#if eventData.startDate}
+        <p>
+          <Date timeStamp={eventData.startDate} />
+        </p>
+      {/if}
     </div>
     {#if eventData.location && eventData.location.name}
       <div class="box">

@@ -30,6 +30,8 @@
           id
           name
           startDate
+          startTime
+          endTime
         }
       }
     }
@@ -44,17 +46,21 @@
   const handleCTABtnClick = async e => {
     e.detail.preventDefault();
 
-    const input = { ...eventData };
+    const currentInput = { ...eventData };
 
-    console.log(input);
+    // prepare input Data
+    const input = {
+      name: currentInput.name,
+      startDate: currentInput.startDate,
+      startTime: `${currentInput.startHoure}:${currentInput.startMinute}`,
+      endTime: `${currentInput.endHoure}:${currentInput.endMinute}`
+    };
 
     // Send tilte and date to backend
     const newEventData = await mutate(client, {
       mutation: CREATEEVENT,
       variables: { input }
     });
-
-    console.log(newEventData.data.createEvent.event);
 
     // Update Event Data store
     eventDataStore.set(newEventData.data.createEvent.event);
@@ -152,8 +158,11 @@
       </section>
     {:else}
       <section class="startEndTime">
-
-        <AddStartEndTime />
+        <AddStartEndTime
+          bind:startHoure={eventData.startHoure}
+          bind:startMinute={eventData.startMinute}
+          bind:endHoure={eventData.endHoure}
+          bind:endMinute={eventData.endMinute} />
       </section>
       <section class="description">
         <AddDescription />
@@ -171,7 +180,7 @@
         <AddWidgets />
       </section>
       <section>
-        <BtnBig text={'GO !'} />
+        <BtnBig text={'GO !'} on:bigbtnclick={handleCTABtnClick} />
       </section>
     {/if}
 

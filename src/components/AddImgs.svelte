@@ -17,7 +17,6 @@
 
   const handleImgUpload = async () => {
     const files = [...document.getElementById("imgs").files];
-    console.log(files);
 
     // ! I definitely should change this at some point, so I dont have 1 request for every Img 🥶 !
     await files.forEach(async file => {

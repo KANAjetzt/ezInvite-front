@@ -1,5 +1,10 @@
 <script>
   import AddTime from "./AddTime.svelte";
+
+  export let startHoure = 0;
+  export let startMinute = 0;
+  export let endHoure = 0;
+  export let endMinute = 0;
 </script>
 
 <style>
@@ -37,8 +42,8 @@
 
 <div class="startEndTime">
   <label class="label">Start Time</label>
-  <AddTime />
+  <AddTime bind:houre={startHoure} bind:minute={startMinute} />
   <div class="dash" />
   <label class="label">End Time</label>
-  <AddTime />
+  <AddTime bind:houre={endHoure} bind:minute={endMinute} />
 </div>

@@ -16,7 +16,6 @@
 
   const handleImgUpload = async () => {
     const file = document.getElementById("heroImg").files[0];
-    console.log(file);
 
     await mutate(client, {
       mutation: UPLOADFILE,

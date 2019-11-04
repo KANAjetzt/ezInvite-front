@@ -1,3 +1,8 @@
+<script>
+  export let houre = 0;
+  export let minute = 0;
+</script>
+
 <style>
   .input {
     font-family: var(--font-primary);
@@ -36,7 +41,8 @@
     min="0"
     max="24"
     placeholder="00"
-    name="houres" />
+    name="houres"
+    bind:value={houre} />
   <span class="spacer">:</span>
   <input
     id="minutes"
@@ -45,5 +51,6 @@
     min="0"
     max="60"
     placeholder="00"
-    name="minutes" />
+    name="minutes"
+    bind:value={minute} />
 </div>

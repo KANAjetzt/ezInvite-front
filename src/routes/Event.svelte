@@ -42,8 +42,6 @@
   const client = getClient();
 
   export const queryEventData = async () => {
-    console.log("querying event data");
-
     //! I need to get the id from somewhere when the event is not just created (URL params?!)
     const id = "5d9f25cc4f5859672464ef42";
 
@@ -57,7 +55,7 @@
 
   //TODO: Check if if something is in store otherwise query event id
   eventData = getEventData();
-  console.log(eventData);
+
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     queryEventData();
   }
