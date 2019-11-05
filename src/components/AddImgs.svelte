@@ -15,11 +15,11 @@
     }
   `;
 
+  // Upload handler after CTA Btn got hammerd!
   const handleImgUpload = async () => {
     const files = [...document.getElementById("imgs").files];
     console.log(files);
 
-    // ! I definitely should change this at some point, so I dont have 1 request for every Img 🥶 !
     const upload = await mutate(client, {
       mutation: UPLOADFILE,
       variables: { files }
@@ -79,8 +79,7 @@
   multiple
   accept="image/*"
   id="imgs"
-  name="imgs"
-  on:change={() => handleImgUpload()} />
+  name="imgs" />
 
 <Rotate child={'.imgsUploadBtn'}>
 
