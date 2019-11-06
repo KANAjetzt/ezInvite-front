@@ -4,14 +4,14 @@
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
 
+  export let bgImage =
+    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
+
   let eventData;
 
   eventDataStore.subscribe(newValue => {
     eventData = newValue;
   });
-
-  let bgImage =
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
 </script>
 
 <style>
@@ -22,6 +22,7 @@
     padding-bottom: 10rem;
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
     background-size: cover;
+    min-height: 20vh;
   }
   .topBar {
     width: 100%;
@@ -83,23 +84,28 @@
   style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
   -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')">
   <div class="topBar" />
-  <div class="title">
-    <h1>{eventData.name}</h1>
-  </div>
-  <div class="info">
-    <div class="box">
-      <CalendarIcon width={16} height={16} fill={'#f9fafb'} />
-      {#if eventData.startDate}
-        <p>
-          <Date timeStamp={eventData.startDate} />
-        </p>
+  {#if eventData.name}
+    <div class="title">
+      <h1>{eventData.name}</h1>
+    </div>
+  {/if}
+  {#if eventData.startDate || (eventData.location && eventData.location.name)}
+    <div class="info">
+      <div class="box">
+        <CalendarIcon width={16} height={16} fill={'#f9fafb'} />
+        {#if eventData.startDate}
+          <p>
+            <Date timeStamp={eventData.startDate} />
+          </p>
+        {/if}
+      </div>
+      {#if eventData.location && eventData.location.name}
+        <div class="box">
+          <LocationPinIcon width={16} height={16} fill={'#f9fafb'} />
+          <p>{eventData.location.name}</p>
+        </div>
       {/if}
     </div>
-    {#if eventData.location && eventData.location.name}
-      <div class="box">
-        <LocationPinIcon width={16} height={16} fill={'#f9fafb'} />
-        <p>{eventData.location.name}</p>
-      </div>
-    {/if}
-  </div>
+  {/if}
+
 </header>

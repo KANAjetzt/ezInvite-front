@@ -1,26 +1,24 @@
 <script>
-  import { getClient, mutate } from "svelte-apollo";
-  import { gql } from "apollo-boost";
-
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
-  const client = getClient();
+  export let heroImgPreview = undefined;
 
-  const UPLOADFILE = gql`
-    mutation($file: Upload!) {
-      uploadHeroImg(file: $file) {
-        heroImg
-      }
-    }
-  `;
-
-  const handleImgUpload = async () => {
+  // ! Handle Img upload after submitting the form in AddEvent Route !
+  const handleImg = () => {
     const file = document.getElementById("heroImg").files[0];
 
-    await mutate(client, {
-      mutation: UPLOADFILE,
-      variables: { file }
-    });
+    const reader = new FileReader();
+    console.log(reader);
+
+    reader.onload = e => {
+      heroImgPreview = reader.result;
+    };
+
+    const dataUrl = reader.readAsDataURL(file);
+
+    // change component to Hero.svelte
+
+    // set the selected img as src=
   };
 </script>
 
@@ -68,7 +66,7 @@
   accept="image/*"
   id="heroImg"
   name="heroImg"
-  on:change={() => handleImgUpload()} />
+  on:change={() => handleImg()} />
 
 <label class="imgUploadBtn" for="heroImg">
   <ImgAddIcon height={80} width={80} fill={'#f9fafb'} />

@@ -5,6 +5,8 @@
 
   import { eventDataStore, getEventData } from "../stores.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
+  import Hero from "../components/Hero.svelte";
+  import RemoveBtn from "../components/BtnRemove.svelte";
   import SimpleField from "../components/SimpleField.svelte";
   import Rotate from "../components/Rotate.svelte";
   import BtnPanel from "../components/BtnPanel.svelte";
@@ -20,6 +22,7 @@
   let moreVisible = false;
 
   let eventData = {};
+  let heroImgPreview;
 
   const client = getClient();
 
@@ -44,6 +47,12 @@
     moreVisible = true;
   };
 
+  // Remove Hero Img Preview
+  const handleHeroImgRemove = e => {
+    heroImgPreview = undefined;
+  };
+
+  // Deal with form data
   const handleCTABtnClick = async e => {
     e.detail.preventDefault();
 
@@ -95,6 +104,7 @@
   .form:last-child {
     margin-bottom: -5rem;
   }
+
   .title {
     margin-top: 5rem;
   }
@@ -124,10 +134,21 @@
 </style>
 
 <Router>
-  <div class="topBar" />
+  {#if !heroImgPreview}
+    <div class="topBar" />
+  {/if}
   <form class="form">
     <section class="heroImg">
-      <AddHeroImg />
+      {#if !heroImgPreview}
+        <AddHeroImg bind:heroImgPreview />
+      {:else}
+        <Hero bgImage={heroImgPreview} />
+        <RemoveBtn
+          marginLeft={1}
+          marginTop={-2.9}
+          on:heroimgremove={() => handleHeroImgRemove()} />
+      {/if}
+
     </section>
     <section class="simpleFields">
       <div class="FormFields">
