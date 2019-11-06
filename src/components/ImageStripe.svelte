@@ -1,8 +1,13 @@
 <script>
-  import { getEventData } from "../stores";
+  import { eventDataStore } from "../stores";
   import Rotate from "./Rotate.svelte";
 
-  let eventData = getEventData();
+  let eventData;
+
+  eventDataStore.subscribe(newData => {
+    console.log(newData);
+    return (eventData = newData);
+  });
 </script>
 
 <style>
@@ -36,7 +41,7 @@
         <div class="imgBox">
           <img
             class="img"
-            src={`http://localhost:3000/img/${img}`}
+            src={img.startsWith('data:') ? img : `http://localhost:3000/img/${img}`}
             alt="Will be added later via API" />
         </div>
       {/each}

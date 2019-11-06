@@ -3,7 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
 
-  import { eventDataStore, getEventData } from "../stores.js";
+  import { eventDataStore } from "../stores.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -14,6 +14,7 @@
   import AddStartEndTime from "../components/AddStartEndTime.svelte";
   import AddDescription from "../components/AddDescription.svelte";
   import AddImgs from "../components/AddImgs.svelte";
+  import ImageStripe from "../components/ImageStripe.svelte";
   import LocationPicker from "../components/AddLocationPicker.svelte";
   import WidgetPicker from "../components/AddSelectWidget.svelte";
   import AddWidgets from "../components/AddWidget.svelte";
@@ -23,6 +24,13 @@
 
   let eventData = {};
   let heroImgPreview;
+  let imgStripe;
+
+  eventDataStore.subscribe(newData => {
+    console.log(newData);
+    eventData = newData;
+    console.log(eventData);
+  });
 
   const client = getClient();
 
@@ -193,7 +201,10 @@
         <AddDescription bind:value={eventData.description} />
       </section>
       <section class="imgsUpload">
-        <AddImgs />
+        <AddImgs bind:imgStripe />
+        {#if eventData.imgs}
+          <ImageStripe />
+        {/if}
       </section>
       <section class="locationPicker">
         <LocationPicker />

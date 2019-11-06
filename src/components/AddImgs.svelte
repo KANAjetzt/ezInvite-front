@@ -2,6 +2,7 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
+  import { eventDataStore } from "../stores";
   import Rotate from "./Rotate.svelte";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
@@ -16,16 +17,41 @@
   `;
 
   // Upload handler after CTA Btn got hammerd!
-  const handleImgUpload = async () => {
-    const files = [...document.getElementById("imgs").files];
-    console.log(files);
+  // const handleImgUpload = async () => {
+  //   const files = [...document.getElementById("imgs").files];
+  //   console.log(files);
 
-    const upload = await mutate(client, {
-      mutation: UPLOADFILE,
-      variables: { files }
-    });
+  //   const upload = await mutate(client, {
+  //     mutation: UPLOADFILE,
+  //     variables: { files }
+  //   });
 
-    console.log(upload);
+  //   console.log(upload);
+  // };
+
+  const handleImgs = () => {
+    const imgs = document.getElementById("imgs").files;
+    let imgsData = [];
+    const reader = new FileReader();
+
+    // read File
+    const readFile = img => {
+      return reader.readAsDataURL(img);
+    };
+
+    // Save File
+    reader.onload = e => {
+      // Add File to imgsArray when its loaded
+      imgsData = [...imgsData, reader.result];
+      // Check if there are more imgs
+      if (imgsData.length < imgs.length) {
+        // if so run readFile again
+        readFile(imgs[imgsData.length]);
+      } else {
+        eventDataStore.update(currentData => (currentData.imgs = imgsData));
+      }
+    };
+    readFile(imgs[0]);
   };
 </script>
 
@@ -79,7 +105,8 @@
   multiple
   accept="image/*"
   id="imgs"
-  name="imgs" />
+  name="imgs"
+  on:change={() => handleImgs()} />
 
 <Rotate child={'.imgsUploadBtn'}>
 

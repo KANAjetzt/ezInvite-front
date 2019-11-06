@@ -8,17 +8,15 @@
     const file = document.getElementById("heroImg").files[0];
 
     const reader = new FileReader();
-    console.log(reader);
 
+    // When img is loaded set result to heroImgPreview
+    // heroImgPreview is bound in AddEvent to heroImgPreview
+    // heroImgPreview is send to Hero.svelte as backgroundImg prop
     reader.onload = e => {
       heroImgPreview = reader.result;
     };
 
     const dataUrl = reader.readAsDataURL(file);
-
-    // change component to Hero.svelte
-
-    // set the selected img as src=
   };
 </script>
 
