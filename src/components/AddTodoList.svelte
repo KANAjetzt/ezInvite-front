@@ -1,7 +1,13 @@
 <script>
+  import { todoStore } from "../stores";
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
-  let todos = [];
+
+  let todos;
+
+  todoStore.subscribe(newData => {
+    todos = newData;
+  });
 </script>
 
 <style>
@@ -14,7 +20,7 @@
 </style>
 
 <ul class="todoList">
-  {#each todos as todo}
+  {#each $todos as todo}
     <Todo data={todo} />
   {/each}
   <AddTodoInput />

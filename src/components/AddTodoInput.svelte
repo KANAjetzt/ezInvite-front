@@ -1,6 +1,23 @@
 <script>
+  import { todoStore } from "../stores";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
+
+  let text;
+  let requiredPersons;
+
+  const handlePersonAddBtnClick = e => {
+    e.detail.preventDefault();
+
+    todoStore.update(current => {
+      let newTodos = [...current];
+      newTodos = [
+        ...newTodos,
+        { text: text, requiredPersons: requiredPersons }
+      ];
+      return newTodos;
+    });
+  };
 </script>
 
 <style>
@@ -51,8 +68,13 @@
 
 <div class="inputWrapper">
   <PersonAddBtn
+    on:personaddbtnclick={handlePersonAddBtnClick}
     iconStyle="z-index: 20; transform: translateX(135%); opacity: 0.9;" />
-  <input class="inputBox" type="text" placeholder="Add something.." />
+  <input
+    class="inputBox"
+    type="text"
+    placeholder="Add something.."
+    bind:value={text} />
   <label for="personCount">
     <PersonCountIcon
       width={25}
@@ -67,5 +89,6 @@
     type="number"
     min="1"
     placeholder="1"
-    name="personCount" />
+    name="personCount"
+    bind:value={requiredPersons} />
 </div>

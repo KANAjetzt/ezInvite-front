@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 
 export const eventDataStore = writable({});
+export const todoStore = writable([]);
 
 export const getEventData = () => {
   let eventData;

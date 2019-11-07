@@ -25,11 +25,16 @@
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
   <PersonAddBtn />
-
-  {#each data.users as { photo, name }}
-    <PersonImg {photo} {name} />
-  {/each}
-
+  {console.log(!data.users)}
+  {#if !data.users}
+    {#each data.requiredPersons as { photo, name }}
+      <PersonImg />
+    {/each}
+  {:else}
+    {#each data.users as { photo, name }}
+      <PersonImg {photo} {name} />
+    {/each}
+  {/if}
   <p class="text">{data.text}</p>
 
 </li>

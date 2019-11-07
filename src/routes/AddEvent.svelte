@@ -3,7 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
 
-  import { eventDataStore } from "../stores.js";
+  import { eventDataStore, todoStore } from "../stores.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -24,12 +24,18 @@
   let listWidgetVisible = false;
 
   let eventData = {};
+  let todos;
   let heroImgPreview;
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
     console.log(newData);
     eventData = newData;
+  });
+
+  todoStore.subscribe(newData => {
+    console.log(newData);
+    todos = newData;
   });
 
   const client = getClient();

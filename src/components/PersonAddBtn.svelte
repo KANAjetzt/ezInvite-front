@@ -1,4 +1,6 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   import PersonImg from "./PersonImg.svelte";
   import PlusIcon from "./Icons/Plus.svelte";
 
@@ -7,7 +9,7 @@
   export let iconStyle =
     "z-index: 20; transform: translateX(135%); opacity: 0.7;";
 
-  // OnClickAddPersonToTodo
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -25,7 +27,11 @@
   }
 </style>
 
-<button class="addBtn">
+<button
+  class="addBtn"
+  on:click={e => {
+    dispatch('personaddbtnclick', e);
+  }}>
   <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
   <PersonImg />
 </button>
