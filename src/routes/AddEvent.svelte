@@ -27,6 +27,7 @@
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
+    console.log(newData);
     eventData = newData;
   });
 

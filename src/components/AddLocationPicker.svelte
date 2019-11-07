@@ -6,8 +6,33 @@
   import mapboxgl from "mapbox-gl/dist/mapbox-gl.js";
   import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
+  import { eventDataStore } from "../stores.js";
   import Rotate from "./Rotate.svelte";
+  import SimpleField from "./SimpleField.svelte";
 
+  const updateStore = (key, newValue) => {
+    eventDataStore.update(currentData => {
+      const newEventData = { ...currentData };
+      if (!newEventData.location) newEventData.location = {};
+      newEventData.location[key] = newValue;
+
+      return newEventData;
+    });
+  };
+
+  const handleLocationCustomNameChange = e => {
+    // update Store on Value change
+    console.log(e);
+    updateStore("name", e.detail);
+  };
+
+  const handleLocationDescriptionChange = e => {
+    // update Store on Value change
+    console.log(e);
+    updateStore("description", e.detail);
+  };
+
+  // Load all the Map / Geocoder stuff
   onMount(async () => {
     mapboxgl.accessToken =
       "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjcmxmeDM2eGkzY3BrNHFtZDJtZncifQ.y_6ulnsUXBO36UyjTWmzlA";
@@ -30,11 +55,19 @@
     // Add location search
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
-      mapboxgl: map,
+      mapboxgl: mapboxgl,
       placeholder: "Where is your event?"
     });
 
     document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
+
+    geocoder.on("result", e => {
+      // ! 🤠 Updating the store with bouth values in one go would be nice 🤠 !
+      // cordinates
+      updateStore("coordinates", e.result.center);
+      // location Name
+      updateStore("address", e.result.place_name);
+    });
   });
 </script>
 
@@ -71,6 +104,11 @@
     margin-top: 1.5rem;
     background: var(--color-primary);
     z-index: 20;
+  }
+
+  .locationName,
+  .locationDescription {
+    margin-top: 2rem;
   }
 
   :global(.marker) {
@@ -197,5 +235,20 @@
 
 <div id="mapbox" class="mapbox" />
 <div id="geocoder" class="geocoder">
-  <span class="title">Location</span>
+  <span class="title">Location address</span>
+</div>
+
+<div class="locationName">
+  <SimpleField
+    name={'locationCustomName'}
+    heading={'Location Name'}
+    placeholder={'Name your location..'}
+    on:simplefieldchange={handleLocationCustomNameChange} />
+</div>
+<div class="locationDescription">
+  <SimpleField
+    name={'locationDescription'}
+    heading={'Location Description'}
+    placeholder={'Describe your location..'}
+    on:simplefieldchange={handleLocationDescriptionChange} />
 </div>

@@ -1,8 +1,12 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   export let value = "";
   export let name;
-  export let placeholder;
+  export let placeholder = "";
   export let heading;
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -42,4 +46,13 @@
 </style>
 
 <label for={name} class="label">{heading}</label>
-<input id={name} class="input" type="text" bind:value {placeholder} {name} />
+<input
+  id={name}
+  class="input"
+  type="text"
+  bind:value
+  {placeholder}
+  {name}
+  on:change={e => {
+    dispatch('simplefieldchange', e.target.value);
+  }} />
