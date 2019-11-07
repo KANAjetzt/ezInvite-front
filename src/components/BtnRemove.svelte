@@ -5,12 +5,14 @@
 
   export let marginTop = 0;
   export let marginLeft = 0;
+  export let width = 25;
+  export let height = 25;
 
   const dispatch = createEventDispatcher();
 
-  // Remove Preview Img --> simple dispatch an event and handle it on AddEvent Component.
+  // Remove Preview Img --> simple dispatch an event and handle it where it get used.
   const handleremoveBtn = () => {
-    dispatch("heroimgremove");
+    dispatch("removebtnclick");
   };
 </script>
 
@@ -32,5 +34,5 @@
   class="removeBtn"
   on:click={() => handleremoveBtn()}
   style={`margin-top: ${marginTop}rem; margin-left: ${marginLeft}rem`}>
-  <CrossIcon width={25} height={25} fill={'#f9fafb'} bg={true} />
+  <CrossIcon {width} {height} fill={'#f9fafb'} bg={true} />
 </button>

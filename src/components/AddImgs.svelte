@@ -6,15 +6,15 @@
   import Rotate from "./Rotate.svelte";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
-  const client = getClient();
+  // const client = getClient();
 
-  const UPLOADFILE = gql`
-    mutation($files: Upload!) {
-      uploadImgs(files: $files) {
-        imgs
-      }
-    }
-  `;
+  // const UPLOADFILE = gql`
+  //   mutation($files: Upload!) {
+  //     uploadImgs(files: $files) {
+  //       imgs
+  //     }
+  //   }
+  // `;
 
   // Upload handler after CTA Btn got hammerd!
   // const handleImgUpload = async () => {
@@ -48,7 +48,11 @@
         // if so run readFile again
         readFile(imgs[imgsData.length]);
       } else {
-        eventDataStore.update(currentData => (currentData.imgs = imgsData));
+        eventDataStore.update(currentData => {
+          const currentEventData = { ...currentData };
+          currentEventData.imgs = imgsData;
+          return currentEventData;
+        });
       }
     };
     readFile(imgs[0]);

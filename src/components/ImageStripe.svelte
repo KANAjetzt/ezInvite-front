@@ -5,7 +5,6 @@
   let eventData;
 
   eventDataStore.subscribe(newData => {
-    console.log(newData);
     return (eventData = newData);
   });
 </script>
@@ -27,6 +26,17 @@
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
   }
+
+  :global(.imageStripe > .removeBtn) {
+    position: absolute;
+    bottom: -1rem;
+    left: 2.5rem;
+    transform: rotate(9deg);
+  }
+
+  .imgBox {
+    overflow: hidden;
+  }
   .img {
     width: 100%;
     height: 110%;
@@ -37,6 +47,7 @@
 {#if eventData.imgs}
   <Rotate child={'.imageStripe'}>
     <section class="imageStripe">
+
       {#each eventData.imgs as img}
         <div class="imgBox">
           <img

@@ -27,9 +27,7 @@
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
-    console.log(newData);
     eventData = newData;
-    console.log(eventData);
   });
 
   const client = getClient();
@@ -58,6 +56,14 @@
   // Remove Hero Img Preview
   const handleHeroImgRemove = e => {
     heroImgPreview = undefined;
+  };
+
+  const handleImgStripeRemove = e => {
+    eventDataStore.update(currentData => {
+      const currentEventData = { ...currentData };
+      currentEventData.imgs = undefined;
+      return currentEventData;
+    });
   };
 
   // Deal with form data
@@ -154,7 +160,7 @@
         <RemoveBtn
           marginLeft={1}
           marginTop={-2.9}
-          on:heroimgremove={() => handleHeroImgRemove()} />
+          on:removebtnclick={() => handleHeroImgRemove()} />
       {/if}
 
     </section>
@@ -201,9 +207,16 @@
         <AddDescription bind:value={eventData.description} />
       </section>
       <section class="imgsUpload">
-        <AddImgs bind:imgStripe />
-        {#if eventData.imgs}
+        {#if !eventData.imgs}
+          <AddImgs bind:imgStripe />
+        {:else}
           <ImageStripe />
+          <RemoveBtn
+            width={20}
+            height={20}
+            marginLeft={1}
+            marginTop={-2.2}
+            on:removebtnclick={() => handleImgStripeRemove()} />
         {/if}
       </section>
       <section class="locationPicker">
