@@ -21,6 +21,7 @@
   import BtnBig from "../components/BtnBig.svelte";
 
   let moreVisible = false;
+  let listWidgetVisible = false;
 
   let eventData = {};
   let heroImgPreview;
@@ -224,11 +225,25 @@
         <LocationPicker />
       </section>
       <section class="widgetPicker">
-        <WidgetPicker />
+        <WidgetPicker
+          on:listbtnclick={e => {
+            e.detail.preventDefault();
+            listWidgetVisible = !listWidgetVisible;
+          }} />
       </section>
-      <section class="widgets">
-        <AddWidgets />
-      </section>
+      {#if listWidgetVisible}
+        <section class="widgets">
+          <AddWidgets />
+          <RemoveBtn
+            width={25}
+            height={25}
+            marginLeft={1}
+            marginTop={-2.5}
+            on:removebtnclick={() => {
+              listWidgetVisible = !listWidgetVisible;
+            }} />
+        </section>
+      {/if}
       <section>
         <BtnBig text={'GO !'} on:bigbtnclick={handleCTABtnClick} />
       </section>

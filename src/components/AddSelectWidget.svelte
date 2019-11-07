@@ -1,7 +1,11 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   import DescriptionBox from "./DescriptionBox.svelte";
   import Rotate from "./Rotate.svelte";
   import DoneDoubleIcon from "./Icons/DoneDouble.svelte";
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -37,6 +41,10 @@
     z-index: 20;
   }
 
+  .btn:focus {
+    outline: solid 1px var(--color-primary);
+  }
+
   .btnTitle {
     margin: 0;
     margin-top: 1.5rem;
@@ -65,7 +73,7 @@
   <Rotate child={'.background'}>
     <div class="background">
       <div class="wrapper">
-        <button class="btn">
+        <button class="btn" on:click={e => dispatch('listbtnclick', e)}>
           <DoneDoubleIcon
             width={80}
             height={80}
