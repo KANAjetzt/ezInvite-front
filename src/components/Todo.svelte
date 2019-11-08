@@ -1,8 +1,15 @@
 <script>
+  import { onMount } from "svelte";
+
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
 
   export let data;
+  let shortenPersonImgs = false;
+
+  onMount(() => {
+    if (data.requiredPersons > 5) shortenPersonImgs = true;
+  });
 </script>
 
 <style>
@@ -25,16 +32,11 @@
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
   <PersonAddBtn />
-  {console.log(!data.users)}
-  {#if !data.users}
-    {#each data.requiredPersons as { photo, name }}
-      <PersonImg />
-    {/each}
-  {:else}
-    {#each data.users as { photo, name }}
-      <PersonImg {photo} {name} />
-    {/each}
+  {#each data.users as { photo, name }}
+    <PersonImg {photo} {name} />
+  {/each}
+  {#if shortenPersonImgs}
+    <PersonImg count={data.requiredPersons - 4} />
   {/if}
   <p class="text">{data.text}</p>
-
 </li>

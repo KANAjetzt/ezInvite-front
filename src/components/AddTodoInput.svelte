@@ -6,6 +6,23 @@
   let text;
   let requiredPersons;
 
+  // generate Users to feed the Todo component with them
+  const generateDummyUsers = count => {
+    if (count > 5) count = 4;
+    let dummyUsers = [];
+    for (let i = 0; i < count; i++) {
+      console.log(i);
+      dummyUsers = [
+        ...dummyUsers,
+        {
+          name: "unkown user",
+          photo: "http://localhost:3000/img/user/default.jpg"
+        }
+      ];
+    }
+    return dummyUsers;
+  };
+
   const handlePersonAddBtnClick = e => {
     e.detail.preventDefault();
 
@@ -13,7 +30,11 @@
       let newTodos = [...current];
       newTodos = [
         ...newTodos,
-        { text: text, requiredPersons: requiredPersons }
+        {
+          text: text,
+          requiredPersons: requiredPersons,
+          users: generateDummyUsers(requiredPersons)
+        }
       ];
       return newTodos;
     });

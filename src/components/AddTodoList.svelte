@@ -20,7 +20,7 @@
 </style>
 
 <ul class="todoList">
-  {#each $todos as todo}
+  {#each todos as todo}
     <Todo data={todo} />
   {/each}
   <AddTodoInput />
