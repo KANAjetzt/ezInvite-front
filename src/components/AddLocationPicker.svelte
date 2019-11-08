@@ -22,13 +22,11 @@
 
   const handleLocationCustomNameChange = e => {
     // update Store on Value change
-    console.log(e);
     updateStore("name", e.detail);
   };
 
   const handleLocationDescriptionChange = e => {
     // update Store on Value change
-    console.log(e);
     updateStore("description", e.detail);
   };
 

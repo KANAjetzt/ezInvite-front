@@ -11,7 +11,6 @@
     if (count > 5) count = 4;
     let dummyUsers = [];
     for (let i = 0; i < count; i++) {
-      console.log(i);
       dummyUsers = [
         ...dummyUsers,
         {

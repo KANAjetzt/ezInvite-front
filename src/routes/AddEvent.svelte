@@ -29,12 +29,10 @@
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
-    console.log(newData);
     eventData = newData;
   });
 
   todoStore.subscribe(newData => {
-    console.log(newData);
     todos = newData;
   });
 
