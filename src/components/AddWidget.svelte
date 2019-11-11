@@ -1,6 +1,6 @@
 <script>
   import Rotate from "./Rotate.svelte";
-  import AddTodoList from "./AddTodoList.svelte";
+  import TodoList from "./TodoList.svelte";
   import DescriptionBox from "./DescriptionBox.svelte";
 </script>
 
@@ -24,7 +24,7 @@
     <div class="bar" />
   </Rotate>
 
-  <AddTodoList />
+  <TodoList />
 
   <Rotate child={'.bar'}>
     <div class="bar" />

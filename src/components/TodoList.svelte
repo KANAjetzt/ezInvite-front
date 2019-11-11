@@ -3,35 +3,62 @@
   //TODO: Think about storing that in a store or passing it down to the components.
   //TODO: Die user müssen im query noch gepoplulated werden.
 
-  import { getClient } from "svelte-apollo";
-  import { gql } from "apollo-boost";
-
-  import { getEventData } from "../stores";
+  import { todoStore } from "../stores";
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
 
-  //! widgets[0] only a quick fix - later loop widgets and get all with type === todo
-  const GETTODOS = gql`
-    {
-      todosForWidget(id: "${getEventData().widgets[0].id}") {
-        users {
-          id
-          name
-          photo
+  let todos;
+
+  // generate Users to feed the Todo component with them
+  const generateDummyUsers = count => {
+    let dummyUsers = [];
+    if (count > 5) count = 4;
+    for (let i = 0; i < count; i++) {
+      dummyUsers = [
+        ...dummyUsers,
+        {
+          name: "unkown user",
+          photo: "http://localhost:3000/img/user/default.jpg"
         }
-        text
-      }
+      ];
     }
-  `;
-
-  const client = getClient();
-
-  export const queryTodos = async () => {
-    const data = await client.query({ query: GETTODOS });
-    return data.data.todosForWidget;
+    return dummyUsers;
   };
 
-  let todosData = queryTodos();
+  // Add Dummys Users to data if needed
+  const prepareData = todo => {
+    let newTodo = { ...todo };
+
+    // if there are no partacing users on that thing yet
+    if (!todo.users || todo.users.length === 0) {
+      // If more than 5 people are required add 5 dummy users
+      if (todo.requiredPersons > 5) newTodo.users = generateDummyUsers(5);
+
+      // If less then 5 people are required add the ammount of requiredPersons in dummy Users
+      newTodo.users = generateDummyUsers(todo.requiredPersons);
+    }
+
+    // if this thing allready has some partacing users
+    if (todo.users && todo.users[0]) {
+      const partacer = todo.users.length;
+      const requiredPersons = todo.requiredPersons;
+
+      // If more than 5 people are allready partacing on this thing
+      // They get shown on the page - so no need for dummys
+      if (partacer > 5) return;
+
+      // get an Array of dummy users to pass in to the notDone Array (?!)
+      const dummyUsers = generateDummyUsers(requiredPersons - partacer);
+
+      // Add the dummy users to the existing users
+      newTodo.users = newTodo.users.concat(dummyUsers);
+    }
+    return newTodo;
+  };
+
+  todoStore.subscribe(newData => {
+    todos = newData.map(todo => prepareData(todo));
+  });
 </script>
 
 <style>
@@ -43,14 +70,9 @@
   }
 </style>
 
-{#await todosData}
-  <p>...loading...</p>
-{:then todos}
-  <ul class="todoList">
-    {#each todos as todo}
-      <Todo data={todo} />
-    {/each}
-    <AddTodoInput />
-  </ul>
-
-{/await}
+<ul class="todoList">
+  {#each todos as todo}
+    <Todo data={todo} />
+  {/each}
+  <AddTodoInput />
+</ul>

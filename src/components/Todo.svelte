@@ -5,6 +5,7 @@
   import PersonAddBtn from "./PersonAddBtn.svelte";
 
   export let data;
+
   let shortenPersonImgs = false;
 
   onMount(() => {

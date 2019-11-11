@@ -3,7 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Link, Route } from "svelte-routing";
 
-  import { eventDataStore, getEventData } from "../stores.js";
+  import { eventDataStore, todoStore } from "../stores.js";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -13,6 +13,15 @@
   import Answers from "../components/Answers.svelte";
 
   let eventData;
+  let todos;
+
+  eventDataStore.subscribe(newData => {
+    eventData = newData;
+  });
+
+  todoStore.subscribe(newData => {
+    todos = newData;
+  });
 
   const GETEVENT = gql`
     query($id: ID!) {
@@ -34,6 +43,21 @@
         }
         widgets {
           id
+          type
+        }
+      }
+    }
+  `;
+
+  const GETTODOS = gql`
+    query($id: ID!) {
+      todosForWidget(id: $id) {
+        id
+        text
+        requiredPersons
+        users {
+          name
+          photo
         }
       }
     }
@@ -41,21 +65,32 @@
 
   const client = getClient();
 
-  export const queryEventData = async () => {
+  const queryEventData = async () => {
+    const queryTodos = async widgetId => {
+      const id = widgetId;
+
+      // Query for todos with specific widget id
+      const data = await client.query({ query: GETTODOS, variables: { id } });
+
+      // Update Todos Store with queryed Todos Data
+      todoStore.set(data.data.todosForWidget);
+    };
+
     //! I need to get the id from somewhere when the event is not just created (URL params?!)
     const id = "5d9f25cc4f5859672464ef42";
 
     // Query  for event with specific id
     const data = await client.query({ query: GETEVENT, variables: { id } });
+    const widgets = data.data.event.widgets;
 
+    await queryTodos(
+      widgets[widgets.findIndex(widget => widget.type === "todo")].id
+    );
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
-    eventData = data.data.event;
   };
 
-  //TODO: Check if if something is in store otherwise query event id
-  eventData = getEventData();
-
+  // Check if if something is in store otherwise query event id
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     queryEventData();
   }

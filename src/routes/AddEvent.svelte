@@ -29,12 +29,10 @@
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
-    console.log(newData);
     eventData = newData;
   });
 
   todoStore.subscribe(newData => {
-    console.log(newData);
     todos = newData;
   });
 
@@ -66,9 +64,11 @@
   const CREATETODO = gql`
     mutation($input: CreateTodoInput!) {
       createTodo(input: $input) {
-        id
-        text
-        requiredPersons
+        todo {
+          id
+          text
+          requiredPersons
+        }
       }
     }
   `;
@@ -92,6 +92,7 @@
     });
   };
 
+  //BUG: ! - When Btn get's clicked 2 times --> 2 todo widgets are added - !
   const handlelistBtnClick = e => {
     // onlistbtnclick --> create new widget with type "todo"
     e.detail.preventDefault();
@@ -99,6 +100,26 @@
     eventData.widgetTypes && eventData.widgetTypes[0]
       ? (eventData.widgetTypes = [...eventData.widgetTypes, "todo"])
       : (eventData.widgetTypes = ["todo"]);
+  };
+
+  const handleTodoData = async eventData => {
+    const widgets = eventData.data.createEvent.event.widgets;
+    const WidgetID =
+      widgets[widgets.findIndex(widget => widget.type === "todo")].id;
+
+    // TODO: Add multiple todos in one go to DB
+    todos.forEach(async todo => {
+      const input = {
+        widget: WidgetID,
+        text: todo.text,
+        requiredPersons: todo.requiredPersons
+      };
+
+      const savedTodo = await mutate(client, {
+        mutation: CREATETODO,
+        variables: { input }
+      });
+    });
   };
 
   const handleEventData = async () => {
@@ -120,8 +141,6 @@
       widgetTypes: currentInput.widgetTypes
     };
 
-    console.log(input);
-
     // Send tilte and date to backend
     const newEventData = await mutate(client, {
       mutation: CREATEEVENT,
@@ -132,28 +151,6 @@
 
     // Update Event Data store
     eventDataStore.set(newEventData.data.createEvent.event);
-  };
-
-  // Currently a mess - check if mutation gets triggerd
-  // TODO: Add multiple todos in one go to DB
-  const handleTodoData = async eventData => {
-    const widgets = eventData.data.createEvent.event.widgets;
-    const WidgetID = widgets[widgets.findIndex(widget => widget === "todo")].id;
-
-    todos.forEach(async todo => {
-      const input = {
-        widget: WidgetID,
-        text: todo.text,
-        requiredPersons: todo.requiredPersons
-      };
-
-      const savedTodo = await mutate(client, {
-        mutation: CREATETODO,
-        variables: { input }
-      });
-
-      console.log(savedTodo);
-    });
   };
 
   // Deal with form data

@@ -6,22 +6,7 @@
   let text;
   let requiredPersons;
 
-  // generate Users to feed the Todo component with them
-  const generateDummyUsers = count => {
-    if (count > 5) count = 4;
-    let dummyUsers = [];
-    for (let i = 0; i < count; i++) {
-      dummyUsers = [
-        ...dummyUsers,
-        {
-          name: "unkown user",
-          photo: "http://localhost:3000/img/user/default.jpg"
-        }
-      ];
-    }
-    return dummyUsers;
-  };
-
+  // TODO: Check if we are on the Event page / if so save the new Thing to the DB
   const handlePersonAddBtnClick = e => {
     e.detail.preventDefault();
 
@@ -31,8 +16,7 @@
         ...newTodos,
         {
           text: text,
-          requiredPersons: requiredPersons,
-          users: generateDummyUsers(requiredPersons)
+          requiredPersons: requiredPersons
         }
       ];
       return newTodos;
