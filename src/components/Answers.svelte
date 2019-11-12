@@ -4,20 +4,30 @@
       - Make Section without people not apear!
 */
 
-  import { getEventData } from "../stores";
+  import { eventDataStore } from "../stores";
   import PersonCard from "./PersonCard.svelte";
   import DoneIcon from "./Icons/DoneFilled.svelte";
   import CrossIcon from "./Icons/Cross.svelte";
   import QuestionmarkIcon from "./Icons/Questionmark.svelte";
 
+  let eventData;
   let acceptedUsers = [];
   let canceledUsers = [];
   let pendingUsers = [];
 
-  getEventData().users.forEach(user => {
-    if (user.accepted) acceptedUsers.push(user);
-    if (user.accepted === false) canceledUsers.push(user);
-    if (user.accepted === null) pendingUsers.push(user);
+  eventDataStore.subscribe(newData => {
+    if (!newData.users) {
+      eventData = newData;
+      return;
+    }
+
+    newData.users.forEach(user => {
+      if (user.accepted) acceptedUsers.push(user);
+      if (user.accepted === false) canceledUsers.push(user);
+      if (user.accepted === null) pendingUsers.push(user);
+    });
+
+    eventData = newData;
   });
 </script>
 

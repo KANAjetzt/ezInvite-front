@@ -151,9 +151,6 @@
     });
 
     handleTodoData(newEventData);
-
-    // Update Event Data store
-    eventDataStore.set(newEventData.data.createEvent.event);
   };
 
   // Deal with form data
@@ -162,7 +159,7 @@
 
     await handleEventData();
 
-    navigate("/event");
+    navigate("/eventPreview");
   };
 </script>
 

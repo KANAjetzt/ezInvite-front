@@ -5,6 +5,7 @@
   import { setClient } from "svelte-apollo";
   import { Router, Link, Route } from "svelte-routing";
 
+  import EventPreview from "./routes/EventPreview.svelte";
   import Event from "./routes/Event.svelte";
   import AddEvent from "./routes/AddEvent.svelte";
 
@@ -22,4 +23,5 @@
 <Router {url}>
   <Route path="/" component={AddEvent} />
   <Route path="event" component={Event} />
+  <Route path="eventPreview" component={EventPreview} />
 </Router>

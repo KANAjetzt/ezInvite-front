@@ -5,6 +5,7 @@
   let eventData;
 
   eventDataStore.subscribe(newData => {
+    console.log(newData);
     eventData = newData;
   });
 </script>
