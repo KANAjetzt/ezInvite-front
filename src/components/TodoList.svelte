@@ -47,7 +47,7 @@
       // They get shown on the page - so no need for dummys
       if (partacer > 5) return;
 
-      // get an Array of dummy users to pass in to the notDone Array (?!)
+      // get an Array of dummy users
       const dummyUsers = generateDummyUsers(requiredPersons - partacer);
 
       // Add the dummy users to the existing users

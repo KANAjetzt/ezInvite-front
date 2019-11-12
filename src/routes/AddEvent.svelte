@@ -29,6 +29,7 @@
   let imgStripe;
 
   eventDataStore.subscribe(newData => {
+    console.log(newData);
     eventData = newData;
   });
 
@@ -138,7 +139,9 @@
         description: currentInput.location.description,
         name: currentInput.location.name
       },
-      widgetTypes: currentInput.widgetTypes
+      widgetTypes: currentInput.widgetTypes,
+      heroImg: currentInput.pureHeroImg,
+      imgs: currentInput.pureImgs
     };
 
     // Send tilte and date to backend
@@ -220,10 +223,10 @@
   {/if}
   <form class="form">
     <section class="heroImg">
-      {#if !heroImgPreview}
-        <AddHeroImg bind:heroImgPreview />
+      {#if !eventData.heroImgPreview}
+        <AddHeroImg />
       {:else}
-        <Hero bgImage={heroImgPreview} />
+        <Hero bgImage={eventData.heroImgPreview} />
         <RemoveBtn
           marginLeft={1}
           marginTop={-2.9}

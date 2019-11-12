@@ -5,7 +5,7 @@
   let eventData;
 
   eventDataStore.subscribe(newData => {
-    return (eventData = newData);
+    eventData = newData;
   });
 </script>
 
@@ -52,7 +52,7 @@
         <div class="imgBox">
           <img
             class="img"
-            src={img.startsWith('data:') ? img : `http://localhost:3000/img/${img}`}
+            src={img.startsWith('data:') ? img : `${img}`}
             alt="Will be added later via API" />
         </div>
       {/each}

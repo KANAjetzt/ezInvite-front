@@ -1,33 +1,7 @@
 <script>
-  import { getClient, mutate } from "svelte-apollo";
-  import { gql } from "apollo-boost";
-
   import { eventDataStore } from "../stores";
   import Rotate from "./Rotate.svelte";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
-
-  // const client = getClient();
-
-  // const UPLOADFILE = gql`
-  //   mutation($files: Upload!) {
-  //     uploadImgs(files: $files) {
-  //       imgs
-  //     }
-  //   }
-  // `;
-
-  // Upload handler after CTA Btn got hammerd!
-  // const handleImgUpload = async () => {
-  //   const files = [...document.getElementById("imgs").files];
-  //   console.log(files);
-
-  //   const upload = await mutate(client, {
-  //     mutation: UPLOADFILE,
-  //     variables: { files }
-  //   });
-
-  //   console.log(upload);
-  // };
 
   const handleImgs = () => {
     const imgs = document.getElementById("imgs").files;
@@ -51,6 +25,7 @@
         eventDataStore.update(currentData => {
           const currentEventData = { ...currentData };
           currentEventData.imgs = imgsData;
+          currentEventData.pureImgs = imgs;
           return currentEventData;
         });
       }

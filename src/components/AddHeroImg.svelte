@@ -1,11 +1,10 @@
 <script>
+  import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
-
-  export let heroImgPreview = undefined;
 
   // ! Handle Img upload after submitting the form in AddEvent Route !
   const handleImg = () => {
-    const file = document.getElementById("heroImg").files[0];
+    const img = document.getElementById("heroImg").files[0];
 
     const reader = new FileReader();
 
@@ -13,10 +12,17 @@
     // heroImgPreview is bound in AddEvent to heroImgPreview
     // heroImgPreview is send to Hero.svelte as backgroundImg prop
     reader.onload = e => {
-      heroImgPreview = reader.result;
+      const imgData = reader.result;
+
+      eventDataStore.update(currentData => {
+        const currentEventData = { ...currentData };
+        currentEventData.heroImgPreview = imgData;
+        currentEventData.pureHeroImg = img;
+        return currentEventData;
+      });
     };
 
-    const dataUrl = reader.readAsDataURL(file);
+    const dataUrl = reader.readAsDataURL(img);
   };
 </script>
 

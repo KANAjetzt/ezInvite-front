@@ -31,6 +31,7 @@
         startTime
         endTime
         description
+        heroImg
         imgs
         location {
           name
@@ -77,7 +78,7 @@
     };
 
     //! I need to get the id from somewhere when the event is not just created (URL params?!)
-    const id = "5d9f25cc4f5859672464ef42";
+    const id = "5dca80e94bec7b509440363b";
 
     // Query  for event with specific id
     const data = await client.query({ query: GETEVENT, variables: { id } });
@@ -100,21 +101,21 @@
   {#await eventData}
     <p>loading</p>
   {:then event}
-    <Hero />
+    <Hero bgImage={event.heroImg} />
     <QuickFacts />
-    {#if eventData.description}
+    {#if event.description}
       <Description />
     {/if}
-    {#if eventData.imgs}
+    {#if event.imgs}
       <ImageStripe />
     {/if}
-    {#if eventData.location && eventData.location.coordinates[0]}
+    {#if event.location && event.location.coordinates[0]}
       <Map />
     {/if}
-    {#if eventData.widgets && eventData.widgets[0]}
+    {#if event.widgets && event.widgets[0]}
       <Widget />
     {/if}
-    {#if eventData.users && eventData.users[0]}
+    {#if event.users && event.users[0]}
       <Answers />
     {/if}
   {/await}

@@ -18,7 +18,7 @@
       childHeight = document.querySelector(child).getBoundingClientRect()
         .height;
       ready = true;
-    }, 10);
+    }, 100);
   });
 </script>
 
