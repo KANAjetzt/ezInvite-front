@@ -141,8 +141,8 @@
     const input = {
       name: currentInput.name,
       startDate: currentInput.startDate,
-      startTime: `${currentInput.startHoure}:${currentInput.startMinute}`,
-      endTime: `${currentInput.endHoure}:${currentInput.endMinute}`,
+      startTime: currentInput.startTime,
+      endTime: currentInput.endTime,
       description: currentInput.description,
       location: {
         address: currentInput.location.address,
@@ -318,10 +318,8 @@
     {:else}
       <section class="startEndTime">
         <AddStartEndTime
-          bind:startHoure={eventData.startHoure}
-          bind:startMinute={eventData.startMinute}
-          bind:endHoure={eventData.endHoure}
-          bind:endMinute={eventData.endMinute} />
+          bind:startTime={eventData.startTime}
+          bind:endTime={eventData.endTime} />
       </section>
       <section class="description">
         <AddDescription bind:value={eventData.description} />

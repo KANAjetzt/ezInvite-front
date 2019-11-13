@@ -1,10 +1,8 @@
 <script>
   import AddTime from "./AddTime.svelte";
 
-  export let startHoure = 0;
-  export let startMinute = 0;
-  export let endHoure = 0;
-  export let endMinute = 0;
+  export let startTime = undefined;
+  export let endTime = undefined;
 </script>
 
 <style>
@@ -31,6 +29,27 @@
     margin-bottom: 0.5rem;
   }
 
+  .input {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 1.8rem;
+    text-align: center;
+    color: var(--color-text-primary);
+    background-color: transparent;
+    border: none;
+    transition: all 0.05s ease-in-out;
+  }
+
+  .input::placeholder {
+    color: var(--color-text-primary);
+    opacity: 0.95;
+  }
+
+  .input:focus {
+    outline: none;
+    box-shadow: 0 3px 0 var(--color-secondary);
+  }
+
   .dash {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
@@ -42,8 +61,18 @@
 
 <div class="startEndTime">
   <label class="label">Start Time</label>
-  <AddTime bind:houre={startHoure} bind:minute={startMinute} />
+  <input
+    type="time"
+    id="startTime"
+    class="input"
+    name="startTime"
+    bind:value={startTime} />
   <div class="dash" />
   <label class="label">End Time</label>
-  <AddTime bind:houre={endHoure} bind:minute={endMinute} />
+  <input
+    type="time"
+    id="endTime"
+    class="input"
+    name="endTime"
+    bind:value={endTime} />
 </div>
