@@ -11,7 +11,8 @@
   const dispatch = createEventDispatcher();
 
   // Remove Preview Img --> simple dispatch an event and handle it where it get used.
-  const handleremoveBtn = () => {
+  const handleremoveBtn = e => {
+    e.preventDefault();
     dispatch("removebtnclick");
   };
 </script>
@@ -32,7 +33,7 @@
 
 <button
   class="removeBtn"
-  on:click={() => handleremoveBtn()}
+  on:click={e => handleremoveBtn(e)}
   style={`margin-top: ${marginTop}rem; margin-left: ${marginLeft}rem`}>
   <CrossIcon {width} {height} fill={'#f9fafb'} bg={true} />
 </button>

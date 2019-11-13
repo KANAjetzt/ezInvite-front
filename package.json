@@ -10,7 +10,8 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^4.0.4",
-    "svelte": "^3.0.0"
+    "svelte": "^3.0.0",
+    "svelte-calendar": "^1.1.0"
   },
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^4.5.0",

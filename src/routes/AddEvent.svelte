@@ -2,6 +2,7 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
+  import Datepicker from "svelte-calendar";
 
   import { eventDataStore, todoStore } from "../stores.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
@@ -27,6 +28,12 @@
   let todos;
   let heroImgPreview;
   let imgStripe;
+  let formattedSelected;
+  let dateChosen;
+
+  $: if (dateChosen) {
+    eventDataStore.set(eventData);
+  }
 
   eventDataStore.subscribe(newData => {
     console.log(newData);
@@ -82,7 +89,11 @@
 
   // Remove Hero Img Preview
   const handleHeroImgRemove = e => {
-    heroImgPreview = undefined;
+    eventDataStore.update(currentData => {
+      const currentEventData = { ...currentData };
+      currentEventData.heroImgPreview = undefined;
+      return currentEventData;
+    });
   };
 
   const handleImgStripeRemove = e => {
@@ -192,6 +203,36 @@
 
   .date {
     margin-top: 2rem;
+    font-family: var(--font-primary);
+  }
+
+  .labelDatepicker {
+    display: block;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+  }
+
+  .datePickerBtn {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem 1rem 1.5rem;
+    margin: 0;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    z-index: 20;
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--color-text-primary);
+    background: transparent;
+    box-shadow: 0 1px 0 var(--color-secondary);
   }
 
   .selectBtns {
@@ -241,11 +282,23 @@
             bind:value={eventData.name} />
         </div>
         <div class="date">
-          <SimpleField
-            name={'Date'}
-            heading={'Date'}
-            placeholder={'When does it start?'}
-            bind:value={eventData.startDate} />
+          <span class="labelDatepicker">Date</span>
+          <Datepicker
+            start={new Date()}
+            end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+            format={'#{l}, #{F} #{j}, #{Y}'}
+            highlightColor="#047bd7"
+            dayBackgroundColor="#efefef"
+            dayTextColor="#333"
+            dayHighlightedBackgroundColor="#047bd7"
+            dayHighlightedTextColor="#fff"
+            bind:selected={eventData.startDate}
+            bind:formattedSelected
+            bind:dateChosen>
+            <button class="datePickerBtn" on:click={e => e.preventDefault()}>
+              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
+            </button>
+          </Datepicker>
         </div>
       </div>
     </section>
