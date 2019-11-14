@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
@@ -31,9 +32,15 @@
   let formattedSelected;
   let dateChosen;
 
-  $: if (dateChosen) {
-    eventDataStore.set(eventData);
-  }
+  // $: if (dateChosen) {
+  //   eventDataStore.set(eventData);
+  // }
+
+  onMount(() => {
+    return () => {
+      console.log("!! unmounted - AddEvent !!");
+    };
+  });
 
   eventDataStore.subscribe(newData => {
     console.log(newData);

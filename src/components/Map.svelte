@@ -4,20 +4,24 @@
 
   import { onMount } from "svelte";
   import mapboxgl from "mapbox-gl/dist/mapbox-gl.js";
+  import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
-  import { getEventData } from "../stores";
+  import { eventDataStore } from "../stores.js";
   import Rotate from "./Rotate.svelte";
+  import SimpleField from "./SimpleField.svelte";
 
-  let location = getEventData().location;
+  let location = $eventDataStore.location;
 
+  // Load all the Map / Geocoder stuff
   onMount(async () => {
+    console.log(location);
     mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjbHE1ZjBmZ3UzY3FpeHdieTR6cmEifQ.P4335T1qsOc_NhjN_Mfd-g";
+      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjcmxmeDM2eGkzY3BrNHFtZDJtZncifQ.y_6ulnsUXBO36UyjTWmzlA";
+
+    console.log(document.getElementById("mapbox"));
     var map = new mapboxgl.Map({
       container: "mapbox",
       style: "mapbox://styles/kanajetzt/ck06cxang246d1dpirijqxubs",
-      center: location.coordinates,
-      zoom: 12,
       scrollZoom: false
     });
 
@@ -36,18 +40,13 @@
 </script>
 
 <style>
-  .mapWrapper {
-    overflow: hidden;
-    transform: rotate(-9deg) scale(1.2);
+  #mapbox {
+    width: 100vw;
+    height: 40rem;
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
-  }
-
-  #mapbox {
-    transform: rotate(9deg) scale(1.3);
-    width: 100vw;
-    height: 20rem;
+    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0% 100%);
   }
 
   :global(.marker) {
@@ -59,8 +58,4 @@
   }
 </style>
 
-<Rotate child={'.mapWrapper'}>
-  <div class="mapWrapper">
-    <div id="mapbox" />
-  </div>
-</Rotate>
+<div id="mapbox" class="mapbox" />
