@@ -1,6 +1,4 @@
 <script>
-  import AddTime from "./AddTime.svelte";
-
   export let startTime = undefined;
   export let endTime = undefined;
 </script>
@@ -9,13 +7,18 @@
   .startEndTime {
     display: grid;
     grid-template-columns: 1fr min-content 1fr;
-    grid-template-rows: min-content 1fr;
     align-items: center;
     justify-items: center;
     margin-top: 2rem;
-    padding: 0 1.5rem;
+    /* padding: 0 1.5rem; */
     padding-bottom: 2rem;
     border-bottom: solid 1px var(--color-secondary);
+  }
+
+  .startTime,
+  .endTime {
+    display: flex;
+    flex-direction: column;
   }
 
   .label {
@@ -29,7 +32,18 @@
     margin-bottom: 0.5rem;
   }
 
+  /*
+   -- On Firefox the input is not centerd -- 
+   -- Added extra wrapper divs to inputs  --
+   -- to center it on firefox as well     --
+   -- could remove divs and add           --
+   -- @supports(-moz-appearance:none)     --
+   -- and unset the with for firefox      --
+  */
   .input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
     font-family: var(--font-primary);
     font-weight: 300;
     font-size: 1.8rem;
@@ -39,7 +53,6 @@
     border: none;
     transition: all 0.05s ease-in-out;
   }
-
   .input::placeholder {
     color: var(--color-text-primary);
     opacity: 0.95;
@@ -60,19 +73,23 @@
 </style>
 
 <div class="startEndTime">
-  <label class="label">Start Time</label>
-  <input
-    type="time"
-    id="startTime"
-    class="input"
-    name="startTime"
-    bind:value={startTime} />
+  <div class="startTime">
+    <label class="label">Start Time</label>
+    <input
+      type="time"
+      id="startTime"
+      class="input"
+      name="startTime"
+      bind:value={startTime} />
+  </div>
   <div class="dash" />
-  <label class="label">End Time</label>
-  <input
-    type="time"
-    id="endTime"
-    class="input"
-    name="endTime"
-    bind:value={endTime} />
+  <div class="endTime">
+    <label class="label">End Time</label>
+    <input
+      type="time"
+      id="endTime"
+      class="input"
+      name="endTime"
+      bind:value={endTime} />
+  </div>
 </div>

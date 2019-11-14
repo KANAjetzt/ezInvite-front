@@ -8,6 +8,15 @@ html {
   -webkit-text-size-adjust: 100%; /* 2 */
 }
 
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+
+/* Up/Down arrows for incrementing/decrementing the value */
+input[type="time"]::-webkit-inner-spin-button {
+  display: none;
+}
+
 :root {
   --color-primary: #022c4d;
   --color-primary-light: #035696;
