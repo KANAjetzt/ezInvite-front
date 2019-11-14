@@ -1,7 +1,8 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
 
-  import { eventDataStore } from "../stores.js";
+  import { eventDataStore, todoStore } from "../stores.js";
+  import { getLocalStorage } from "../utils/localStorageHandler.js";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -10,35 +11,34 @@
   import Widget from "../components/Widget.svelte";
   import Answers from "../components/Answers.svelte";
 
-  let eventData;
-  let todos;
+  if (Object.keys($eventDataStore).length === 0) {
+    eventDataStore.set(getLocalStorage("eventData"));
+  }
+  if ($todoStore.length === 0) {
+    todoStore.set(getLocalStorage("todos"));
+  }
 
-  eventDataStore.subscribe(newData => {
-    console.log(newData);
-    eventData = newData;
-  });
+  let eventData = $eventDataStore;
+  let todos = $todoStore;
 </script>
 
 <Router>
-  {#await eventData}
-    <p>loading</p>
-  {:then event}
-    <Hero bgImage={event.heroImgPreview} />
-    <QuickFacts />
-    {#if event.description}
-      <Description />
-    {/if}
-    {#if event.imgs}
-      <ImageStripe />
-    {/if}
-    {#if event.location && event.location.coordinates[0]}
-      <Map />
-    {/if}
-    {#if event.widgets && event.widgets[0]}
-      <Widget />
-    {/if}
 
-    <Answers />
+  <Hero bgImage={eventData.heroImgPreview} />
+  <QuickFacts />
+  {#if eventData.description}
+    <Description />
+  {/if}
+  {#if eventData.imgs}
+    <ImageStripe />
+  {/if}
+  {#if eventData.location && eventData.location.coordinates[0]}
+    <Map />
+  {/if}
+  {#if todos.length}
+    <Widget />
+  {/if}
 
-  {/await}
+  <Answers />
+
 </Router>

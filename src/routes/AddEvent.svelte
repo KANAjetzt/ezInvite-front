@@ -1,11 +1,11 @@
 <script>
-  import { onMount } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
 
   import { eventDataStore, todoStore } from "../stores.js";
+  import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -30,20 +30,15 @@
   let heroImgPreview;
   let imgStripe;
   let formattedSelected;
+  let selectedDate;
   let dateChosen;
 
-  // $: if (dateChosen) {
-  //   eventDataStore.set(eventData);
-  // }
-
-  onMount(() => {
-    return () => {
-      console.log("!! unmounted - AddEvent !!");
-    };
-  });
+  $: if (dateChosen) {
+    eventData.startDate = `${selectedDate.getTime()}`;
+    eventDataStore.set(eventData);
+  }
 
   eventDataStore.subscribe(newData => {
-    console.log(newData);
     eventData = newData;
   });
 
@@ -162,20 +157,22 @@
       imgs: currentInput.pureImgs
     };
 
-    // Send tilte and date to backend
-    const newEventData = await mutate(client, {
+    // Send tilte and date to backend return new Event Document
+    return await mutate(client, {
       mutation: CREATEEVENT,
       variables: { input }
     });
-
-    handleTodoData(newEventData);
   };
 
   // Deal with form data
   const handleCTABtnClick = async e => {
     e.detail.preventDefault();
 
-    await handleEventData();
+    const newEventData = await handleEventData();
+    await handleTodoData(newEventData);
+
+    saveLocalStorage(eventData, "eventData");
+    saveLocalStorage(todos, "todos");
 
     navigate("/eventPreview");
   };
@@ -299,7 +296,7 @@
             dayTextColor="#333"
             dayHighlightedBackgroundColor="#047bd7"
             dayHighlightedTextColor="#fff"
-            bind:selected={eventData.startDate}
+            bind:selected={selectedDate}
             bind:formattedSelected
             bind:dateChosen>
             <button class="datePickerBtn" on:click={e => e.preventDefault()}>
