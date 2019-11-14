@@ -101,14 +101,6 @@
     margin-top: 2rem;
   }
 
-  :global(.marker) {
-    background-image: url("img/LocationPin.svg");
-    background-size: cover;
-    width: 15px;
-    height: 21px;
-    cursor: pointer;
-  }
-
   :global(.mapboxgl-ctrl-logo),
   :global(.mapboxgl-ctrl-attrib) {
     display: none !important;

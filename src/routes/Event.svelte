@@ -78,7 +78,7 @@
     };
 
     //! I need to get the id from somewhere when the event is not just created (URL params?!)
-    const id = "5dcd1987c44d0874c41f1e20";
+    const id = "5dcd5322c44d0874c41f1e3e";
 
     // Query  for event with specific id
     const data = await client.query({ query: GETEVENT, variables: { id } });

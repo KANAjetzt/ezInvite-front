@@ -25,6 +25,8 @@
       scrollZoom: false
     });
 
+    const bounds = new mapboxgl.LngLatBounds();
+
     // Create marker
     const el = document.createElement("div");
     el.className = "marker";
@@ -36,6 +38,19 @@
     })
       .setLngLat(location.coordinates)
       .addTo(map);
+
+    // Extend map boudns to include current location
+    bounds.extend(location.coordinates);
+
+    map.fitBounds(bounds, {
+      maxZoom: 12,
+      padding: {
+        top: 200,
+        bottom: 150,
+        left: 100,
+        right: 100
+      }
+    });
   });
 </script>
 
@@ -52,8 +67,8 @@
   :global(.marker) {
     background-image: url("img/LocationPin.svg");
     background-size: cover;
-    width: 15px;
-    height: 21px;
+    width: 25px;
+    height: 36px;
     cursor: pointer;
   }
 </style>
