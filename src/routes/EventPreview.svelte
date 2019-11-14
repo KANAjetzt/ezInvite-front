@@ -3,6 +3,7 @@
 
   import { eventDataStore, todoStore } from "../stores.js";
   import { getLocalStorage } from "../utils/localStorageHandler.js";
+  import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -23,7 +24,7 @@
 </script>
 
 <Router>
-
+  <BtnShare />
   <Hero bgImage={eventData.heroImgPreview} />
   <QuickFacts />
   {#if eventData.description}

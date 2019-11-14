@@ -1,6 +1,6 @@
 <script>
-  export let title;
-  export let text;
+  export let title = undefined;
+  export let text = undefined;
 </script>
 
 <style>
@@ -14,7 +14,7 @@
 
   .title {
     margin: 1rem 0 0.5rem 0;
-    padding-left: 1.5rem;
+    padding: 0 1.5rem;
     font-family: var(--font-primary);
     font-weight: 700;
     font-size: 1.4rem;
@@ -33,6 +33,10 @@
 </style>
 
 <div class="box">
-  <h3 class="title">{title}</h3>
-  <p class="text">{text}</p>
+  {#if title}
+    <h3 class="title">{title}</h3>
+  {/if}
+  {#if text}
+    <p class="text">{text}</p>
+  {/if}
 </div>
