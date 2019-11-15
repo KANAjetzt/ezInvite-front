@@ -8,6 +8,7 @@
   import EventPreview from "./routes/EventPreview.svelte";
   import Event from "./routes/Event.svelte";
   import AddEvent from "./routes/AddEvent.svelte";
+  import Share from "./routes/Share.svelte";
 
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
@@ -24,4 +25,5 @@
   <Route path="/" component={AddEvent} />
   <Route path="event" component={Event} />
   <Route path="eventPreview" component={EventPreview} />
+  <Route path="share" component={Share} />
 </Router>

@@ -1,7 +1,7 @@
 <script>
   import PersonImg from "./PersonImg.svelte";
 
-  export let photo;
+  export let photo = undefined;
   export let name;
 </script>
 

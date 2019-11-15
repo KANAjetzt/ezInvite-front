@@ -13,8 +13,8 @@
   }
 
   .title {
-    margin: 1rem 0 0.5rem 0;
-    padding: 0 1.5rem;
+    margin: 0;
+    padding: 0.8rem 1.5rem 0.8rem 1rem;
     font-family: var(--font-primary);
     font-weight: 700;
     font-size: 1.4rem;

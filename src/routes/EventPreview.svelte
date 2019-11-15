@@ -1,5 +1,5 @@
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, navigate } from "svelte-routing";
 
   import { eventDataStore, todoStore } from "../stores.js";
   import { getLocalStorage } from "../utils/localStorageHandler.js";
@@ -24,7 +24,7 @@
 </script>
 
 <Router>
-  <BtnShare />
+  <BtnShare on:sharebtnclick={() => navigate('/share')} />
   <Hero bgImage={eventData.heroImgPreview} />
   <QuickFacts />
   {#if eventData.description}
