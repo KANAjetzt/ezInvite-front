@@ -3,6 +3,8 @@
   // TODO: - Add delete one Btn
 
   import { Router, Link, Route } from "svelte-routing";
+  import { getClient, mutate } from "svelte-apollo";
+  import { gql } from "apollo-boost";
 
   import { eventDataStore, todoStore, userStore } from "../stores.js";
   import {
@@ -13,7 +15,7 @@
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
   import AddPerson from "../components/AddPerson.svelte";
-  import BigBtn from "../components/BtnBig.svelte";
+  import ShareBtn from "../components/BtnBig.svelte";
 
   if (Object.keys($eventDataStore).length === 0) {
     eventDataStore.set(getLocalStorage("eventData"));
@@ -31,6 +33,19 @@
     users = newData;
   });
 
+  const client = getClient();
+
+  const CREATEUSERS = gql`
+    mutation($input: CreateUsersInput!) {
+      createUsers(input: $input) {
+        users {
+          id
+          name
+        }
+      }
+    }
+  `;
+
   // TODO: listen to Enterkey aswell
   const handleAddPerson = e => {
     const personName = e.detail;
@@ -44,11 +59,28 @@
     });
     console.log(users);
   };
+
+  const handleShareBtn = e => {
+    console.log("!!FIRED!!");
+    const input = {
+      users: users.map(user => {
+        const newUser = { ...user };
+        newUser.event = eventData.id;
+        return newUser;
+      })
+    };
+
+    mutate(client, {
+      mutation: CREATEUSERS,
+      variables: { input }
+    });
+  };
 </script>
 
 <style>
   .descriptionBox {
     align-self: flex-start;
+    margin-top: -1rem;
   }
 
   .inputAddPerson {
@@ -83,7 +115,7 @@
       <AddPerson on:addperson={handleAddPerson} />
     </section>
     <section class="btnCta">
-      <BigBtn text={'Share !'} />
+      <ShareBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
     </section>
   </section>
 

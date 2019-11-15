@@ -171,6 +171,9 @@
     const newEventData = await handleEventData();
     await handleTodoData(newEventData);
 
+    console.log(newEventData);
+    eventData.id = newEventData.data.createEvent.event.id;
+
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
 
