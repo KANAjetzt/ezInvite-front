@@ -58,6 +58,8 @@
           startTime
           endTime
           description
+          link
+          slug
           location {
             name
             coordinates
@@ -171,8 +173,12 @@
     const newEventData = await handleEventData();
     await handleTodoData(newEventData);
 
-    console.log(newEventData);
+    // Only add stuff I need from the new event document
     eventData.id = newEventData.data.createEvent.event.id;
+    eventData.slug = newEventData.data.createEvent.event.slug;
+    eventData.link = newEventData.data.createEvent.event.link;
+
+    console.log(eventData);
 
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");

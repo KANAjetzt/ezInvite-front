@@ -17,18 +17,24 @@
   import AddPerson from "../components/AddPerson.svelte";
   import ShareBtn from "../components/BtnBig.svelte";
 
+  // Handle Local Storage
+
+  // If nothing is in store check localStorage
   if (Object.keys($eventDataStore).length === 0) {
     eventDataStore.set(getLocalStorage("eventData"));
   }
 
+  // If nothing is in store check localStorage
   if ($userStore && $userStore.length === 0) {
     userStore.set(getLocalStorage("users"));
   }
 
+  // --- PROPS -- //
   let eventData = $eventDataStore;
-  console.log(eventData);
   let users;
+  let shared = false;
 
+  // Get all that fresh data from userStore
   userStore.subscribe(newData => {
     users = newData;
   });
@@ -41,15 +47,14 @@
         users {
           id
           name
+          link
         }
       }
     }
   `;
 
-  // TODO: listen to Enterkey aswell
   const handleAddPerson = e => {
     const personName = e.detail;
-    console.log(personName);
 
     userStore.update(currentData => {
       let newData = currentData ? [...currentData] : [];
@@ -57,11 +62,10 @@
       saveLocalStorage(newData, "users");
       return newData;
     });
-    console.log(users);
   };
 
-  const handleShareBtn = e => {
-    console.log("!!FIRED!!");
+  const handleShareBtn = async e => {
+    // create Input Object --> check CREATEUSERS GraphQL Docs if needed
     const input = {
       users: users.map(user => {
         const newUser = { ...user };
@@ -70,10 +74,17 @@
       })
     };
 
-    mutate(client, {
+    const newUsers = await mutate(client, {
       mutation: CREATEUSERS,
       variables: { input }
     });
+
+    console.log($eventDataStore);
+    console.log(newUsers);
+    console.log($userStore);
+    userStore.set(newUsers.data.createUsers.users);
+    console.log($userStore);
+    shared = true;
   };
 </script>
 

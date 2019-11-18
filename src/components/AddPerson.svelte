@@ -9,7 +9,6 @@
 
   const handleAddPerson = e => {
     const input = document.getElementById("personName");
-    console.log(personName);
     dispatch("addperson", personName);
     input.value = null;
   };
