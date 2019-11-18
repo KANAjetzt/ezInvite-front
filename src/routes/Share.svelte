@@ -14,6 +14,7 @@
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
+  import LinkBox from "../components/LinkBox.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import ShareBtn from "../components/BtnBig.svelte";
 
@@ -92,6 +93,7 @@
   .descriptionBox {
     align-self: flex-start;
     margin-top: -1rem;
+    max-width: 85vw;
   }
 
   .inputAddPerson {
@@ -114,12 +116,24 @@
   <section class="share">
     <Hero bgImage={eventData.heroImgPreview} />
     <section class="descriptionBox">
-      <DescriptionBox title={'Ivite your freands to your event!'} />
+      {#if !shared}
+        <DescriptionBox title={'Ivite your freands to your event!'} />
+      {:else}
+        <DescriptionBox
+          title={'Send your Invites out, by sharing the following links with your freands'} />
+      {/if}
     </section>
     {#if users}
-      {#each users as { name }}
-        <PersonCard {name} />
-      {/each}
+      {#if !shared}
+        {#each users as { name }}
+          <PersonCard {name} />
+        {/each}
+      {:else}
+        {#each users as { name, link }}
+          <PersonCard {name} />
+          <LinkBox value={`http://localhost:5000/${eventData.slug}/${link}`} />
+        {/each}
+      {/if}
     {/if}
 
     <section class="inputAddPerson">
