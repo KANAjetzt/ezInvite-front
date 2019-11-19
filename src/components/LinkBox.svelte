@@ -4,14 +4,12 @@
 
 <style>
   .linkBox {
-    display: flex;
-    padding: 0.5rem;
-    padding-top: 1.5rem;
-    margin-left: 1.5rem;
-    margin-top: -1.8rem;
+    width: calc(100% - 2rem);
+    padding: 1.5rem 1rem 1rem 1rem;
+    margin-top: -2rem;
     font-family: var(--font-primary);
     font-weight: 300;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: var(--color-text-primary);
     background-color: #013f6f;
     border: none;

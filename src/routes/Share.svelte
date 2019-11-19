@@ -2,7 +2,7 @@
   // TODO: - Add delete all Btn
   // TODO: - Add delete one Btn
 
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Link, Route, navigate } from "svelte-routing";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
@@ -15,8 +15,9 @@
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
   import LinkBox from "../components/LinkBox.svelte";
+  import LinkBoxGlobal from "../components/LinkBoxGlobal.svelte";
   import AddPerson from "../components/AddPerson.svelte";
-  import ShareBtn from "../components/BtnBig.svelte";
+  import BigBtn from "../components/BtnBig.svelte";
 
   // Handle Local Storage
 
@@ -87,6 +88,11 @@
     console.log($userStore);
     shared = true;
   };
+
+  const handleBackBtn = e => {
+    console.log("navigate to created Event");
+    // navigate('/event')
+  };
 </script>
 
 <style>
@@ -94,10 +100,43 @@
     align-self: flex-start;
     margin-top: -1rem;
     max-width: 85vw;
+    margin-bottom: 1rem;
+  }
+
+  .descriptionBoxGlobal {
+    max-width: 85vw;
+    margin-bottom: 4rem;
+  }
+
+  .persons {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 1.5rem;
+  }
+
+  .persons {
+    padding-top: 2rem;
+  }
+
+  .person {
+    padding-top: 2rem;
+  }
+
+  .person:first-child {
+    padding-top: unset;
+  }
+
+  .person:last-child {
+    margin-bottom: 7rem;
   }
 
   .inputAddPerson {
     margin-top: auto;
+  }
+
+  .linkBoxGlobal {
+    margin-bottom: 4rem;
   }
 
   .share {
@@ -108,6 +147,7 @@
 
   .btnCta {
     justify-self: flex-end;
+    margin-top: auto;
   }
 </style>
 
@@ -123,24 +163,49 @@
           title={'Send your Invites out, by sharing the following links with your freands'} />
       {/if}
     </section>
-    {#if users}
-      {#if !shared}
-        {#each users as { name }}
-          <PersonCard {name} />
-        {/each}
-      {:else}
-        {#each users as { name, link }}
-          <PersonCard {name} />
-          <LinkBox value={`http://localhost:5000/${eventData.slug}/${link}`} />
-        {/each}
+    <section class="persons">
+      {#if users}
+        {#if !shared}
+          {#each users as { name }}
+            <PersonCard {name} />
+          {/each}
+        {:else}
+          {#each users as { name, link }}
+            <div class="person">
+              <PersonCard {name} />
+              <LinkBox
+                value={`http://localhost:5000/${eventData.slug}/${link}`} />
+            </div>
+          {/each}
+        {/if}
       {/if}
-    {/if}
-
-    <section class="inputAddPerson">
-      <AddPerson on:addperson={handleAddPerson} />
     </section>
+    {#if !shared}
+      <section class="inputAddPerson">
+        <AddPerson on:addperson={handleAddPerson} />
+      </section>
+    {/if}
+    {#if shared}
+      <section class="descriptionBoxGlobal">
+        <DescriptionBox
+          title={'Or use this one to share it with whoever you want'} />
+      </section>
+      <section class="linkBoxGlobal">
+        <LinkBoxGlobal
+          value={`http://localhost:5000/${eventData.slug}/${eventData.link}`} />
+      </section>
+    {/if}
     <section class="btnCta">
-      <ShareBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
+      {#if !shared}
+        <BigBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
+      {:else}
+        <BigBtn
+          text={'Back to your page'}
+          on:bigbtnclick={handleBackBtn}
+          minusMargin={5}
+          pannelHeight={15}
+          fontSize={2.8} />
+      {/if}
     </section>
   </section>
 

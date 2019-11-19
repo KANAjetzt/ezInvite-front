@@ -2,6 +2,7 @@
   import Rotate from "./Rotate.svelte";
 
   export let minusMargin;
+  export let pannelHeight = 13;
 </script>
 
 <style>
@@ -10,7 +11,6 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 13rem;
     margin-bottom: -3rem;
     background: linear-gradient(112.82deg, #0364af 7.85%, #0d8ff2 96.54%);
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -27,7 +27,7 @@
 </style>
 
 <Rotate child={'.pannel'} {minusMargin}>
-  <div class="pannel">
+  <div class="pannel" style="height: {pannelHeight}rem;">
     <div class="btnWrapper">
       <slot />
     </div>

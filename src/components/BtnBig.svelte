@@ -4,6 +4,9 @@
   import BtnPanel from "./BtnPanel.svelte";
 
   export let text;
+  export let fontSize = 6.4;
+  export let minusMargin = 2.5;
+  export let pannelHeight = 13;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -27,9 +30,10 @@
   }
 </style>
 
-<BtnPanel minusMargin={2.5}>
+<BtnPanel {minusMargin} {pannelHeight}>
   <button
     class="bigBtn"
+    style="font-size: {fontSize}rem;"
     on:click={e => {
       dispatch('bigbtnclick', e);
     }}>

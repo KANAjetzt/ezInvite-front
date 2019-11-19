@@ -9,16 +9,16 @@
   .personCard {
     display: flex;
     align-items: center;
-    margin-left: 2rem;
+    z-index: 20;
   }
 
   .name {
     background-color: var(--color-primary-light);
-    padding: 0.5rem 1.5rem;
+    padding: 1rem 2rem;
     margin-left: -1rem;
     border-radius: 2px;
     font-family: var(--font-primary);
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.6rem;
     color: var(--color-text-primary);
   }

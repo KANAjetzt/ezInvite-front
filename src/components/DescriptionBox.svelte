@@ -9,12 +9,13 @@
     display: inline-block;
     background: var(--color-tertiary);
     box-shadow: 4px 2px 2px rgba(0, 0, 0, 0.25);
+    line-height: 1.4;
     z-index: 10;
   }
 
   .title {
     margin: 0;
-    padding: 0.8rem 1.5rem 0.8rem 1rem;
+    padding: 1rem 2rem 1rem 1rem;
     font-family: var(--font-primary);
     font-weight: 700;
     font-size: 1.4rem;

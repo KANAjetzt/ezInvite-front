@@ -18,7 +18,7 @@
   .personAdd {
     display: flex;
     align-items: center;
-    padding: 0 3rem 0 1.5rem;
+    padding-right: 3rem;
   }
 
   .personAddBtn {
