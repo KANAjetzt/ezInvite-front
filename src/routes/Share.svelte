@@ -91,7 +91,7 @@
 
   const handleBackBtn = e => {
     console.log("navigate to created Event");
-    // navigate('/event')
+    navigate(`http://localhost:5000/${eventData.slug}/${eventData.link}`);
   };
 </script>
 
@@ -174,7 +174,7 @@
             <div class="person">
               <PersonCard {name} />
               <LinkBox
-                value={`http://localhost:5000/${eventData.slug}/${link}`} />
+                value={`http://localhost:5000/${eventData.slug}/${eventData.link}/${link}`} />
             </div>
           {/each}
         {/if}

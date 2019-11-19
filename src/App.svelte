@@ -23,7 +23,7 @@
 
 <Router {url}>
   <Route path="/" component={AddEvent} />
-  <Route path="event" component={Event} />
+  <Route path="" component={Event} />
   <Route path="eventPreview" component={EventPreview} />
   <Route path="share" component={Share} />
 </Router>

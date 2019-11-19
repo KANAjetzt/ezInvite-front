@@ -14,6 +14,7 @@
 
   let eventData;
   let todos;
+  let currentUser;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
@@ -24,8 +25,8 @@
   });
 
   const GETEVENT = gql`
-    query($id: ID!) {
-      event(id: $id) {
+    query($input: QueryEventInput!) {
+      event(input: $input) {
         name
         startDate
         startTime
@@ -33,6 +34,7 @@
         description
         heroImg
         imgs
+        link
         location {
           name
           coordinates
@@ -41,6 +43,7 @@
           name
           photo
           accepted
+          link
         }
         widgets {
           id
@@ -77,16 +80,29 @@
       todoStore.set(data.data.todosForWidget);
     };
 
-    //! I need to get the id from somewhere when the event is not just created (URL params?!)
-    const id = "5dcd5322c44d0874c41f1e3e";
+    // index 4 = event link | index 5 = user link
+    const pathArr = window.location.href.split("/");
+    console.log(pathArr);
 
-    // Query  for event with specific id
-    const data = await client.query({ query: GETEVENT, variables: { id } });
+    // if no user link query for event only
+    const input = { link: pathArr[4], slug: pathArr[3] };
+    console.log(input);
+
+    // Query for event
+    const data = await client.query({ query: GETEVENT, variables: { input } });
     const widgets = data.data.event.widgets;
+    const users = data.data.event.users;
 
     await queryTodos(
       widgets[widgets.findIndex(widget => widget.type === "todo")].id
     );
+
+    // If user link is given
+    if (pathArr[5]) {
+      currentUser = users[users.findIndex(user => user.link === pathArr[5])];
+      console.log(currentUser);
+    }
+
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
   };
