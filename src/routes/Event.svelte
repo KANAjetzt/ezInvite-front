@@ -11,10 +11,13 @@
   import Map from "../components/Map.svelte";
   import Widget from "../components/Widget.svelte";
   import Answers from "../components/Answers.svelte";
+  import EventOverlay from "../components/EventOverlay.svelte";
+  import AddPersonProfile from "../components/AddPersonProfile.svelte";
 
   let eventData;
   let todos;
   let currentUser;
+  let btnClick = false;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
@@ -99,7 +102,6 @@
 
     // query for event with the right link and slug
     const newEventData = await queryEventData(input);
-    console.log(newEventData);
 
     // grab widgets and users from the queryed event
     const widgets = newEventData.data.event.widgets;
@@ -143,5 +145,11 @@
     {#if event.users && event.users[0]}
       <Answers />
     {/if}
+    {#if btnClick}
+      <EventOverlay>
+        <AddPersonProfile />
+      </EventOverlay>
+    {/if}
+    <button on:click={() => (btnClick = true)}>click</button>
   {/await}
 </Router>
