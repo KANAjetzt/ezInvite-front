@@ -69,47 +69,56 @@
 
   const client = getClient();
 
-  const queryEventData = async () => {
-    const queryTodos = async widgetId => {
-      const id = widgetId;
+  const queryTodos = async widgetId => {
+    const id = widgetId;
 
-      // Query for todos with specific widget id
-      const data = await client.query({ query: GETTODOS, variables: { id } });
+    // Query for todos with specific widget id
+    const data = await client.query({ query: GETTODOS, variables: { id } });
 
-      // Update Todos Store with queryed Todos Data
-      todoStore.set(data.data.todosForWidget);
-    };
+    // Update Todos Store with queryed Todos Data
+    todoStore.set(data.data.todosForWidget);
 
-    // index 4 = event link | index 5 = user link
-    const pathArr = window.location.href.split("/");
-    console.log(pathArr);
+    return data;
+  };
 
-    // if no user link query for event only
-    const input = { link: pathArr[4], slug: pathArr[3] };
-    console.log(input);
-
+  const queryEventData = async input => {
     // Query for event
     const data = await client.query({ query: GETEVENT, variables: { input } });
-    const widgets = data.data.event.widgets;
-    const users = data.data.event.users;
 
+    // Update Event Data Store with queryed event Data
+    eventDataStore.set(data.data.event);
+
+    return data;
+  };
+
+  const handleData = async () => {
+    // construct input object for mutation
+    // index 4 = event link | index 5 = user link
+    const pathArr = window.location.href.split("/");
+    const input = { link: pathArr[4], slug: pathArr[3] };
+
+    // query for event with the right link and slug
+    const newEventData = await queryEventData(input);
+    console.log(newEventData);
+
+    // grab widgets and users from the queryed event
+    const widgets = newEventData.data.event.widgets;
+    const users = newEventData.data.event.users;
+
+    // Search the Widget Array for type todo
+    // grab the id from the entry and query for all event todos with that
     await queryTodos(
       widgets[widgets.findIndex(widget => widget.type === "todo")].id
     );
 
-    // If user link is given
-    if (pathArr[5]) {
+    // set current user if the user link is given
+    if (pathArr[5])
       currentUser = users[users.findIndex(user => user.link === pathArr[5])];
-      console.log(currentUser);
-    }
-
-    // Update Event Data Store with queryed event Data
-    eventDataStore.set(data.data.event);
   };
 
-  // Check if if something is in store otherwise query event id
+  // Check if something is in store otherwise query for the data
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
-    queryEventData();
+    handleData();
   }
 </script>
 
