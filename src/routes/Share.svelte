@@ -204,7 +204,8 @@
           on:bigbtnclick={handleBackBtn}
           minusMargin={5}
           pannelHeight={15}
-          fontSize={2.8} />
+          fontSize={2.8}
+          clipVar={'tertiary'} />
       {/if}
     </section>
   </section>

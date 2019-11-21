@@ -1,6 +1,7 @@
 <script>
   export let minusMargin;
   export let pannelHeight = 13;
+  export let clipVar = "secondary";
 </script>
 
 <style>
@@ -16,7 +17,6 @@
     margin-bottom: -3rem;
     padding-top: 3.5rem;
     background: linear-gradient(112.82deg, #0364af 7.85%, #0d8ff2 96.54%);
-    clip-path: var(--clip-secondary);
   }
 
   .btnWrapper {
@@ -28,7 +28,9 @@
 </style>
 
 <div class="pannelWrapper">
-  <div class="pannel" style="height: {pannelHeight}rem;">
+  <div
+    class="pannel"
+    style="height: {pannelHeight}rem; clip-path: var(--clip-{clipVar});">
     <div class="btnWrapper">
       <slot />
     </div>
