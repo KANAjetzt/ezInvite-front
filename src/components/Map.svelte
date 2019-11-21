@@ -59,7 +59,7 @@
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
-    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0% 100%);
+    clip-path: var(--clip-primary);
   }
 
   :global(.marker) {

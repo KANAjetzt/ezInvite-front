@@ -24,6 +24,12 @@ input[type="time"]::-webkit-inner-spin-button {
   --color-tertiary: #2d5f86;
   --color-text-primary: #f9fafb;
   --font-primary: "Montserrat", sans-serif;
+  --clip-primary: polygon(
+    0 calc(0% + 15vw),
+    100% 0,
+    100% calc(100% - 15vw),
+    0 100%
+  );
 }
 
 /* Sections

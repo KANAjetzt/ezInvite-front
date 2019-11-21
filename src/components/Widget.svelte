@@ -1,26 +1,28 @@
 <script>
-  import Rotate from "./Rotate.svelte";
   import TodoList from "./TodoList.svelte";
 </script>
 
 <style>
+  .barWrapper {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
+  }
   .bar {
-    width: 120vw;
-    height: 0.5rem;
+    height: 6.3rem;
     background-image: linear-gradient(89.78deg, #0467b3 12.43%, #035696 99.33%);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-    transform: rotate(-9deg);
+    clip-path: var(--clip-primary);
   }
 </style>
 
 <section class="widget">
-  <Rotate child={'.bar'}>
+
+  <div class="barWrapper">
     <div class="bar" />
-  </Rotate>
+  </div>
 
   <TodoList />
 
-  <Rotate child={'.bar'}>
+  <div class="barWrapper">
     <div class="bar" />
-  </Rotate>
+  </div>
+
 </section>
