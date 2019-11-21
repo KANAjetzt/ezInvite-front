@@ -13,6 +13,7 @@
   import Answers from "../components/Answers.svelte";
   import EventOverlay from "../components/EventOverlay.svelte";
   import AddPersonProfile from "../components/AddPersonProfile.svelte";
+  import AddRespond from "../components/AddRespond.svelte";
 
   let eventData;
   let todos;
@@ -150,6 +151,7 @@
         <AddPersonProfile />
       </EventOverlay>
     {/if}
+    <AddRespond />
     <button on:click={() => (btnClick = !btnClick)}>click</button>
   {/await}
 </Router>
