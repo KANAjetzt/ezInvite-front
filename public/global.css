@@ -30,6 +30,13 @@ input[type="time"]::-webkit-inner-spin-button {
     100% calc(100% - 15vw),
     0 100%
   );
+  --clip-secondary: polygon(
+    0 calc(0% + 15vw),
+    100% 0,
+    100% calc(100% - 5vw),
+    calc(100% - 35vw) 100%,
+    0 100%
+  );
 }
 
 /* Sections

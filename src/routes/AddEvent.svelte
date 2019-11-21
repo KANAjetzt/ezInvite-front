@@ -10,7 +10,6 @@
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
   import SimpleField from "../components/SimpleField.svelte";
-  import Rotate from "../components/Rotate.svelte";
   import BtnPanel from "../components/BtnPanel.svelte";
   import NormalBtn from "../components/NormalBtn.svelte";
   import AddStartEndTime from "../components/AddStartEndTime.svelte";
@@ -201,8 +200,7 @@
   .form {
     display: flex;
     flex-direction: column;
-    /* With fields over one Page space-between doesen't work well */
-    /* justify-content: space-between; */
+    justify-content: space-between;
     min-height: 100vh;
   }
 
@@ -246,13 +244,6 @@
     color: var(--color-text-primary);
     background: transparent;
     box-shadow: 0 1px 0 var(--color-secondary);
-  }
-
-  .selectBtns {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100vw;
   }
 
   .imgsUpload {
@@ -373,6 +364,5 @@
         <BtnBig text={'GO !'} on:bigbtnclick={handleCTABtnClick} />
       </section>
     {/if}
-
   </form>
 </Router>

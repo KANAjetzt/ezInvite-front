@@ -1,6 +1,5 @@
 <script>
   import { eventDataStore } from "../stores";
-  import Rotate from "./Rotate.svelte";
 
   let eventData;
 

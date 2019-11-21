@@ -7,7 +7,6 @@
   import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
   import { eventDataStore } from "../stores.js";
-  import Rotate from "./Rotate.svelte";
   import SimpleField from "./SimpleField.svelte";
 
   let location = $eventDataStore.location;

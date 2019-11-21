@@ -1,6 +1,5 @@
 <script>
   import { eventDataStore } from "../stores";
-  import Rotate from "./Rotate.svelte";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
   const handleImgs = () => {
@@ -35,12 +34,11 @@
 </script>
 
 <style>
-  .wrapper {
+  /* .wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: rotate(9deg);
-  }
+  } */
 
   .imgsUpload {
     width: 0.1px;
@@ -52,9 +50,12 @@
   }
 
   .imgsUploadBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100vw;
     position: relative;
-    padding: 2.5rem 0;
+    padding: 6.5rem 0;
     background-image: linear-gradient(
       130.02deg,
       #0476d0 12.41%,
@@ -62,7 +63,7 @@
     );
     background-size: cover;
     cursor: pointer;
-    transform: rotate(-9deg) scale(1.1);
+    clip-path: var(--clip-primary);
   }
 
   .imgsUploadBtn span {
@@ -87,13 +88,7 @@
   name="imgs"
   on:change={() => handleImgs()} />
 
-<Rotate child={'.imgsUploadBtn'}>
-
-  <label class="imgsUploadBtn" for="imgs">
-    <div class="wrapper">
-      <ImgAddIcon height={50} width={50} fill={'#f9fafb'} />
-      <span>Add more Images</span>
-    </div>
-  </label>
-
-</Rotate>
+<label class="imgsUploadBtn" for="imgs">
+  <ImgAddIcon height={50} width={50} fill={'#f9fafb'} />
+  <span>Add more Images</span>
+</label>
