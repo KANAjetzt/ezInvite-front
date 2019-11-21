@@ -150,6 +150,6 @@
         <AddPersonProfile />
       </EventOverlay>
     {/if}
-    <button on:click={() => (btnClick = true)}>click</button>
+    <button on:click={() => (btnClick = !btnClick)}>click</button>
   {/await}
 </Router>

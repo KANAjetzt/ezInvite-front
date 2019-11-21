@@ -7,7 +7,8 @@
 <style>
   .pannelWrapper {
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
-    height: 100%;
+    /* I think on AddEvent this fixed something */
+    /* height: 100%; */
   }
   .pannel {
     display: flex;

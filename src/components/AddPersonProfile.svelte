@@ -2,6 +2,7 @@
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
+  import BtnBig from "./BtnBig.svelte";
 </script>
 
 <style>
@@ -28,4 +29,5 @@
     <AddPersonInput />
   </div>
   <AddPersonImg />
+  <BtnBig text={'Done !'} clipVar={'tertiary'} fontSize={5.4} />
 </section>

@@ -22,7 +22,7 @@
     align-items: center;
     width: 100%;
     position: relative;
-    padding: 4.5rem 0;
+    padding: 6.5rem 0;
     background-image: linear-gradient(
       130.02deg,
       #0476d0 12.41%,
@@ -30,7 +30,7 @@
     );
     background-size: cover;
     cursor: pointer;
-    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0% 100%);
+    clip-path: var(--clip-primary);
   }
 
   .personImgUploadBtn span {
