@@ -7,17 +7,15 @@
   .respond {
     position: fixed;
     bottom: 10rem;
-    display: flex;
-    flex-direction: column;
     z-index: 200;
     display: grid;
     grid-template-rows: min-content 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .descriptionBox {
     grid-row: 1 / 2;
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
   }
 </style>
 

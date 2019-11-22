@@ -24,21 +24,44 @@
     color: var(--color-text-primary);
   }
 
-  .btnConfirm {
+  .btnConfirmWrapper {
+    display: grid;
     grid-row: 2 / 3;
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
+    width: 115%;
+    filter: drop-shadow(2px 4px 0px rgba(0, 0, 0, 0.1));
+  }
+
+  .btnConfirm {
     margin-top: -2rem;
-    padding: 4rem 12rem 2rem 3rem;
     background: #0467b3;
-    clip-path: polygon(0 0, 100% 0, calc(100% - 17vw) 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
+  }
+
+  .confirmIconWrapper,
+  .declineIconWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .confirmIconWrapper {
+    padding: 4rem 5rem 2rem 0;
   }
 
   .btnDecline {
+    display: flex;
+    align-content: flex-end;
+    align-items: flex-end;
     grid-row: 2 / 3;
-    grid-column: 2 / 3;
-    margin-left: -7rem;
-    padding: 2rem 4rem 2rem 7rem;
+    grid-column: 2 / 4;
+    width: 120%;
     background: linear-gradient(112.87deg, #0364af 7.85%, #0d8ff2 96.54%);
+    border-radius: 2px;
+  }
+
+  .declineIconWrapper {
+    padding: 2rem 2.6rem 2rem 0;
   }
 
   .btnText {
@@ -54,19 +77,25 @@
   }
 </style>
 
-<button
-  class="btnConfirm"
-  on:click={e => {
-    dispatch('confirmbtnclick', e);
-  }}>
-  <CheckIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
-  <span class="btnText">confirm</span>
-</button>
+<div class="btnConfirmWrapper">
+  <button
+    class="btnConfirm"
+    on:click={e => {
+      dispatch('confirmbtnclick', e);
+    }}>
+    <div class="confirmIconWrapper">
+      <CheckIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
+      <span class="btnText">confirm</span>
+    </div>
+  </button>
+</div>
 <button
   class="btnDecline"
   on:click={e => {
     dispatch('declinebtnclick', e);
   }}>
-  <XIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
-  <span class="btnText">decline</span>
+  <div class="declineIconWrapper">
+    <XIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
+    <span class="btnText">decline</span>
+  </div>
 </button>

@@ -9,7 +9,7 @@
   }
 
   .bar {
-    height: 6.3rem;
+    height: 16vw;
     background-image: linear-gradient(89.78deg, #0467b3 12.43%, #035696 99.33%);
     clip-path: var(--clip-primary);
   }
