@@ -3,8 +3,6 @@
   let clickCounter = 0;
 
   const outsideClickListener = e => {
-    console.log(e.target.closest(".personProfile"));
-    console.log(clickCounter);
     if (e.target.closest(".personProfile")) return;
     if (clickCounter > 0) visible = false;
     clickCounter++;
@@ -38,7 +36,6 @@
   }
 </style>
 
-{console.log(visible)}
 {#if visible}
   <div class="overlay">
     <slot class="element" />

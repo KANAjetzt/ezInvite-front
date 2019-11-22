@@ -81,16 +81,11 @@
       variables: { input }
     });
 
-    console.log($eventDataStore);
-    console.log(newUsers);
-    console.log($userStore);
     userStore.set(newUsers.data.createUsers.users);
-    console.log($userStore);
     shared = true;
   };
 
   const handleBackBtn = e => {
-    console.log("navigate to created Event");
     navigate(`http://localhost:5000/${eventData.slug}/${eventData.link}`);
   };
 </script>

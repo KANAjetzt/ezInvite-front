@@ -17,7 +17,6 @@
 
   let eventData;
   let todos;
-  let currentUser;
   let btnClick = false;
 
   eventDataStore.subscribe(newData => {
@@ -116,7 +115,8 @@
 
     // set current user if the user link is given
     if (pathArr[5])
-      currentUser = users[users.findIndex(user => user.link === pathArr[5])];
+      $eventDataStore.currentUser =
+        users[users.findIndex(user => user.link === pathArr[5])];
   };
 
   // Check if something is in store otherwise query for the data

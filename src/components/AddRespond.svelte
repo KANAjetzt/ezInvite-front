@@ -3,7 +3,7 @@
   import BtnMinified from "./BtnMinified.svelte";
   import BtnRespond from "./BtnRespond.svelte";
 
-  let visible = false;
+  let visible = true;
 </script>
 
 <style>
