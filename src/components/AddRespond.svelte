@@ -1,6 +1,9 @@
 <script>
   import DescriptionBox from "./DescriptionBox.svelte";
+  import BtnMinified from "./BtnMinified.svelte";
   import BtnRespond from "./BtnRespond.svelte";
+
+  let visible = false;
 </script>
 
 <style>
@@ -11,6 +14,7 @@
     display: grid;
     grid-template-rows: min-content 1fr;
     grid-template-columns: 1fr 1fr 1fr;
+    width: 100vw;
   }
 
   .descriptionBox {
@@ -20,8 +24,15 @@
 </style>
 
 <div class="respond">
-  <div class="descriptionBox">
-    <DescriptionBox title={'Respond to your invite'} />
-  </div>
-  <BtnRespond />
+  {#if !visible}
+    <BtnMinified
+      on:minifiedbtnclick={() => {
+        visible = !visible;
+      }} />
+  {:else}
+    <div class="descriptionBox">
+      <DescriptionBox title={'Respond to your invite'} />
+    </div>
+    <BtnRespond />
+  {/if}
 </div>

@@ -15,7 +15,6 @@
     align-items: center;
     margin: 0;
     border: none;
-
     cursor: pointer;
     text-decoration: none;
     font-family: var(--font-primary);
@@ -28,8 +27,9 @@
     display: grid;
     grid-row: 2 / 3;
     grid-column: 1 / 3;
-    width: 115%;
-    filter: drop-shadow(2px 4px 0px rgba(0, 0, 0, 0.1));
+    /* Maybe later for media query */
+    /* width: 115%; */
+    filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.3));
   }
 
   .btnConfirm {
@@ -55,7 +55,8 @@
     align-items: flex-end;
     grid-row: 2 / 3;
     grid-column: 2 / 4;
-    width: 120%;
+    /* Maybe later for media query */
+    /* width: 120%; */
     background: linear-gradient(112.87deg, #0364af 7.85%, #0d8ff2 96.54%);
     border-radius: 2px;
   }
