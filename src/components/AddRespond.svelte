@@ -12,7 +12,7 @@
     bottom: 10rem;
     z-index: 200;
     display: grid;
-    grid-template-rows: min-content 1fr;
+    grid-template-rows: min-content 1fr min-content;
     grid-template-columns: 1fr 1fr 1fr;
     width: 100vw;
   }
@@ -33,6 +33,9 @@
     <div class="descriptionBox">
       <DescriptionBox title={'Respond to your invite'} />
     </div>
-    <BtnRespond />
+    <BtnRespond
+      on:minifibtnclick={() => {
+        visible = !visible;
+      }} />
   {/if}
 </div>

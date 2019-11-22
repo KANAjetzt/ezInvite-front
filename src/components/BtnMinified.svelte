@@ -17,10 +17,7 @@
     text-decoration: none;
     background: rgba(4, 103, 179, 0.5);
     clip-path: polygon(0 0, 100% 0, 0% 100%, 0 100%);
-    padding-bottom: 6rem;
-    padding-top: 1rem;
-    padding-right: 3rem;
-    padding-left: 1.5rem;
+    padding: 1rem 3rem 6rem 1.5rem;
     width: 56%;
   }
 </style>

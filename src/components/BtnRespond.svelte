@@ -3,13 +3,15 @@
 
   import CheckIcon from "./Icons/DoneFilled.svelte";
   import XIcon from "./Icons/Cross.svelte";
+  import ArrowIcon from "./Icons/Arrow.svelte";
 
   const dispatch = createEventDispatcher();
 </script>
 
 <style>
   .btnConfirm,
-  .btnDecline {
+  .btnDecline,
+  .btnMinifi {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,10 +19,6 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
-    font-family: var(--font-primary);
-    font-weight: 700;
-    font-size: 6.4rem;
-    color: var(--color-text-primary);
   }
 
   .btnConfirmWrapper {
@@ -76,6 +74,20 @@
     font-size: 1.4rem;
     color: var(--color-text-primary);
   }
+
+  .btnMinifi {
+    background: linear-gradient(112.87deg, #0364af 7.85%, #0d8ff2 96.54%);
+    grid-row: 3 / 4;
+    grid-column: 3 / 4;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    padding-left: 9rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 80%);
+  }
+
+  .arrowIcon {
+    transform: rotate(180deg) scale(0.9);
+  }
 </style>
 
 <div class="btnConfirmWrapper">
@@ -98,5 +110,15 @@
   <div class="declineIconWrapper">
     <XIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
     <span class="btnText">decline</span>
+  </div>
+</button>
+
+<button
+  class="btnMinifi"
+  on:click={e => {
+    dispatch('minifibtnclick', e);
+  }}>
+  <div class="arrowIcon">
+    <ArrowIcon height={30} width={30} fill={'#000'} fillOpacity={0.4} />
   </div>
 </button>

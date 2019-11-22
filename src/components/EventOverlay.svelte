@@ -29,7 +29,7 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 200;
+    z-index: 300;
     backdrop-filter: blur(5px);
   }
 
