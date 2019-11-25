@@ -8,7 +8,17 @@
   import BtnRespond from "./BtnRespond.svelte";
 
   export let showAddPersonProfile = false;
-  let visible = true;
+
+  const handleVisibility = () => {
+    // ! can't access $eventDataStore right here right now !
+    console.log($eventDataStore);
+    return $eventDataStore.currentUser &&
+      $eventDataStore.currentUser.accepted === null
+      ? true
+      : false;
+  };
+
+  let visible = handleVisibility();
 
   const TOGGLEUSERACCEPTED = gql`
     mutation($input: ToggleUserAcceptedInput!) {
@@ -27,13 +37,17 @@
 
   const handleRespons = async e => {
     // Check if currentUser exists
-    if (!$eventDataStore.currentUser) {
+    console.log($eventDataStore);
+    if (
+      !$eventDataStore.currentUser ||
+      $eventDataStore.currentUser.photo === "default.jpg"
+    ) {
       // If not render AddUserProfile Component
       showAddPersonProfile = !showAddPersonProfile;
       return;
     }
 
-    // If so set currentUser accapted state to false ore true
+    // If so set currentUser accepted state to false ore true
 
     // Assamble input object
     const input = {
