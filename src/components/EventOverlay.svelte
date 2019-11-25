@@ -1,11 +1,12 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
 
+  export let ignoreClickClasses;
+
   const dispatch = createEventDispatcher();
 
   const clickOutsideHandler = e => {
-    if (e.target.closest(".personProfile") || e.target.closest(".respond"))
-      return;
+    if (e.target.closest(ignoreClickClasses)) return;
     dispatch("clickoutside");
   };
 
@@ -32,12 +33,8 @@
     z-index: 300;
     backdrop-filter: blur(5px);
   }
-
-  .element {
-    z-index: 500;
-  }
 </style>
 
 <div class="overlay">
-  <slot class="element" />
+  <slot />
 </div>

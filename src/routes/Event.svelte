@@ -148,6 +148,7 @@
     {/if}
     {#if showAddPersonProfile}
       <EventOverlay
+        ignoreClickClasses={'.personProfile, .respond'}
         on:clickoutside={() => {
           showAddPersonProfile = !showAddPersonProfile;
         }}>
