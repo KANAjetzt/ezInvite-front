@@ -1,19 +1,21 @@
 <script>
-  let visible = true;
-  let clickCounter = 0;
+  import { createEventDispatcher, onMount } from "svelte";
 
-  const outsideClickListener = e => {
-    if (e.target.closest(".personProfile")) return;
-    if (clickCounter > 0) visible = false;
-    clickCounter++;
+  const dispatch = createEventDispatcher();
+
+  const clickOutsideHandler = e => {
+    if (e.target.closest(".personProfile") || e.target.closest(".respond"))
+      return;
+    dispatch("clickoutside");
   };
 
-  $: if (!visible && clickCounter > 0) clickCounter = 0;
+  onMount(() => {
+    document.addEventListener("click", clickOutsideHandler);
 
-  // TODO: Figure out if this is a good idear
-  // Maybe it's better to handle this in the component that uses
-  // the overlay.
-  document.addEventListener("click", outsideClickListener);
+    return () => {
+      document.removeEventListener("click", clickOutsideHandler);
+    };
+  });
 </script>
 
 <style>
@@ -36,8 +38,6 @@
   }
 </style>
 
-{#if visible}
-  <div class="overlay">
-    <slot class="element" />
-  </div>
-{/if}
+<div class="overlay">
+  <slot class="element" />
+</div>

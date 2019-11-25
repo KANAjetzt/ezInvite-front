@@ -1,9 +1,58 @@
 <script>
+  import { getClient, mutate } from "svelte-apollo";
+  import { gql } from "apollo-boost";
+
+  import { eventDataStore } from "../stores";
   import DescriptionBox from "./DescriptionBox.svelte";
   import BtnMinified from "./BtnMinified.svelte";
   import BtnRespond from "./BtnRespond.svelte";
 
+  export let showAddPersonProfile = false;
   let visible = true;
+
+  const TOGGLEUSERACCEPTED = gql`
+    mutation($input: ToggleUserAcceptedInput!) {
+      toggleUserAccepted(input: $input) {
+        user {
+          id
+          name
+          accepted
+          events
+        }
+      }
+    }
+  `;
+
+  const client = getClient();
+
+  const handleRespons = async e => {
+    // Check if currentUser exists
+    if (!$eventDataStore.currentUser) {
+      // If not render AddUserProfile Component
+      showAddPersonProfile = !showAddPersonProfile;
+      return;
+    }
+
+    // If so set currentUser accapted state to false ore true
+
+    // Assamble input object
+    const input = {
+      link: $eventDataStore.currentUser.link,
+      accepted: e.detail.accepted
+    };
+
+    // send to backend
+    await mutate(client, {
+      mutation: TOGGLEUSERACCEPTED,
+      variables: { input }
+    });
+
+    // update eventDataStore
+    $eventDataStore.currentUser.accepted = e.detail.accepted;
+
+    // close Respond slection
+    visible = !visible;
+  };
 </script>
 
 <style>
@@ -34,6 +83,8 @@
       <DescriptionBox title={'Respond to your invite'} />
     </div>
     <BtnRespond
+      on:confirmbtnclick={handleRespons}
+      on:declinebtnclick={handleRespons}
       on:minifibtnclick={() => {
         visible = !visible;
       }} />

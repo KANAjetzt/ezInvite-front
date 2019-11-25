@@ -94,7 +94,7 @@
   <button
     class="btnConfirm"
     on:click={e => {
-      dispatch('confirmbtnclick', e);
+      dispatch('confirmbtnclick', { accepted: true });
     }}>
     <div class="confirmIconWrapper">
       <CheckIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
@@ -105,7 +105,7 @@
 <button
   class="btnDecline"
   on:click={e => {
-    dispatch('declinebtnclick', e);
+    dispatch('declinebtnclick', { accepted: false });
   }}>
   <div class="declineIconWrapper">
     <XIcon height={45} width={45} fill={'#f9fafb'} bg={true} />

@@ -17,7 +17,7 @@
 
   let eventData;
   let todos;
-  let btnClick = false;
+  let showAddPersonProfile;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
@@ -146,12 +146,14 @@
     {#if event.users && event.users[0]}
       <Answers />
     {/if}
-    {#if btnClick}
-      <EventOverlay>
+    {#if showAddPersonProfile}
+      <EventOverlay
+        on:clickoutside={() => {
+          showAddPersonProfile = !showAddPersonProfile;
+        }}>
         <AddPersonProfile />
       </EventOverlay>
     {/if}
-    <AddRespond />
-    <button on:click={() => (btnClick = !btnClick)}>click</button>
+    <AddRespond bind:showAddPersonProfile />
   {/await}
 </Router>

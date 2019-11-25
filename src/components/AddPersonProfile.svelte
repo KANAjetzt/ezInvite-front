@@ -5,8 +5,6 @@
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
   import BtnBig from "./BtnBig.svelte";
-
-  console.log($eventDataStore);
 </script>
 
 <style>

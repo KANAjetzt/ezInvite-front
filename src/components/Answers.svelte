@@ -10,24 +10,17 @@
   import CrossIcon from "./Icons/Cross.svelte";
   import QuestionmarkIcon from "./Icons/Questionmark.svelte";
 
-  let eventData;
+  let users;
   let acceptedUsers = [];
   let canceledUsers = [];
   let pendingUsers = [];
 
   eventDataStore.subscribe(newData => {
-    if (!newData.users) {
-      eventData = newData;
-      return;
-    }
+    users = newData.users;
 
-    newData.users.forEach(user => {
-      if (user.accepted) acceptedUsers.push(user);
-      if (user.accepted === false) canceledUsers.push(user);
-      if (user.accepted === null) pendingUsers.push(user);
-    });
-
-    eventData = newData;
+    acceptedUsers = users.filter(user => user.accepted === true);
+    canceledUsers = users.filter(user => user.accepted === false);
+    pendingUsers = users.filter(user => user.accepted === null);
   });
 </script>
 
