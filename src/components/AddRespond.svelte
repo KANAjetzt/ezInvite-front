@@ -8,17 +8,7 @@
   import BtnRespond from "./BtnRespond.svelte";
 
   export let showAddPersonProfile = false;
-
-  const handleVisibility = () => {
-    // ! can't access $eventDataStore right here right now !
-    console.log($eventDataStore);
-    return $eventDataStore.currentUser &&
-      $eventDataStore.currentUser.accepted === null
-      ? true
-      : false;
-  };
-
-  let visible = handleVisibility();
+  export let showFullResponder = true;
 
   const TOGGLEUSERACCEPTED = gql`
     mutation($input: ToggleUserAcceptedInput!) {
@@ -65,7 +55,7 @@
     $eventDataStore.currentUser.accepted = e.detail.accepted;
 
     // close Respond slection
-    visible = !visible;
+    showFullResponder = !showFullResponder;
   };
 </script>
 
@@ -87,10 +77,10 @@
 </style>
 
 <div class="respond">
-  {#if !visible}
+  {#if !showFullResponder}
     <BtnMinified
       on:minifiedbtnclick={() => {
-        visible = !visible;
+        showFullResponder = !showFullResponder;
       }} />
   {:else}
     <div class="descriptionBox">
@@ -100,7 +90,7 @@
       on:confirmbtnclick={handleRespons}
       on:declinebtnclick={handleRespons}
       on:minifibtnclick={() => {
-        visible = !visible;
+        showFullResponder = !showFullResponder;
       }} />
   {/if}
 </div>

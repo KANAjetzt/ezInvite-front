@@ -18,6 +18,7 @@
   let eventData;
   let todos;
   let showAddPersonProfile;
+  let showFullResponder;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
@@ -72,6 +73,16 @@
 
   const client = getClient();
 
+  // returns true if the person didn't responded, true if he did.
+  const handleResponder = () => {
+    console.log($eventDataStore);
+    return ($eventDataStore.currentUser &&
+      $eventDataStore.currentUser.accepted === null) ||
+      $eventDataStore.currentUser === undefined
+      ? true
+      : false;
+  };
+
   const queryTodos = async widgetId => {
     const id = widgetId;
 
@@ -90,7 +101,6 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
-
     return data;
   };
 
@@ -117,6 +127,9 @@
     if (pathArr[5])
       $eventDataStore.currentUser =
         users[users.findIndex(user => user.link === pathArr[5])];
+
+    // ceck if current user responded already
+    showFullResponder = handleResponder();
   };
 
   // Check if something is in store otherwise query for the data
@@ -155,6 +168,6 @@
         <AddPersonProfile />
       </EventOverlay>
     {/if}
-    <AddRespond bind:showAddPersonProfile />
+    <AddRespond bind:showAddPersonProfile bind:showFullResponder />
   {/await}
 </Router>
