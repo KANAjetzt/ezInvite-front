@@ -1,8 +1,20 @@
 <script>
+  import { eventDataStore } from "../stores";
   import AddPhotoIcon from "./Icons/AddPhoto.svelte";
 
-  const handlePersonImgUpload = () => {
-    console.log("upload img to cloudinary!");
+  const handlePersonImg = () => {
+    const img = document.getElementById("personImgUpload").files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const imgData = reader.result;
+
+      $eventDataStore.personImgPreview = imgData;
+      $eventDataStore.purePersonImg = img;
+    };
+
+    const dataUrl = reader.readAsDataURL(img);
   };
 </script>
 
@@ -53,7 +65,7 @@
   accept="image/*"
   id="personImgUpload"
   name="personImgUpload"
-  on:change={handlePersonImgUpload} />
+  on:change={handlePersonImg} />
 
 <label class="personImgUploadBtn" for="personImgUpload">
   <AddPhotoIcon height={50} width={50} fill={'#f9fafb'} />

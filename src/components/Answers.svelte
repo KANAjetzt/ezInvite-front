@@ -17,10 +17,11 @@
 
   eventDataStore.subscribe(newData => {
     users = newData.users;
-
-    acceptedUsers = users.filter(user => user.accepted === true);
-    canceledUsers = users.filter(user => user.accepted === false);
-    pendingUsers = users.filter(user => user.accepted === null);
+    if (users) {
+      acceptedUsers = users.filter(user => user.accepted === true);
+      canceledUsers = users.filter(user => user.accepted === false);
+      pendingUsers = users.filter(user => user.accepted === null);
+    }
   });
 </script>
 
@@ -71,7 +72,7 @@
     {#if acceptedUsers}
       {#each acceptedUsers as user}
         <PersonCard
-          photo={`http://localhost:3000/img/user/${user.photo}`}
+          photo={user.photo === 'default.jpg' ? undefined : user.photo}
           name={user.name} />
       {/each}
     {/if}
@@ -86,7 +87,7 @@
   {#if canceledUsers}
     {#each canceledUsers as user}
       <PersonCard
-        photo={`http://localhost:3000/img/user/${user.photo}`}
+        photo={user.photo === 'default.jpg' ? undefined : user.photo}
         name={user.name} />
     {/each}
   {/if}
@@ -100,7 +101,7 @@
   {#if pendingUsers}
     {#each pendingUsers as user}
       <PersonCard
-        photo={`http://localhost:3000/img/user/${user.photo}`}
+        photo={user.photo === 'default.jpg' ? undefined : user.photo}
         name={user.name} />
     {/each}
   {/if}

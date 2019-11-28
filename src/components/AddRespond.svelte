@@ -27,7 +27,6 @@
 
   const handleRespons = async e => {
     // Check if currentUser exists
-    console.log($eventDataStore);
     if (
       !$eventDataStore.currentUser ||
       $eventDataStore.currentUser.photo === "default.jpg"

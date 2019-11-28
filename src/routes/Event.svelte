@@ -75,7 +75,6 @@
 
   // returns true if the person didn't responded, true if he did.
   const handleResponder = () => {
-    console.log($eventDataStore);
     return ($eventDataStore.currentUser &&
       $eventDataStore.currentUser.accepted === null) ||
       $eventDataStore.currentUser === undefined
@@ -101,6 +100,7 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
+    console.log($eventDataStore);
     return data;
   };
 
@@ -161,11 +161,14 @@
     {/if}
     {#if showAddPersonProfile}
       <EventOverlay
-        ignoreClickClasses={'.personProfile, .respond'}
+        ignoreClickClasses={'.personProfile, .respond, .removeBtn'}
         on:clickoutside={() => {
           showAddPersonProfile = !showAddPersonProfile;
         }}>
-        <AddPersonProfile />
+        <AddPersonProfile
+          on:donebtnclick={() => {
+            showAddPersonProfile = !showAddPersonProfile;
+          }} />
       </EventOverlay>
     {/if}
     <AddRespond bind:showAddPersonProfile bind:showFullResponder />
