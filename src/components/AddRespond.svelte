@@ -26,12 +26,20 @@
   const client = getClient();
 
   const handleRespons = async e => {
-    // Check if currentUser exists
+    // Check if currentUser doesn't exists
+    if (!$eventDataStore.currentUser) {
+      //if so set currentUser.unknown true
+      // this is needed to handle the AddPersonProfile Done Btn right
+      $eventDataStore.currentUser = {};
+      $eventDataStore.currentUser.unknown = true;
+    }
+
+    // Check if currentUser.name doesn't exists or default img is set
     if (
-      !$eventDataStore.currentUser ||
+      !$eventDataStore.currentUser.name ||
       $eventDataStore.currentUser.photo === "default.jpg"
     ) {
-      // If not render AddUserProfile Component
+      // If so render AddUserProfile Component
       showAddPersonProfile = !showAddPersonProfile;
       return;
     }
@@ -53,7 +61,7 @@
     // update eventDataStore
     $eventDataStore.currentUser.accepted = e.detail.accepted;
 
-    // close Respond slection
+    // close Respond section
     showFullResponder = !showFullResponder;
   };
 </script>

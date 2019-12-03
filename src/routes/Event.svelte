@@ -39,6 +39,7 @@
         heroImg
         imgs
         link
+        slug
         location {
           name
           coordinates
@@ -161,7 +162,7 @@
     {/if}
     {#if showAddPersonProfile}
       <EventOverlay
-        ignoreClickClasses={'.personProfile, .respond, .removeBtn'}
+        ignoreClickClasses={'.personProfile, .respond, .removeBtn, .personAddBtn'}
         on:clickoutside={() => {
           showAddPersonProfile = !showAddPersonProfile;
         }}>
