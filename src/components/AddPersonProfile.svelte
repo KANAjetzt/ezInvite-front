@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
+  import { navigate } from "svelte-routing";
 
   import { eventDataStore } from "../stores";
 
@@ -12,6 +13,8 @@
   import LinkBox from "./LinkBox.svelte";
   import BtnBig from "./BtnBig.svelte";
   import BtnRemove from "./BtnRemove.svelte";
+
+  export let showFullResponder = true;
 
   const dispatch = createEventDispatcher();
   const client = getClient();
@@ -41,6 +44,7 @@
           id
           name
           photo
+          accepted
         }
       }
     }
@@ -54,21 +58,19 @@
           name
           photo
           link
+          accepted
         }
       }
     }
   `;
 
   const handlePersonName = e => {
-    console.log($eventDataStore);
     $eventDataStore.currentUser.name = e.detail;
-    console.log($eventDataStore);
   };
 
   const handleDoneBtn = async () => {
     if ($eventDataStore.currentUser.unknown) {
       // --- Handle unkonwn user ---
-      console.log("--- handling unknown user ---");
       // get Event ID
       const event = await client.query({
         query: QUERYEVENT,
@@ -76,42 +78,43 @@
           input: { link: $eventDataStore.link, slug: $eventDataStore.slug }
         }
       });
-      console.log(event);
 
       // create new user
       const input = {
         name: $eventDataStore.currentUser.name,
         event: event.data.event.id,
-        photo: $eventDataStore.purePersonImg
+        photo: $eventDataStore.purePersonImg,
+        accepted: $eventDataStore.currentUser.accepted
       };
 
       const createdUser = await mutate(client, {
         mutation: CREATEUSER,
         variables: { input }
       });
-      console.log(createdUser);
 
       // set createdUser to currentUser
       delete createdUser.data.createUser.user.id;
       $eventDataStore.currentUser = createdUser.data.createUser.user;
       $eventDataStore.currentUser.unknown = true;
 
-      // show personal Link
-
-      // navigate to personal Link
+      // add createdUser to users Array
+      eventDataStore.update(currentData => {
+        const newData = { ...currentData };
+        newData.users.push($eventDataStore.currentUser);
+        return newData;
+      });
 
       return;
     }
-
     // --- Handle known user ---
-    console.log("--- handling known user ---");
     const user = await client.query({
       query: QUERYUSERBYLINK,
       variables: { link: $eventDataStore.currentUser.link }
     });
     const input = {
       user: user.data.userByLink.id,
-      photo: $eventDataStore.purePersonImg
+      photo: $eventDataStore.purePersonImg,
+      accepted: $eventDataStore.currentUser.accepted
     };
     const updatedUser = await mutate(client, {
       mutation: UPDATEUSER,
@@ -123,6 +126,21 @@
 
     // Hide Overlay
     dispatch("donebtnclick");
+
+    // close Respond section
+    showFullResponder = !showFullResponder;
+  };
+
+  const handleLinkBtn = () => {
+    navigate(
+      `/${$eventDataStore.slug}/${$eventDataStore.link}/${$eventDataStore.currentUser.link}`
+    );
+
+    // Hide Overlay
+    dispatch("donebtnclick");
+
+    // close Respond section
+    showFullResponder = !showFullResponder;
   };
 </script>
 
@@ -171,6 +189,14 @@
         text={'Add your name and a profile picture, to answer this invite.'} />
     </div>
 
+    <!-- DescriptionBox: User got created -->
+  {:else if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
+    <div class="DescriptionBox">
+      <DescriptionBox
+        title={`Thanks ${$eventDataStore.currentUser.name.split(' ')[0]}!`}
+        text={`Use this link to communikate within this event.`} />
+    </div>
+
     <!-- DescriptionBox: Current user is known -->
   {:else}
     <div class="DescriptionBox">
@@ -181,18 +207,22 @@
   {/if}
 
   <!-- personCard: user enterd his name - render PersonCard Comp with photo prop to update later. -->
-  {#if $eventDataStore.currentUser && $eventDataStore.currentUser.name}
+  {#if ($eventDataStore.currentUser && $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.name) || $eventDataStore.personImgPreview}
     <section class="personCard">
-      <div class="btnRemove">
-        <BtnRemove
-          width={15}
-          height={15}
-          on:removebtnclick={() => {
-            $eventDataStore.currentUser.name = undefined;
-            $eventDataStore.personImgPreview = undefined;
-            $eventDataStore.purePersonImg = undefined;
-          }} />
-      </div>
+      {#if (!$eventDataStore.currentUser.link && $eventDataStore.currentUser.unknown) || (!$eventDataStore.currentUser.unknown && $eventDataStore.personImgPreview)}
+        <div class="btnRemove">
+          <BtnRemove
+            width={15}
+            height={15}
+            on:removebtnclick={() => {
+              if ($eventDataStore.currentUser.unknown) {
+                $eventDataStore.currentUser.name = undefined;
+              }
+              $eventDataStore.personImgPreview = undefined;
+              $eventDataStore.purePersonImg = undefined;
+            }} />
+        </div>
+      {/if}
       <PersonCard
         name={$eventDataStore.currentUser.name}
         photo={$eventDataStore.personImgPreview} />
@@ -219,10 +249,18 @@
     </div>
   {/if}
 
-  <BtnBig
-    text={'Done !'}
-    clipVar={'tertiary'}
-    fontSize={5.4}
-    on:bigbtnclick={handleDoneBtn} />
+  {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
+    <BtnBig
+      text={'go to your personal event page'}
+      clipVar={'tertiary'}
+      fontSize={2.8}
+      on:bigbtnclick={handleLinkBtn} />
+  {:else}
+    <BtnBig
+      text={'Done !'}
+      clipVar={'tertiary'}
+      fontSize={5.4}
+      on:bigbtnclick={handleDoneBtn} />
+  {/if}
 
 </section>

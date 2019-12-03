@@ -26,26 +26,28 @@
   const client = getClient();
 
   const handleRespons = async e => {
-    // Check if currentUser doesn't exists
+    // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
-      //if so set currentUser.unknown true
-      // this is needed to handle the AddPersonProfile Done Btn right
+      // Set currentUser.unknown true
+      // This is required to handle the AddPersonProfile DoneBtn
       $eventDataStore.currentUser = {};
       $eventDataStore.currentUser.unknown = true;
     }
 
-    // Check if currentUser.name doesn't exists or default img is set
+    // --- Check if currentUser.name doesn't exists or default img is set ---
     if (
       !$eventDataStore.currentUser.name ||
       $eventDataStore.currentUser.photo === "default.jpg"
     ) {
-      // If so render AddUserProfile Component
+      // render AddUserProfile Component / Overlay
       showAddPersonProfile = !showAddPersonProfile;
+
+      // Set currentUser accepted state to false ore true
+      $eventDataStore.currentUser.accepted = e.detail.accepted;
       return;
     }
 
-    // If so set currentUser accepted state to false ore true
-
+    // Set currentUser accepted state to false ore true
     // Assamble input object
     const input = {
       link: $eventDataStore.currentUser.link,

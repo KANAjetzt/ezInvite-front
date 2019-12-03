@@ -101,7 +101,6 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
-    console.log($eventDataStore);
     return data;
   };
 
@@ -162,11 +161,12 @@
     {/if}
     {#if showAddPersonProfile}
       <EventOverlay
-        ignoreClickClasses={'.personProfile, .respond, .removeBtn, .personAddBtn'}
+        ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn'}
         on:clickoutside={() => {
           showAddPersonProfile = !showAddPersonProfile;
         }}>
         <AddPersonProfile
+          bind:showFullResponder
           on:donebtnclick={() => {
             showAddPersonProfile = !showAddPersonProfile;
           }} />
