@@ -11,6 +11,8 @@
   import AddPersonImg from "./AddPersonImg.svelte";
   import PersonCard from "./PersonCard.svelte";
   import LinkBox from "./LinkBox.svelte";
+  import BtnPanel from "./BtnPanel.svelte";
+  import NormalBtn from "./NormalBtn.svelte";
   import BtnBig from "./BtnBig.svelte";
   import BtnRemove from "./BtnRemove.svelte";
 
@@ -142,6 +144,19 @@
     // close Respond section
     showFullResponder = !showFullResponder;
   };
+
+  const handleBackBtn = () => {
+    console.log("--- handling BackBtn ---");
+    // clear currentUser
+    if ($eventDataStore.currentUser.unknown) {
+      $eventDataStore.currentUser.name = undefined;
+    }
+    $eventDataStore.personImgPreview = undefined;
+    $eventDataStore.purePersonImg = undefined;
+
+    // Hide Overlay
+    dispatch("donebtnclick");
+  };
 </script>
 
 <style>
@@ -182,7 +197,8 @@
 <section class="personProfile">
 
   <!-- DescriptionBox: Current user is unknown -->
-  {#if !$eventDataStore.currentUser.name}
+  {console.log($eventDataStore)}
+  {#if $eventDataStore.currentUser && !$eventDataStore.currentUser.name}
     <div class="DescriptionBox">
       <DescriptionBox
         title={'Welcome!'}
@@ -237,7 +253,7 @@
   {/if}
 
   <!-- PersonImg: Current user has no Img - show Add profile picture comp -->
-  {#if !$eventDataStore.personImgPreview}
+  {#if (!$eventDataStore.currentUser.unknown && !$eventDataStore.personImgPreview) || ($eventDataStore.currentUser.unknown && !$eventDataStore.currentUser.link && !$eventDataStore.personImgPreview)}
     <AddPersonImg />
   {/if}
 
@@ -256,11 +272,13 @@
       fontSize={2.8}
       on:bigbtnclick={handleLinkBtn} />
   {:else}
-    <BtnBig
-      text={'Done !'}
-      clipVar={'tertiary'}
-      fontSize={5.4}
-      on:bigbtnclick={handleDoneBtn} />
+    <BtnPanel clipVar={'tertiary'}>
+      <NormalBtn
+        text={'go back'}
+        type={'normal'}
+        on:normalbtnclick={handleBackBtn} />
+      <NormalBtn text={'Done !'} type={'cta'} on:ctabtnclick={handleDoneBtn} />
+    </BtnPanel>
   {/if}
 
 </section>

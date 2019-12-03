@@ -306,7 +306,7 @@
     </section>
     {#if !moreVisible}
       <section class="selectBtns">
-        <BtnPanel minusMargin={2.5}>
+        <BtnPanel>
           <NormalBtn
             text={'Add more'}
             type={'normal'}

@@ -1,5 +1,4 @@
 <script>
-  export let minusMargin;
   export let pannelHeight = 13;
   export let clipVar = "secondary";
 </script>
