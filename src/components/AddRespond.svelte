@@ -2,12 +2,11 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
-  import { eventDataStore } from "../stores";
+  import { appStore, eventDataStore } from "../stores";
   import DescriptionBox from "./DescriptionBox.svelte";
   import BtnMinified from "./BtnMinified.svelte";
   import BtnRespond from "./BtnRespond.svelte";
 
-  export let showAddPersonProfile = false;
   export let showFullResponder = true;
 
   const TOGGLEUSERACCEPTED = gql`
@@ -36,11 +35,12 @@
 
     // --- Check if currentUser.name doesn't exists or default img is set ---
     if (
+      !$eventDataStore.currentUser ||
       !$eventDataStore.currentUser.name ||
       $eventDataStore.currentUser.photo === "default.jpg"
     ) {
       // render AddUserProfile Component / Overlay
-      showAddPersonProfile = !showAddPersonProfile;
+      $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
 
       // Set currentUser accepted state to false ore true
       $eventDataStore.currentUser.accepted = e.detail.accepted;
@@ -64,7 +64,7 @@
     $eventDataStore.currentUser.accepted = e.detail.accepted;
 
     // close Respond section
-    showFullResponder = !showFullResponder;
+    $appStore.showFullResponder = !$appStore.showFullResponder;
   };
 </script>
 
@@ -86,10 +86,10 @@
 </style>
 
 <div class="respond">
-  {#if !showFullResponder}
+  {#if !$appStore.showFullResponder}
     <BtnMinified
       on:minifiedbtnclick={() => {
-        showFullResponder = !showFullResponder;
+        $appStore.showFullResponder = !$appStore.showFullResponder;
       }} />
   {:else}
     <div class="descriptionBox">
@@ -99,7 +99,7 @@
       on:confirmbtnclick={handleRespons}
       on:declinebtnclick={handleRespons}
       on:minifibtnclick={() => {
-        showFullResponder = !showFullResponder;
+        $appStore.showFullResponder = !$appStore.showFullResponder;
       }} />
   {/if}
 </div>

@@ -3,7 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Link, Route } from "svelte-routing";
 
-  import { eventDataStore, todoStore } from "../stores.js";
+  import { appStore, eventDataStore, todoStore } from "../stores.js";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -15,10 +15,13 @@
   import AddPersonProfile from "../components/AddPersonProfile.svelte";
   import AddRespond from "../components/AddRespond.svelte";
 
+  let appData;
   let eventData;
   let todos;
-  let showAddPersonProfile;
-  let showFullResponder;
+
+  appStore.subscribe(newData => {
+    appData = newData;
+  });
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
@@ -88,7 +91,6 @@
 
     // Query for todos with specific widget id
     const data = await client.query({ query: GETTODOS, variables: { id } });
-
     // Update Todos Store with queryed Todos Data
     todoStore.set(data.data.todosForWidget);
 
@@ -129,7 +131,7 @@
         users[users.findIndex(user => user.link === pathArr[5])];
 
     // ceck if current user responded already
-    showFullResponder = handleResponder();
+    $appStore.showFullResponder = handleResponder();
   };
 
   // Check if something is in store otherwise query for the data
@@ -159,19 +161,18 @@
     {#if event.users && event.users[0]}
       <Answers />
     {/if}
-    {#if showAddPersonProfile}
+    {#if $appStore.showAddPersonProfile}
       <EventOverlay
-        ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn'}
+        ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn, .addBtn'}
         on:clickoutside={() => {
-          showAddPersonProfile = !showAddPersonProfile;
+          $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
         }}>
         <AddPersonProfile
-          bind:showFullResponder
           on:donebtnclick={() => {
-            showAddPersonProfile = !showAddPersonProfile;
+            $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
           }} />
       </EventOverlay>
     {/if}
-    <AddRespond bind:showAddPersonProfile bind:showFullResponder />
+    <AddRespond />
   {/await}
 </Router>

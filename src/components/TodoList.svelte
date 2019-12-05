@@ -45,6 +45,7 @@
 
       // If more than 5 people are allready partacing on this thing
       // They get shown on the page - so no need for dummys
+      // !!! 🤦‍♂️ Nothing gets returned so we dont have any people in the todo.users array 🤦‍♂️ !!!
       if (partacer > 5) return;
 
       // get an Array of dummy users
@@ -57,7 +58,9 @@
   };
 
   todoStore.subscribe(newData => {
+    console.log(newData);
     todos = newData.map(todo => prepareData(todo));
+    console.log(todos);
   });
 </script>
 

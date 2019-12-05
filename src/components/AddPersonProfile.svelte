@@ -4,7 +4,7 @@
   import { gql } from "apollo-boost";
   import { navigate } from "svelte-routing";
 
-  import { eventDataStore } from "../stores";
+  import { appStore, eventDataStore } from "../stores";
 
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
@@ -15,8 +15,6 @@
   import NormalBtn from "./NormalBtn.svelte";
   import BtnBig from "./BtnBig.svelte";
   import BtnRemove from "./BtnRemove.svelte";
-
-  export let showFullResponder = true;
 
   const dispatch = createEventDispatcher();
   const client = getClient();
@@ -130,7 +128,7 @@
     dispatch("donebtnclick");
 
     // close Respond section
-    showFullResponder = !showFullResponder;
+    $appStore.showFullResponder = !$appStore.showFullResponder;
   };
 
   const handleLinkBtn = () => {
@@ -142,11 +140,10 @@
     dispatch("donebtnclick");
 
     // close Respond section
-    showFullResponder = !showFullResponder;
+    $appStore.showFullResponder = !$appStore.showFullResponder;
   };
 
   const handleBackBtn = () => {
-    console.log("--- handling BackBtn ---");
     // clear currentUser
     if ($eventDataStore.currentUser.unknown) {
       $eventDataStore.currentUser.name = undefined;
@@ -197,7 +194,6 @@
 <section class="personProfile">
 
   <!-- DescriptionBox: Current user is unknown -->
-  {console.log($eventDataStore)}
   {#if $eventDataStore.currentUser && !$eventDataStore.currentUser.name}
     <div class="DescriptionBox">
       <DescriptionBox
