@@ -1,26 +1,124 @@
 <script>
-  import { todoStore } from "../stores";
+  import { gql } from "apollo-boost";
+  import { getClient, mutate } from "svelte-apollo";
+
+  import { appStore, eventDataStore, todoStore } from "../stores";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
 
   let text;
   let requiredPersons;
 
+  const client = getClient();
+
+  const QUERYUSERBYLINK = gql`
+    query($link: String!) {
+      userByLink(link: $link) {
+        id
+        name
+        photo
+      }
+    }
+  `;
+
+  const CREATETODO = gql`
+    mutation($input: CreateTodoInput!) {
+      createTodo(input: $input) {
+        todo {
+          requiredPersons
+          text
+          users {
+            name
+          }
+        }
+      }
+    }
+  `;
+
   // TODO: Check if we are on the Event page / if so save the new Thing to the DB
-  const handlePersonAddBtnClick = e => {
+  const handlePersonAddBtnClick = async e => {
     e.detail.preventDefault();
 
-    todoStore.update(current => {
-      let newTodos = [...current];
-      newTodos = [
-        ...newTodos,
-        {
-          text: text,
-          requiredPersons: requiredPersons
-        }
-      ];
-      return newTodos;
-    });
+    // --- If we are on the addEvent page ---
+    if ($appStore.currentPage === "addEvent") {
+      todoStore.update(current => {
+        let newTodos = [...current];
+        newTodos = [
+          ...newTodos,
+          {
+            text: text,
+            requiredPersons: requiredPersons
+          }
+        ];
+        return newTodos;
+      });
+    }
+
+    // --- If we are on the event page ---
+    if ($appStore.currentPage === "event") {
+      // Check if currentUser doesn't exists
+      if (!$eventDataStore.currentUser) {
+        // Set currentUser.unknown true
+        // This is required to handle the AddPersonProfile DoneBtn
+        $eventDataStore.currentUser = {};
+        $eventDataStore.currentUser.unknown = true;
+      }
+
+      // check if currentUser enterd a name already
+      if (!$eventDataStore.currentUser.name) {
+        // Render AddPersonProfile
+        $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
+        return;
+      }
+
+      // check if currentUser didn't accapted the invite
+      if (!$eventDataStore.currentUser.accepted) {
+        console.log("TODO: Add Mesageboard to show Error / Warings / Infos");
+        console.log("accapted your invite to help with this thing!");
+
+        // Show responder
+        $appStore.showFullResponder = !$appStore.showFullResponder;
+
+        return;
+      }
+
+      // Add thing to Store
+      todoStore.update(current => {
+        let newTodos = [...current];
+        newTodos = [
+          ...newTodos,
+          {
+            text: text,
+            requiredPersons: requiredPersons,
+            users: [$eventDataStore.currentUser]
+          }
+        ];
+        return newTodos;
+      });
+
+      // Save new thing to DB
+
+      // query user id
+      const user = await client.query({
+        query: QUERYUSERBYLINK,
+        variables: { link: $eventDataStore.currentUser.link }
+      });
+
+      const input = {
+        widget:
+          $eventDataStore.widgets[
+            $eventDataStore.widgets.findIndex(widget => widget.type === "todo")
+          ].id,
+        text,
+        requiredPersons,
+        users: [user.data.userByLink.id]
+      };
+
+      const newTodo = await mutate(client, {
+        mutation: CREATETODO,
+        variables: { input }
+      });
+    }
   };
 </script>
 

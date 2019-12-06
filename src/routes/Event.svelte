@@ -19,6 +19,8 @@
   let eventData;
   let todos;
 
+  $appStore.currentPage = "event";
+
   appStore.subscribe(newData => {
     appData = newData;
   });

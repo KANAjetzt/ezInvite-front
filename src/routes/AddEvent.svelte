@@ -4,7 +4,7 @@
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
 
-  import { eventDataStore, todoStore } from "../stores.js";
+  import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
@@ -31,6 +31,8 @@
   let formattedSelected;
   let selectedDate;
   let dateChosen;
+
+  $appStore.currentPage = "addEvent";
 
   $: if (dateChosen) {
     eventData.startDate = `${selectedDate.getTime()}`;

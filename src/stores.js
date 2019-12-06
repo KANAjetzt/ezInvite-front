@@ -2,7 +2,8 @@ import { writable } from "svelte/store";
 
 export const appStore = writable({
   showAddPersonProfile: false,
-  showFullResponder: true
+  showFullResponder: true,
+  currentPage: undefined
 });
 export const eventDataStore = writable({});
 export const todoStore = writable([]);

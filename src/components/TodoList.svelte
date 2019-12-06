@@ -53,9 +53,7 @@
   };
 
   todoStore.subscribe(newData => {
-    console.log(newData);
     todos = newData.map(todo => prepareData(todo));
-    console.log(todos);
   });
 </script>
 
