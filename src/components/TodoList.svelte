@@ -43,6 +43,12 @@
       const partacer = todo.users.length;
       const requiredPersons = todo.requiredPersons;
 
+      // if the thing is done
+      if (partacer >= requiredPersons) {
+        // add done property to todo
+        newTodo.done = true;
+      }
+
       // add partacer count to todo
       newTodo.partacerCount = partacer;
 
@@ -56,7 +62,15 @@
   };
 
   todoStore.subscribe(newData => {
-    todos = newData.map(todo => prepareData(todo));
+    todos = newData
+      .map(todo => prepareData(todo))
+      .sort((a, b) => {
+        // a and b bouth done = 0
+        // a done = false --> a,b
+        // else --> b,a
+        return a.done === b.done ? 0 : a.done ? -1 : 1;
+      });
+    console.log(todos);
   });
 </script>
 
@@ -70,8 +84,8 @@
 </style>
 
 <ul class="todoList">
-  {#each todos as todo}
-    <Todo data={todo} />
+  {#each todos as todo, index}
+    <Todo data={todo} {index} />
   {/each}
   <AddTodoInput />
 </ul>

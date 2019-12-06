@@ -8,6 +8,7 @@
   export let name = "unknown user";
   export let iconStyle =
     "z-index: 20; transform: translateX(135%); opacity: 0.7;";
+  export let index;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -30,7 +31,7 @@
 <button
   class="addBtn"
   on:click={e => {
-    dispatch('personaddbtnclick', e);
+    dispatch('personaddbtnclick', index);
   }}>
   <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
   <PersonImg />

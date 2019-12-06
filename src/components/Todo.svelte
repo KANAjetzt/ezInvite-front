@@ -3,11 +3,12 @@
   import { gql } from "apollo-boost";
   import { getClient, mutate } from "svelte-apollo";
 
-  import { appStore, eventDataStore } from "../stores";
+  import { appStore, eventDataStore, todoStore } from "../stores";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
 
   export let data;
+  export let index;
 
   let shortenPersonImgs = false;
 
@@ -41,9 +42,9 @@
     }
   `;
 
-  const handlePersonAddBtn = async () => {
+  const handlePersonAddBtn = async e => {
     console.log("--- handling PersonAddBtn ---");
-
+    console.log(e.detail);
     // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
       // Set currentUser.unknown true
@@ -78,12 +79,22 @@
     }
 
     // add currentUser to the thing
+    // add user in todoStore
+    console.log($todoStore);
+    console.log(e.detail);
+    todoStore.update(currentData => {
+      const newData = [...currentData];
+      newData[e.detail].users.push($eventDataStore.currentUser);
+      return newData;
+    });
+    console.log($todoStore);
+
     // query user id
     const user = await client.query({
       query: QUERYUSERBYLINK,
       variables: { link: $eventDataStore.currentUser.link }
     });
-    // add user to thing
+    // save user to thing in DB
     const input = { id: data.id, user: user.data.userByLink.id };
     const newTodo = await mutate(client, {
       mutation: ADDUSERTOTODO,
@@ -112,7 +123,7 @@
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
   {#if data.partacerCount < data.requiredPersons}
-    <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} />
+    <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} {index} />
   {/if}
   {#each data.users as { photo, name }, i}
     {#if i < 4}
