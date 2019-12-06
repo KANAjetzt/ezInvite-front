@@ -70,6 +70,12 @@
       return;
     }
 
+    // check if requiredPersons count is met
+    if (data.users.length >= data.requiredPersons) {
+      console.log("TODO: Visualize that this todo is done");
+      return;
+    }
+
     // add currentUser to the thing
     // query user id
     const user = await client.query({
@@ -77,14 +83,11 @@
       variables: { link: $eventDataStore.currentUser.link }
     });
     // add user to thing
-
     const input = { id: data.id, user: user.data.userByLink.id };
     const newTodo = await mutate(client, {
       mutation: ADDUSERTOTODO,
       variables: { input }
     });
-
-    // check if currentUser count is met
   };
 </script>
 
@@ -107,9 +110,13 @@
 
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
-  <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} />
-  {#each data.users as { photo, name }}
-    <PersonImg {photo} {name} />
+  {#if data.users.length < data.requiredPersons}
+    <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} />
+  {/if}
+  {#each data.users as { photo, name }, i}
+    {#if i < 4}
+      <PersonImg {photo} {name} />
+    {/if}
   {/each}
   {#if shortenPersonImgs}
     <PersonImg count={data.requiredPersons - 4} />
