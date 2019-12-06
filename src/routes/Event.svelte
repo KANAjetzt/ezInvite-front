@@ -105,6 +105,7 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
+    console.log($eventDataStore);
     return data;
   };
 

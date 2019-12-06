@@ -71,7 +71,8 @@
     }
 
     // check if requiredPersons count is met
-    if (data.users.length >= data.requiredPersons) {
+    console.log(data.users);
+    if (data.partacerCount >= data.requiredPersons) {
       console.log("TODO: Visualize that this todo is done");
       return;
     }
@@ -110,7 +111,7 @@
 
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
-  {#if data.users.length < data.requiredPersons}
+  {#if data.partacerCount < data.requiredPersons}
     <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} />
   {/if}
   {#each data.users as { photo, name }, i}

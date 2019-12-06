@@ -43,6 +43,9 @@
       const partacer = todo.users.length;
       const requiredPersons = todo.requiredPersons;
 
+      // add partacer count to todo
+      newTodo.partacerCount = partacer;
+
       // get an Array of dummy users
       const dummyUsers = generateDummyUsers(requiredPersons - partacer);
 
