@@ -31,7 +31,7 @@
 <button
   class="addBtn"
   on:click={e => {
-    dispatch('personaddbtnclick', index);
+    dispatch('personaddbtnclick', { index: index, originalEvent: e });
   }}>
   <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
   <PersonImg />

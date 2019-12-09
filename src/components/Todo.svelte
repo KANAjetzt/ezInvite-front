@@ -44,7 +44,6 @@
 
   const handlePersonAddBtn = async e => {
     console.log("--- handling PersonAddBtn ---");
-    console.log(e.detail);
     // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
       // Set currentUser.unknown true
@@ -72,7 +71,6 @@
     }
 
     // check if requiredPersons count is met
-    console.log(data.users);
     if (data.partacerCount >= data.requiredPersons) {
       console.log("TODO: Visualize that this todo is done");
       return;
@@ -80,14 +78,13 @@
 
     // add currentUser to the thing
     // add user in todoStore
-    console.log($todoStore);
-    console.log(e.detail);
     todoStore.update(currentData => {
       const newData = [...currentData];
-      newData[e.detail].users.push($eventDataStore.currentUser);
+      newData[e.detail].users[
+        newData[e.detail].users.findIndex(user => user.name === "unkown user")
+      ] = $eventDataStore.currentUser;
       return newData;
     });
-    console.log($todoStore);
 
     // query user id
     const user = await client.query({
@@ -131,7 +128,7 @@
     {/if}
   {/each}
   {#if shortenPersonImgs}
-    <PersonImg count={data.requiredPersons - 4} />
+    <PersonImg count={data.requiredPersons - data.partacerCount} />
   {/if}
   <p class="text">{data.text}</p>
 </li>
