@@ -122,7 +122,7 @@
 
 <li class="todo">
   <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
-  {#if data.partacerCount < data.requiredPersons}
+  {#if data.partacerCount ? data.partacerCount : 0 < data.requiredPersons}
     <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} {index} />
   {/if}
   {#each data.users as { photo, name }, i}

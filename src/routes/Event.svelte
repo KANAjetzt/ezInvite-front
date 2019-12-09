@@ -93,6 +93,9 @@
 
     // Query for todos with specific widget id
     const data = await client.query({ query: GETTODOS, variables: { id } });
+
+    // sort Todos by done or not
+
     // Update Todos Store with queryed Todos Data
     todoStore.set(data.data.todosForWidget);
 
