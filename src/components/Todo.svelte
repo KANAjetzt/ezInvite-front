@@ -124,7 +124,11 @@
   {/if}
   {#each data.users as { photo, name }, i}
     {#if i < 4}
-      <PersonImg {photo} {name} />
+      {#if photo === 'default.jpg'}
+        <PersonImg {name} />
+      {:else}
+        <PersonImg {photo} {name} />
+      {/if}
     {/if}
   {/each}
   {#if shortenPersonImgs}
