@@ -16,6 +16,7 @@
   import PersonCard from "../components/PersonCard.svelte";
   import LinkBox from "../components/LinkBox.svelte";
   import LinkBoxGlobal from "../components/LinkBoxGlobal.svelte";
+  import LinkBoxEdit from "../components/LinkBoxEdit.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
 
@@ -98,7 +99,8 @@
     margin-bottom: 1rem;
   }
 
-  .descriptionBoxGlobal {
+  .descriptionBoxGlobal,
+  .descriptionBoxEdit {
     max-width: 85vw;
     margin-bottom: 4rem;
   }
@@ -130,7 +132,8 @@
     margin-top: auto;
   }
 
-  .linkBoxGlobal {
+  .linkBoxGlobal,
+  .linkBoxEdit {
     margin-bottom: 4rem;
   }
 
@@ -188,6 +191,14 @@
       <section class="linkBoxGlobal">
         <LinkBoxGlobal
           value={`http://localhost:5000/${eventData.slug}/${eventData.link}`} />
+      </section>
+      <section class="descriptionBoxEdit">
+        <DescriptionBox
+          title={'Save this Link to eventually edit your event later!'} />
+      </section>
+      <section class="linkBoxEdit">
+        <LinkBoxEdit
+          value={`http://localhost:5000/edit/${eventData.slug}/${eventData.editLink}`} />
       </section>
     {/if}
     <section class="btnCta">

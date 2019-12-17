@@ -60,7 +60,6 @@
           endTime
           description
           link
-          editLink
           slug
           location {
             name
@@ -180,7 +179,6 @@
     eventData.id = newEventData.data.createEvent.event.id;
     eventData.slug = newEventData.data.createEvent.event.slug;
     eventData.link = newEventData.data.createEvent.event.link;
-    eventData.editLink = newEventData.data.createEvent.event.editLink;
 
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
@@ -266,6 +264,7 @@
   {#if !heroImgPreview}
     <div class="topBar" />
   {/if}
+  <h1>Edit Page</h1>
   <form class="form">
     <section class="heroImg">
       {#if !eventData.heroImgPreview}
