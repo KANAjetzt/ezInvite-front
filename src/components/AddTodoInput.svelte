@@ -37,7 +37,7 @@
 
   // TODO: Check if we are on the Event page / if so save the new Thing to the DB
   const handlePersonAddBtnClick = async e => {
-    e.detail.preventDefault();
+    e.detail.originalEvent.preventDefault();
 
     // --- If we are on the addEvent page ---
     if ($appStore.currentPage === "addEvent") {

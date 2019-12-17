@@ -109,14 +109,16 @@
     });
   };
 
-  //BUG: ! - When Btn get's clicked 2 times --> 2 todo widgets are added - !
   const handlelistBtnClick = e => {
     // onlistbtnclick --> create new widget with type "todo"
+    // This will need more work when we add more widgets
     e.detail.preventDefault();
+
     listWidgetVisible = !listWidgetVisible;
-    eventData.widgetTypes && eventData.widgetTypes[0]
-      ? (eventData.widgetTypes = [...eventData.widgetTypes, "todo"])
-      : (eventData.widgetTypes = ["todo"]);
+
+    listWidgetVisible
+      ? (eventData.widgetTypes = ["todo"])
+      : (eventData.widgetTypes = []);
   };
 
   const handleTodoData = async eventData => {
@@ -141,7 +143,6 @@
 
   const handleEventData = async () => {
     const currentInput = { ...eventData };
-
     // prepare input Data
     const input = {
       name: currentInput.name,
