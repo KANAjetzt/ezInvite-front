@@ -3,6 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
+  import { onMount } from "svelte";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
@@ -49,6 +50,36 @@
 
   const client = getClient();
 
+  const GETEVENT = gql`
+    query($input: QueryEventInput!) {
+      event(input: $input) {
+        name
+        startDate
+        startTime
+        endTime
+        description
+        heroImg
+        imgs
+        link
+        slug
+        location {
+          name
+          coordinates
+        }
+        users {
+          name
+          photo
+          accepted
+          link
+        }
+        widgets {
+          id
+          type
+        }
+      }
+    }
+  `;
+
   const CREATEEVENT = gql`
     mutation($input: CreateEventInput!) {
       createEvent(input: $input) {
@@ -85,6 +116,25 @@
       }
     }
   `;
+
+  // Handle Event Data
+  const queryEventData = async input => {
+    console.log("--- querying Event Data ---");
+    // construct input object for mutation
+    // index 4 = slug | index 5 = event link
+    const pathArr = window.location.href.split("/");
+    console.log(pathArr);
+
+    // Query for event
+    const data = await client.query({
+      query: GETEVENT,
+      variables: { input: { editLink: pathArr[5], slug: pathArr[4] } }
+    });
+
+    // Update Event Data Store with queryed event Data
+    eventDataStore.set(data.data.event);
+    return data;
+  };
 
   // Render all Form Fields not shown by default
   const handleNormalBtnClick = e => {
@@ -185,6 +235,8 @@
 
     navigate("/eventPreview");
   };
+
+  queryEventData();
 </script>
 
 <style>
