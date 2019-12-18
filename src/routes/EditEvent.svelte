@@ -22,32 +22,6 @@
   import AddWidgets from "../components/AddWidget.svelte";
   import BtnBig from "../components/BtnBig.svelte";
 
-  let moreVisible = false;
-  let listWidgetVisible = false;
-
-  let eventData = {};
-  let todos;
-  let heroImgPreview;
-  let imgStripe;
-  let formattedSelected;
-  let selectedDate;
-  let dateChosen;
-
-  $appStore.currentPage = "addEvent";
-
-  $: if (dateChosen) {
-    eventData.startDate = `${selectedDate.getTime()}`;
-    eventDataStore.set(eventData);
-  }
-
-  eventDataStore.subscribe(newData => {
-    eventData = newData;
-  });
-
-  todoStore.subscribe(newData => {
-    todos = newData;
-  });
-
   const client = getClient();
 
   const GETEVENT = gql`
@@ -65,6 +39,7 @@
         location {
           name
           coordinates
+          address
         }
         users {
           name
@@ -79,6 +54,48 @@
       }
     }
   `;
+
+  const GETTODOS = gql`
+    query($id: ID!) {
+      todosForWidget(id: $id) {
+        id
+        text
+        requiredPersons
+        users {
+          name
+          photo
+        }
+      }
+    }
+  `;
+
+  let moreVisible = false;
+  let listWidgetVisible = false;
+
+  let eventData = handleData();
+  let todos;
+  let heroImgPreview;
+  let imgStripe;
+  let formattedSelected;
+  let selectedDate = eventData.startDate
+    ? new Date(eventData.startDate * 1)
+    : new Date();
+  let dateChosen;
+
+  $appStore.currentPage = "addEvent";
+
+  $: if (dateChosen) {
+    eventData.startDate = `${selectedDate.getTime()}`;
+    eventDataStore.set(eventData);
+  }
+
+  eventDataStore.subscribe(newData => {
+    eventData = newData;
+  });
+
+  todoStore.subscribe(newData => {
+    todos = newData;
+  });
 
   const CREATEEVENT = gql`
     mutation($input: CreateEventInput!) {
@@ -117,8 +134,19 @@
     }
   `;
 
-  // Handle Event Data
-  const queryEventData = async input => {
+  // HANDLE DATA
+  async function handleData() {
+    const data = await queryEventData();
+    console.log(data);
+    queryTodoData(
+      data.data.event.widgets[
+        data.data.event.widgets.findIndex(widget => widget.type === "todo")
+      ].id
+    );
+  }
+
+  // --- Query Event Data ---
+  async function queryEventData() {
     console.log("--- querying Event Data ---");
     // construct input object for mutation
     // index 4 = slug | index 5 = event link
@@ -133,8 +161,22 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
+    console.log($eventDataStore);
     return data;
-  };
+  }
+
+  // --- Query Todo Data ---
+  async function queryTodoData(widgetId) {
+    const id = widgetId;
+    // Query for todos with specific widget id
+    const data = await client.query({ query: GETTODOS, variables: { id } });
+
+    const todos = data.data.todosForWidget;
+
+    // Update Todo Store with queryed todo Data
+    todoStore.set(todos);
+    console.log($todoStore);
+  }
 
   // Render all Form Fields not shown by default
   const handleNormalBtnClick = e => {
@@ -146,7 +188,7 @@
   const handleHeroImgRemove = e => {
     eventDataStore.update(currentData => {
       const currentEventData = { ...currentData };
-      currentEventData.heroImgPreview = undefined;
+      currentEventData.heroImg = undefined;
       return currentEventData;
     });
   };
@@ -235,8 +277,6 @@
 
     navigate("/eventPreview");
   };
-
-  queryEventData();
 </script>
 
 <style>
@@ -313,67 +353,56 @@
 </style>
 
 <Router>
-  {#if !heroImgPreview}
-    <div class="topBar" />
-  {/if}
-  <h1>Edit Page</h1>
-  <form class="form">
-    <section class="heroImg">
-      {#if !eventData.heroImgPreview}
-        <AddHeroImg />
-      {:else}
-        <Hero bgImage={eventData.heroImgPreview} />
-        <RemoveBtn
-          marginLeft={1}
-          marginTop={-2.9}
-          on:removebtnclick={() => handleHeroImgRemove()} />
-      {/if}
+  {#await eventData}
+    ..loading...
+  {:then eventData}
+    {#if !heroImgPreview}
+      <div class="topBar" />
+    {/if}
+    <form class="form">
+      <section class="heroImg">
+        {#if !eventData.heroImg}
+          <AddHeroImg />
+        {:else}
+          <Hero bgImage={eventData.heroImg} />
+          <RemoveBtn
+            marginLeft={1}
+            marginTop={-2.9}
+            on:removebtnclick={() => handleHeroImgRemove()} />
+        {/if}
 
-    </section>
-    <section class="simpleFields">
-      <div class="FormFields">
-        <div class="title">
-          <SimpleField
-            name={'Title'}
-            heading={'Title'}
-            placeholder={'What are you planing?'}
-            bind:value={eventData.name} />
-        </div>
-        <div class="date">
-          <span class="labelDatepicker">Date</span>
-          <Datepicker
-            start={new Date()}
-            end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
-            highlightColor="#047bd7"
-            dayBackgroundColor="#efefef"
-            dayTextColor="#333"
-            dayHighlightedBackgroundColor="#047bd7"
-            dayHighlightedTextColor="#fff"
-            bind:selected={selectedDate}
-            bind:formattedSelected
-            bind:dateChosen>
-            <button class="datePickerBtn" on:click={e => e.preventDefault()}>
-              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
-            </button>
-          </Datepicker>
-        </div>
-      </div>
-    </section>
-    {#if !moreVisible}
-      <section class="selectBtns">
-        <BtnPanel>
-          <NormalBtn
-            text={'Add more'}
-            type={'normal'}
-            on:normalbtnclick={handleNormalBtnClick} />
-          <NormalBtn
-            text={'GO !'}
-            type={'cta'}
-            on:ctabtnclick={handleCTABtnClick} />
-        </BtnPanel>
       </section>
-    {:else}
+      <section class="simpleFields">
+        <div class="FormFields">
+          <div class="title">
+            <SimpleField
+              name={'Title'}
+              heading={'Title'}
+              placeholder={'What are you planing?'}
+              bind:value={eventData.name} />
+          </div>
+          <div class="date">
+            <span class="labelDatepicker">Date</span>
+            <Datepicker
+              start={new Date()}
+              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+              format={'#{l}, #{F} #{j}, #{Y}'}
+              highlightColor="#047bd7"
+              dayBackgroundColor="#efefef"
+              dayTextColor="#333"
+              dayHighlightedBackgroundColor="#047bd7"
+              dayHighlightedTextColor="#fff"
+              selected={eventData.startDate ? new Date(eventData.startDate * 1) : new Date()}
+              bind:formattedSelected
+              bind:dateChosen>
+              <button class="datePickerBtn" on:click={e => e.preventDefault()}>
+                {formattedSelected}
+              </button>
+            </Datepicker>
+          </div>
+        </div>
+      </section>
+
       <section class="startEndTime">
         <AddStartEndTime
           bind:startTime={eventData.startTime}
@@ -401,7 +430,7 @@
       <section class="widgetPicker">
         <WidgetPicker on:listbtnclick={handlelistBtnClick} />
       </section>
-      {#if listWidgetVisible}
+      {#if listWidgetVisible || $todoStore[0]}
         <section class="widgets">
           <AddWidgets />
           <RemoveBtn
@@ -410,13 +439,14 @@
             marginLeft={1}
             marginTop={-2.5}
             on:removebtnclick={() => {
-              listWidgetVisible = !listWidgetVisible;
+              listWidgetVisible = false;
+              $todoStore = [];
             }} />
         </section>
       {/if}
       <section>
         <BtnBig text={'GO !'} on:bigbtnclick={handleCTABtnClick} />
       </section>
-    {/if}
-  </form>
+    </form>
+  {/await}
 </Router>

@@ -9,6 +9,11 @@
   import { eventDataStore } from "../stores.js";
   import SimpleField from "./SimpleField.svelte";
 
+  let geocoder;
+
+  $: if ($eventDataStore.location && $eventDataStore.location.address)
+    geocoderQuery();
+
   const updateStore = (key, newValue) => {
     eventDataStore.update(currentData => {
       const newEventData = { ...currentData };
@@ -29,6 +34,11 @@
     updateStore("description", e.detail);
   };
 
+  const geocoderQuery = () => {
+    console.log("!!! querying !!!");
+    geocoder.query($eventDataStore.location.address);
+  };
+
   // Load all the Map / Geocoder stuff
   onMount(async () => {
     mapboxgl.accessToken =
@@ -39,18 +49,8 @@
       scrollZoom: false
     });
 
-    // Add geolocate control to the map.
-    map.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        }
-      }),
-      "bottom-left"
-    );
-
     // Add location search
-    const geocoder = new MapboxGeocoder({
+    geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
       placeholder: "Where is your event?"
@@ -223,13 +223,13 @@
   <SimpleField
     name={'locationCustomName'}
     heading={'Location Name'}
-    placeholder={'Name your location..'}
+    placeholder={$eventDataStore.location && $eventDataStore.location.name ? $eventDataStore.location.name : 'Name your location..'}
     on:simplefieldchange={handleLocationCustomNameChange} />
 </div>
 <div class="locationDescription">
   <SimpleField
     name={'locationDescription'}
     heading={'Location Description'}
-    placeholder={'Describe your location..'}
+    placeholder={$eventDataStore.location && $eventDataStore.location.description ? $eventDataStore.location.description : 'Describe your location..'}
     on:simplefieldchange={handleLocationDescriptionChange} />
 </div>
