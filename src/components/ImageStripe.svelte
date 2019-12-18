@@ -21,6 +21,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     clip-path: var(--clip-primary);
+    min-height: 18rem;
   }
 
   :global(.imageStripe > .removeBtn) {
