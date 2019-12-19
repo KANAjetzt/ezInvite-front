@@ -27,6 +27,7 @@
   const GETEVENT = gql`
     query($input: QueryEventInput!) {
       event(input: $input) {
+        id
         name
         startDate
         startTime
@@ -39,6 +40,7 @@
         location {
           name
           coordinates
+          description
           address
         }
         users {
@@ -77,16 +79,14 @@
   let heroImgPreview;
   let imgStripe;
   let formattedSelected;
-  let selectedDate = eventData.startDate
-    ? new Date(eventData.startDate * 1)
-    : new Date();
+  let selectedDate;
   let dateChosen;
 
   $appStore.currentPage = "addEvent";
 
   $: if (dateChosen) {
-    eventData.startDate = `${selectedDate.getTime()}`;
-    eventDataStore.set(eventData);
+    $eventDataStore.startDate = `${selectedDate.getTime()}`;
+    console.log($eventDataStore.startDate);
   }
 
   eventDataStore.subscribe(newData => {
@@ -97,9 +97,9 @@
     todos = newData;
   });
 
-  const CREATEEVENT = gql`
-    mutation($input: CreateEventInput!) {
-      createEvent(input: $input) {
+  const UPDATEEVENT = gql`
+    mutation($input: UpdateEventInput!) {
+      updateEvent(input: $input) {
         event {
           id
           name
@@ -112,6 +112,7 @@
           location {
             name
             coordinates
+            description
           }
           widgets {
             id
@@ -143,6 +144,9 @@
         data.data.event.widgets.findIndex(widget => widget.type === "todo")
       ].id
     );
+
+    // set event date in date picker
+    selectedDate = new Date(data.data.event.startDate * 1);
   }
 
   // --- Query Event Data ---
@@ -235,8 +239,10 @@
 
   const handleEventData = async () => {
     const currentInput = { ...eventData };
+    console.log(currentInput);
     // prepare input Data
     const input = {
+      id: currentInput.id,
       name: currentInput.name,
       startDate: currentInput.startDate,
       startTime: currentInput.startTime,
@@ -255,7 +261,7 @@
 
     // Send tilte and date to backend return new Event Document
     return await mutate(client, {
-      mutation: CREATEEVENT,
+      mutation: UPDATEEVENT,
       variables: { input }
     });
   };
@@ -265,7 +271,7 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
-    await handleTodoData(newEventData);
+    // await handleTodoData(newEventData);
 
     // Only add stuff I need from the new event document
     eventData.id = newEventData.data.createEvent.event.id;
@@ -356,7 +362,7 @@
   {#await eventData}
     ..loading...
   {:then eventData}
-    {#if !heroImgPreview}
+    {#if !heroImgPreview && !eventData.heroImg}
       <div class="topBar" />
     {/if}
     <form class="form">
@@ -392,7 +398,7 @@
               dayTextColor="#333"
               dayHighlightedBackgroundColor="#047bd7"
               dayHighlightedTextColor="#fff"
-              selected={eventData.startDate ? new Date(eventData.startDate * 1) : new Date()}
+              bind:selected={selectedDate}
               bind:formattedSelected
               bind:dateChosen>
               <button class="datePickerBtn" on:click={e => e.preventDefault()}>
