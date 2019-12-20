@@ -82,7 +82,7 @@
   let selectedDate;
   let dateChosen;
 
-  $appStore.currentPage = "addEvent";
+  $appStore.currentPage = "editEvent";
 
   $: if (dateChosen) {
     $eventDataStore.startDate = `${selectedDate.getTime()}`;

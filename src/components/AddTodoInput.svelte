@@ -25,6 +25,7 @@
     mutation($input: CreateTodoInput!) {
       createTodo(input: $input) {
         todo {
+          id
           requiredPersons
           text
           users {
@@ -39,8 +40,12 @@
   const handlePersonAddBtnClick = async e => {
     e.detail.originalEvent.preventDefault();
 
-    // --- If we are on the addEvent page ---
-    if ($appStore.currentPage === "addEvent") {
+    // --- If we are on the addEvent or editEvent page ---
+    if (
+      $appStore.currentPage === "addEvent" ||
+      $appStore.currentPage === "editEvent"
+    ) {
+      // Update todoStore with new thing
       todoStore.update(current => {
         let newTodos = [...current];
         newTodos = [
@@ -52,6 +57,31 @@
         ];
         return newTodos;
       });
+    }
+
+    // --- If we are on the edit event page ---
+    if ($appStore.currentPage === "editEvent") {
+      // save new todo to DB
+      const newTodo = await mutate(client, {
+        mutation: CREATETODO,
+        variables: {
+          input: {
+            widget:
+              $eventDataStore.widgets[
+                $eventDataStore.widgets.findIndex(
+                  widget => widget.type === "todo"
+                )
+              ].id,
+            text,
+            requiredPersons
+          }
+        }
+      });
+
+      console.log(newTodo);
+
+      // add ID to thing in todoStore
+      $todoStore[$todoStore.length - 1].id = newTodo.data.createTodo.todo.id;
     }
 
     // --- If we are on the event page ---

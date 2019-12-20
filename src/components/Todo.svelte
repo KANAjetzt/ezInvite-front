@@ -6,6 +6,7 @@
   import { appStore, eventDataStore, todoStore } from "../stores";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
+  import RemoveBtn from "./BtnRemove.svelte";
 
   export let data;
   export let index;
@@ -38,6 +39,14 @@
             name
           }
         }
+      }
+    }
+  `;
+
+  const DELETETODO = gql`
+    mutation($input: DeleteTodoInput!) {
+      deleteTodo(input: $input) {
+        success
       }
     }
   `;
@@ -98,6 +107,23 @@
       variables: { input }
     });
   };
+
+  const handleTodoRemove = async () => {
+    console.log("remvoe Todo from DB!");
+
+    // Delete thing from todo store
+    todoStore.update(currentValue => {
+      let newValue = [...currentValue];
+      newValue.splice(index, 1);
+      return newValue;
+    });
+
+    // delete Todo in DB
+    const deleteTodo = await mutate(client, {
+      mutation: DELETETODO,
+      variables: { input: { id: data.id } }
+    });
+  };
 </script>
 
 <style>
@@ -136,3 +162,11 @@
   {/if}
   <p class="text">{data.text}</p>
 </li>
+{#if $appStore.currentPage === 'editEvent'}
+  <RemoveBtn
+    width={20}
+    height={20}
+    marginLeft={1}
+    marginTop={-2.2}
+    on:removebtnclick={handleTodoRemove} />
+{/if}
