@@ -10,9 +10,16 @@
   import SimpleField from "./SimpleField.svelte";
 
   let geocoder;
+  let initQuery = false;
 
-  $: if ($eventDataStore.location && $eventDataStore.location.address)
-    geocoderQuery();
+  $: if (
+    $eventDataStore.location &&
+    $eventDataStore.location.address &&
+    !initQuery
+  ) {
+    geocoder.query($eventDataStore.location.address);
+    initQuery = true;
+  }
 
   const updateStore = (key, newValue) => {
     eventDataStore.update(currentData => {
@@ -32,11 +39,6 @@
   const handleLocationDescriptionChange = e => {
     // update Store on Value change
     updateStore("description", e.detail);
-  };
-
-  const geocoderQuery = () => {
-    console.log("!!! querying !!!");
-    geocoder.query($eventDataStore.location.address);
   };
 
   // Load all the Map / Geocoder stuff
@@ -216,7 +218,7 @@
 
 <div id="addLocationMapbox" class="mapbox" />
 <div id="geocoder" class="geocoder">
-  <span class="title">Location address</span>
+  <span class="title">Location Address</span>
 </div>
 
 <div class="locationName">
