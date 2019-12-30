@@ -51,6 +51,7 @@
           id
           name
           link
+          accepted
         }
       }
     }
@@ -84,6 +85,9 @@
 
     userStore.set(newUsers.data.createUsers.users);
     shared = true;
+
+    // populate eventData Store with user Data
+    $eventDataStore.users = $userStore;
   };
 
   const handleBackBtn = e => {

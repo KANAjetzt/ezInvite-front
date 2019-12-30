@@ -191,6 +191,8 @@
       widgets[widgets.findIndex(widget => widget.type === "todo")].id
     );
 
+    console.log($todoStore);
+
     // set current user if the user link is given
     if (pathArr[5])
       $eventDataStore.currentUser =
@@ -204,9 +206,6 @@
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
   }
-
-  console.log($eventDataStore);
-  console.log($todoStore);
 </script>
 
 <Router>
@@ -224,7 +223,8 @@
     {#if event.location && event.location.coordinates[0]}
       <Map />
     {/if}
-    {#if event.widgetTypes && event.widgetTypes[0]}
+    {console.log($eventDataStore)}
+    {#if (event.widgetTypes && event.widgetTypes[0]) || (event.widgets && event.widgets[0])}
       <Widget />
     {/if}
     {#if event.users && event.users[0]}
