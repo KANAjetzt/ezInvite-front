@@ -143,24 +143,22 @@
   };
 
   const handleEventData = async () => {
-    const currentInput = { ...eventData };
-    // prepare input Data
-    const input = {
-      name: currentInput.name,
-      startDate: currentInput.startDate,
-      startTime: currentInput.startTime,
-      endTime: currentInput.endTime,
-      description: currentInput.description,
-      location: {
-        address: currentInput.location.address,
-        coordinates: currentInput.location.coordinates,
-        description: currentInput.location.description,
-        name: currentInput.location.name
-      },
-      widgetTypes: currentInput.widgetTypes,
-      heroImg: currentInput.pureHeroImg,
-      imgs: currentInput.pureImgs
-    };
+    const input = { ...eventData };
+
+    console.log(input);
+    if (input.pureHeroImg) {
+      input.heroImg = input.pureHeroImg;
+      delete input.pureHeroImg;
+      delete input.heroImgPreview;
+      console.log(input);
+    }
+
+    if (input.pureImgs) {
+      delete input.imgs;
+      input.imgs = input.pureImgs;
+      delete input.pureImgs;
+      console.log(input);
+    }
 
     // Send tilte and date to backend return new Event Document
     return await mutate(client, {
@@ -174,7 +172,14 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
-    await handleTodoData(newEventData);
+    console.log(newEventData);
+    if (
+      newEventData.data.createEvent.event.widgets.findIndex(
+        widget => widget.type === "todo"
+      ) !== -1
+    ) {
+      await handleTodoData(newEventData);
+    }
 
     // Only add stuff I need from the new event document
     eventData.id = newEventData.data.createEvent.event.id;
@@ -185,8 +190,8 @@
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
 
-    console.log($todoStore)
-    console.log($eventDataStore)
+    console.log($todoStore);
+    console.log($eventDataStore);
 
     navigate("/eventPreview");
   };

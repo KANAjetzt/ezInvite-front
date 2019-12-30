@@ -187,11 +187,11 @@
 
     // Search the Widget Array for type todo
     // grab the id from the entry and query for all event todos with that
-    await queryTodos(
-      widgets[widgets.findIndex(widget => widget.type === "todo")].id
-    );
-
-    console.log($todoStore);
+    if (widgets && widgets[0]) {
+      await queryTodos(
+        widgets[widgets.findIndex(widget => widget.type === "todo")].id
+      );
+    }
 
     // set current user if the user link is given
     if (pathArr[5])
@@ -200,30 +200,33 @@
 
     // ceck if current user responded already
     $appStore.showFullResponder = handleResponder();
+
+    console.log($eventDataStore);
   };
 
   // Check if something is in store otherwise query for the data
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
   }
+
+  console.log($eventDataStore);
 </script>
 
 <Router>
   {#await eventData}
     <p>loading</p>
   {:then event}
-    <Hero bgImage={event.heroImg} />
+    <Hero bgImage={event.heroImg ? event.heroImg : event.heroImgPreview} />
     <QuickFacts />
     {#if event.description}
       <Description />
     {/if}
-    {#if event.imgs}
+    {#if event.imgs && event.imgs[0]}
       <ImageStripe />
     {/if}
     {#if event.location && event.location.coordinates[0]}
       <Map />
     {/if}
-    {console.log($eventDataStore)}
     {#if (event.widgetTypes && event.widgetTypes[0]) || (event.widgets && event.widgets[0])}
       <Widget />
     {/if}
