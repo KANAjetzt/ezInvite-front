@@ -204,6 +204,9 @@
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
   }
+
+  console.log($eventDataStore);
+  console.log($todoStore);
 </script>
 
 <Router>
@@ -221,7 +224,7 @@
     {#if event.location && event.location.coordinates[0]}
       <Map />
     {/if}
-    {#if event.widgets && event.widgets[0]}
+    {#if event.widgetTypes && event.widgetTypes[0]}
       <Widget />
     {/if}
     {#if event.users && event.users[0]}

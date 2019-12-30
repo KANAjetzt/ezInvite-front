@@ -185,6 +185,9 @@
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
 
+    console.log($todoStore)
+    console.log($eventDataStore)
+
     navigate("/eventPreview");
   };
 </script>
