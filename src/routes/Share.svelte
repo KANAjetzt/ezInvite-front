@@ -19,6 +19,7 @@
   import LinkBoxEdit from "../components/LinkBoxEdit.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
+  import BtnRemove from "../components/BtnRemove.svelte";
 
   // Handle Local Storage
 
@@ -169,6 +170,7 @@
       {#if users}
         {#if !shared}
           {#each users as { name }}
+            <BtnRemove width={20} height={20} />
             <PersonCard {name} />
           {/each}
         {:else}
