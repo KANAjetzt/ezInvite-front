@@ -2,7 +2,10 @@
   import { Router, navigate } from "svelte-routing";
 
   import { eventDataStore, todoStore } from "../stores.js";
-  import { getLocalStorage } from "../utils/localStorageHandler.js";
+  import {
+    getLocalStorage,
+    deleteLocalStorage
+  } from "../utils/localStorageHandler.js";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
@@ -21,10 +24,17 @@
 
   let eventData = $eventDataStore;
   let todos = $todoStore;
+
+  const handleShareBtn = () => {
+    // delete users from local storage
+    deleteLocalStorage("users");
+
+    navigate("/share");
+  };
 </script>
 
 <Router>
-  <BtnShare on:sharebtnclick={() => navigate('/share')} />
+  <BtnShare on:sharebtnclick={handleShareBtn} />
   <Hero bgImage={eventData.heroImgPreview} />
   <QuickFacts />
   {#if eventData.description}

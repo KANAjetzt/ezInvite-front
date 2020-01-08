@@ -9,7 +9,8 @@
   import { eventDataStore, todoStore, userStore } from "../stores.js";
   import {
     getLocalStorage,
-    saveLocalStorage
+    saveLocalStorage,
+    deleteLocalStorage
   } from "../utils/localStorageHandler.js";
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
@@ -69,6 +70,19 @@
     });
   };
 
+  const handlePersonRemove = index => {
+    console.log(index);
+    // delete person from store
+    userStore.update(currentData => {
+      let newData = [...currentData];
+      newData.splice(index, 1);
+      saveLocalStorage(newData, "users");
+      return newData;
+    });
+    console.log($userStore);
+    // update local storage
+  };
+
   const handleShareBtn = async e => {
     // create Input Object --> check CREATEUSERS GraphQL Docs if needed
     const input = {
@@ -121,6 +135,14 @@
     padding-top: 2rem;
   }
 
+  .personBevoreShare {
+    padding-top: 1rem;
+  }
+
+  .personBevoreShare:last-child {
+    padding-bottom: 3rem;
+  }
+
   .person {
     padding-top: 2rem;
   }
@@ -169,9 +191,16 @@
     <section class="persons">
       {#if users}
         {#if !shared}
-          {#each users as { name }}
-            <BtnRemove width={20} height={20} />
-            <PersonCard {name} />
+          {#each users as { name }, index}
+            <div class="personBevoreShare">
+              <PersonCard {name} />
+              <BtnRemove
+                width={20}
+                height={20}
+                marginTop={-2}
+                marginLeft={-1}
+                on:removebtnclick={() => handlePersonRemove(index)} />
+            </div>
           {/each}
         {:else}
           {#each users as { name, link }}
