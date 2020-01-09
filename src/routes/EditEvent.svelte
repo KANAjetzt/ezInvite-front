@@ -139,11 +139,12 @@
   async function handleData() {
     const data = await queryEventData();
     console.log(data);
-    queryTodoData(
-      data.data.event.widgets[
-        data.data.event.widgets.findIndex(widget => widget.type === "todo")
-      ].id
-    );
+    const widgets = data.data.event.widgets;
+    if (widgets && widgets[0]) {
+      queryTodoData(
+        widgets[widgets.findIndex(widget => widget.type === "todo")].id
+      );
+    }
 
     // set event date in date picker
     selectedDate = new Date(data.data.event.startDate * 1);
@@ -193,6 +194,7 @@
     eventDataStore.update(currentData => {
       const currentEventData = { ...currentData };
       currentEventData.heroImg = undefined;
+      currentEventData.heroImgPreview = undefined;
       return currentEventData;
     });
   };
@@ -218,7 +220,7 @@
   };
 
   const handleTodoData = async eventData => {
-    const widgets = eventData.data.createEvent.event.widgets;
+    const widgets = eventData.data.updateEvent.event.widgets;
     const WidgetID =
       widgets[widgets.findIndex(widget => widget.type === "todo")].id;
 
@@ -238,26 +240,49 @@
   };
 
   const handleEventData = async () => {
-    const currentInput = { ...eventData };
-    console.log(currentInput);
-    // prepare input Data
-    const input = {
-      id: currentInput.id,
-      name: currentInput.name,
-      startDate: currentInput.startDate,
-      startTime: currentInput.startTime,
-      endTime: currentInput.endTime,
-      description: currentInput.description,
-      location: {
-        address: currentInput.location.address,
-        coordinates: currentInput.location.coordinates,
-        description: currentInput.location.description,
-        name: currentInput.location.name
-      },
-      widgetTypes: currentInput.widgetTypes,
-      heroImg: currentInput.pureHeroImg,
-      imgs: currentInput.pureImgs
-    };
+    const allowed = [
+      "id",
+      "name",
+      "startDate",
+      "startTime",
+      "endTime",
+      "description",
+      "pureHeroImg",
+      "heroImg",
+      "pureImgs",
+      "imgs",
+      "location",
+      "widgetTypes"
+    ];
+
+    const input = Object.keys(eventData)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: eventData[key]
+        };
+      }, {});
+
+    console.log(input);
+
+    if (input.pureHeroImg) {
+      input.heroImg = input.pureHeroImg;
+      delete input.pureHeroImg;
+      delete input.heroImgPreview;
+      console.log(input);
+    }
+
+    if (input.pureImgs) {
+      delete input.imgs;
+      input.imgs = input.pureImgs;
+      delete input.pureImgs;
+      console.log(input);
+    }
+
+    if (input.location) {
+      delete input.location.__typename;
+    }
 
     // Send tilte and date to backend return new Event Document
     return await mutate(client, {
@@ -271,17 +296,25 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
-    // await handleTodoData(newEventData);
+    if (
+      newEventData.data.updateEvent.event.widgets.findIndex(
+        widget => widget.type === "todo"
+      ) !== -1
+    ) {
+      await handleTodoData(newEventData);
+    }
 
     // Only add stuff I need from the new event document
-    eventData.id = newEventData.data.createEvent.event.id;
-    eventData.slug = newEventData.data.createEvent.event.slug;
-    eventData.link = newEventData.data.createEvent.event.link;
+    eventData.id = newEventData.data.updateEvent.event.id;
+    eventData.slug = newEventData.data.updateEvent.event.slug;
+    eventData.link = newEventData.data.updateEvent.event.link;
+    eventData.editLink = newEventData.data.updateEvent.event.editLink;
 
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
 
-    navigate("/eventPreview");
+    // Navigate back to the event page
+    navigate(`http://localhost:5000/${eventData.slug}/${eventData.link}`);
   };
 </script>
 
@@ -362,15 +395,16 @@
   {#await eventData}
     ..loading...
   {:then eventData}
-    {#if !heroImgPreview && !eventData.heroImg}
+    {#if !eventData.heroImgPreview && !eventData.heroImg}
       <div class="topBar" />
     {/if}
     <form class="form">
       <section class="heroImg">
-        {#if !eventData.heroImg}
+        {#if !eventData.heroImgPreview && (!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg')}
           <AddHeroImg />
         {:else}
-          <Hero bgImage={eventData.heroImg} />
+          <Hero
+            bgImage={!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg' ? eventData.heroImgPreview : eventData.heroImg} />
           <RemoveBtn
             marginLeft={1}
             marginTop={-2.9}
@@ -418,7 +452,7 @@
         <AddDescription bind:value={eventData.description} />
       </section>
       <section class="imgsUpload">
-        {#if !eventData.imgs}
+        {#if !eventData.imgs || !eventData.imgs[0]}
           <AddImgs bind:imgStripe />
         {:else}
           <ImageStripe />

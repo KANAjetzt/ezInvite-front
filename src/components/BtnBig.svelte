@@ -5,7 +5,6 @@
 
   export let text;
   export let fontSize = 6.4;
-  export let minusMargin = 2.5;
   export let pannelHeight = 13;
   export let clipVar = "secondary";
 
@@ -31,7 +30,7 @@
   }
 </style>
 
-<BtnPanel {minusMargin} {pannelHeight} {clipVar}>
+<BtnPanel {pannelHeight} {clipVar}>
   <button
     class="bigBtn"
     style="font-size: {fontSize}rem;"

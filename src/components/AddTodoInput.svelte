@@ -57,10 +57,16 @@
         ];
         return newTodos;
       });
+
+      console.log($todoStore);
     }
 
-    // --- If we are on the edit event page ---
-    if ($appStore.currentPage === "editEvent") {
+    // --- If we are on the edit event page and
+    //     if there is allready a todo widget ---
+    if (
+      $appStore.currentPage === "editEvent" &&
+      $eventDataStore.widgets.findIndex(widget => widget.type === "todo") !== -1
+    ) {
       // save new todo to DB
       const newTodo = await mutate(client, {
         mutation: CREATETODO,
