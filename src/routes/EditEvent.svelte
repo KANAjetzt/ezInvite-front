@@ -76,6 +76,7 @@
 
   let eventData = handleData();
   let todos;
+  let newTodos;
   let heroImgPreview;
   let imgStripe;
   let formattedSelected;
@@ -123,10 +124,10 @@
     }
   `;
 
-  const CREATETODO = gql`
-    mutation($input: CreateTodoInput!) {
-      createTodo(input: $input) {
-        todo {
+  const CREATETODOS = gql`
+    mutation($input: CreateTodosInput!) {
+      createTodos(input: $input) {
+        todos {
           id
           text
           requiredPersons
@@ -235,17 +236,9 @@
       widgets[widgets.findIndex(widget => widget.type === "todo")].id;
 
     // TODO: Add multiple todos in one go to DB
-    todos.forEach(async todo => {
-      const input = {
-        widget: WidgetID,
-        text: todo.text,
-        requiredPersons: todo.requiredPersons
-      };
-
-      const savedTodo = await mutate(client, {
-        mutation: CREATETODO,
-        variables: { input }
-      });
+    const newTodos = await mutate(client, {
+      mutation: CREATETODOS,
+      variables: { input: { todos: newTodos } }
     });
   };
 
@@ -306,13 +299,6 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
-    if (
-      newEventData.data.updateEvent.event.widgets.findIndex(
-        widget => widget.type === "todo"
-      ) !== -1
-    ) {
-      await handleTodoData(newEventData);
-    }
 
     // Only add stuff I need from the new event document
     eventData.id = newEventData.data.updateEvent.event.id;
