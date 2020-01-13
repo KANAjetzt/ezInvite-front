@@ -207,7 +207,7 @@
     });
   };
 
-  const handlelistBtnClick = e => {
+  const handlelistBtnClick = async e => {
     // onlistbtnclick --> create new widget with type "todo"
     // This will need more work when we add more widgets
     e.detail.preventDefault();
@@ -217,6 +217,16 @@
     listWidgetVisible
       ? (eventData.widgetTypes = ["todo"])
       : (eventData.widgetTypes = []);
+
+    // Add Widget to Event in DB
+    const updatedEvent = await mutate(client, {
+      mutation: UPDATEEVENT,
+      variables: {
+        input: { id: eventData.id, widgetTypes: eventData.widgetTypes }
+      }
+    });
+
+    console.log(updatedEvent);
   };
 
   const handleTodoData = async eventData => {
