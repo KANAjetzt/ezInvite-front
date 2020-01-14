@@ -27,7 +27,9 @@
 
 <style>
   .answers {
+    margin: auto;
     padding: 0 2rem;
+    max-width: 70rem;
   }
 
   .heading {

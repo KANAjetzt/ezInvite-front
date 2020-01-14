@@ -23,6 +23,7 @@
   .box {
     position: relative;
     width: 85vw;
+    max-width: 40rem;
     margin: -5rem auto 0 auto;
     background-color: var(--color-primary);
     box-shadow: 4px 1px 2px #0a1b29;

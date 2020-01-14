@@ -319,7 +319,7 @@
     </section>
     {#if !moreVisible}
       <section class="selectBtns">
-        <BtnPanel>
+        <BtnPanel clipVar={'secondary-fixed'}>
           <NormalBtn
             text={'Add more'}
             type={'normal'}

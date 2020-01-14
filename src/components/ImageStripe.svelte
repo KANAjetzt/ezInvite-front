@@ -24,6 +24,12 @@
     min-height: 18rem;
   }
 
+  @media only screen and (min-width: 64em) {
+    .imageStripeWrapper {
+      margin-bottom: -9vw;
+    }
+  }
+
   :global(.imageStripe > .removeBtn) {
     position: absolute;
     bottom: -1rem;

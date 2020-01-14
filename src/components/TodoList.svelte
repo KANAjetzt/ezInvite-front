@@ -74,10 +74,11 @@
 
 <style>
   .todoList {
-    margin: 0;
+    margin: auto;
     padding: 0;
     padding: 0 1.5rem;
     list-style: none;
+    max-width: 70rem;
   }
 </style>
 

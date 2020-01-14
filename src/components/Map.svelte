@@ -54,11 +54,18 @@
 <style>
   #mapbox {
     width: 100vw;
-    height: 40rem;
+    height: 40vw;
+    min-height: 33rem;
     box-shadow: -8px -5px 7px 0px hsl(206, 95%, 15%), -4px -5px 0px 0px #000,
       8px 4px 11px 0px hsl(206, 95%, 15%), inset -13px -20px 0px 0px #000,
       2px 4px 0px 0px #000;
     clip-path: var(--clip-primary);
+  }
+
+  @media only screen and (min-width: 64em) {
+    #mapbox {
+      margin-bottom: -9vw;
+    }
   }
 
   :global(.marker) {

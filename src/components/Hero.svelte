@@ -18,16 +18,18 @@
   .hero {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     position: relative;
     padding-bottom: 10rem;
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
     background-size: cover;
     min-height: 20vh;
+    height: 20vw;
   }
+
   .topBar {
     width: 100%;
     height: 0.5rem;
-    margin-bottom: 4rem;
     background-image: linear-gradient(
       89.87deg,
       #0476d0 -2.53%,
@@ -79,11 +81,12 @@
   }
 </style>
 
+<div class="topBar" />
 <header
   class="hero"
   style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
   -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')">
-  <div class="topBar" />
+
   {#if eventData.name}
     <div class="title">
       <h1>{eventData.name}</h1>

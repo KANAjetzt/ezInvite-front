@@ -7,7 +7,7 @@
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
   }
   .bar {
-    height: 6.3rem;
+    height: 16vw;
     background-image: linear-gradient(89.78deg, #0467b3 12.43%, #035696 99.33%);
     clip-path: var(--clip-primary);
   }

@@ -8,6 +8,12 @@ html {
   -webkit-text-size-adjust: 100%; /* 2 */
 }
 
+@media only screen and (min-width: 64em) {
+  html {
+    font-size: 80%;
+  }
+}
+
 input[type="time"]::-webkit-clear-button {
   display: none;
 }
@@ -34,6 +40,13 @@ input[type="time"]::-webkit-inner-spin-button {
     0 calc(0% + 15vw),
     100% 0,
     100% calc(100% - 5vw),
+    calc(100% - 35vw) 100%,
+    0 100%
+  );
+  --clip-secondary-fixed: polygon(
+    0 34%,
+    100% 0,
+    100% 89%,
     calc(100% - 35vw) 100%,
     0 100%
   );

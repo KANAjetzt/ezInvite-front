@@ -77,6 +77,7 @@
     grid-template-rows: min-content 1fr min-content;
     grid-template-columns: 1fr 1fr 1fr;
     width: 100vw;
+    max-width: 47rem;
   }
 
   .descriptionBox {
