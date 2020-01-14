@@ -167,6 +167,7 @@
 
   .inputBox {
     display: inline;
+    width: 100%;
     padding: 0.5rem 1.5rem;
     margin: 0;
     margin-left: -1rem;
@@ -207,7 +208,8 @@
 <div class="inputWrapper">
   <PersonAddBtn
     on:personaddbtnclick={handlePersonAddBtnClick}
-    iconStyle="z-index: 20; transform: translateX(135%); opacity: 0.9;" />
+    iconStyle="z-index: 20; opacity: 0.8; transform: translateX(-0.6rem);
+    grid-column: 1 / 2; grid-row: 1 / 2;" />
   <input
     class="inputBox"
     type="text"

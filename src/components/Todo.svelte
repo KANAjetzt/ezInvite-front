@@ -131,6 +131,10 @@
     display: flex;
     align-items: center;
   }
+
+  .todo:first-child {
+    margin-top: 2rem;
+  }
   .text {
     background-color: var(--color-primary-light);
     padding: 0.5rem 1.5rem;

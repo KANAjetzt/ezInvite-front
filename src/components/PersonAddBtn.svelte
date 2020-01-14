@@ -7,13 +7,28 @@
   export let photo = "default.jpg";
   export let name = "unknown user";
   export let iconStyle =
-    "z-index: 20; transform: translateX(135%); opacity: 0.7;";
+    "z-index: 20; opacity: 0.7; transform: translateX(-0.6rem); grid-column: 1 / 2; grid-row: 1 / 2;";
   export let index;
 
   const dispatch = createEventDispatcher();
 </script>
 
 <style>
+  .btnContent {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .imgWrapper {
+    width: 4.5rem;
+    height: auto;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
   .addBtn {
     display: flex;
     align-items: center;
@@ -33,6 +48,10 @@
   on:click={e => {
     dispatch('personaddbtnclick', { index: index, originalEvent: e });
   }}>
-  <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
-  <PersonImg />
+  <div class="btnContent">
+    <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
+    <div class="imgWrapper">
+      <PersonImg />
+    </div>
+  </div>
 </button>

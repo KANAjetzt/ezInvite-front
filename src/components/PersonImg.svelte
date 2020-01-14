@@ -6,8 +6,8 @@
 
 <style>
   .imgBox {
-    width: 4.5rem;
-    height: 4.5rem;
+    max-width: 4.5rem;
+    max-height: 4.5rem;
     border: solid 4px var(--color-primary);
     border-radius: 100%;
     overflow: hidden;
