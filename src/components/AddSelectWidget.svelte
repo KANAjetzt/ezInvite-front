@@ -11,8 +11,11 @@
   .widgetPicker {
     margin-top: -6rem;
     width: 100vw;
+    min-height: 19rem;
+    height: 25vw;
     display: flex;
     justify-content: center;
+    align-items: center;
     background: var(--color-primary-light);
     clip-path: var(--clip-primary);
     padding: 9rem 0;

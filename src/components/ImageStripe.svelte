@@ -26,7 +26,8 @@
 
   @media only screen and (min-width: 64em) {
     .imageStripeWrapper {
-      margin-bottom: -9vw;
+      /* Breaks remove Btn on add/edit page */
+      /* margin-bottom: -9vw; */
     }
   }
 

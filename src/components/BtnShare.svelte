@@ -9,9 +9,15 @@
 
 <style>
   .shareBtn {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     bottom: 10rem;
     z-index: 200;
+  }
+
+  .shareBtn > div:first-child {
+    width: 88%;
   }
 
   .bigBtn {

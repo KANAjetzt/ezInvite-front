@@ -5,7 +5,7 @@
 
   export let text;
   export let fontSize = 6.4;
-  export let pannelHeight = 13;
+  export let pannelHeight = 25;
   export let clipVar = "secondary";
 
   const dispatch = createEventDispatcher();

@@ -53,7 +53,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100vw;
+    height: 25vw;
     position: relative;
     padding: 6.5rem 0;
     background-image: linear-gradient(
