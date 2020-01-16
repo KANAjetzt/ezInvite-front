@@ -16,7 +16,7 @@
     z-index: 200;
   }
 
-  .shareBtn > div:first-child {
+  div > div:first-child {
     width: 88%;
   }
 
@@ -45,7 +45,9 @@
 </style>
 
 <div class="shareBtn">
-  <DescriptionBox title={'Everything Looks good?'} />
+  <DescriptionBox
+    title={'Everything Looks good?'}
+    descriptionBoxModifier={'--shareBtn'} />
   <button
     class="bigBtn"
     on:click={e => {

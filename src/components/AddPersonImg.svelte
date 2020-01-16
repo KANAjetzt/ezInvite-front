@@ -32,7 +32,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
+    min-height: 20rem;
     position: relative;
     padding: 6.5rem 0;
     background-image: linear-gradient(
@@ -42,7 +44,7 @@
     );
     background-size: cover;
     cursor: pointer;
-    clip-path: var(--clip-primary);
+    clip-path: var(--clip-primary-fixed);
   }
 
   .personImgUploadBtn span {

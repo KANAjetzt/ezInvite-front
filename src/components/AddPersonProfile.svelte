@@ -160,6 +160,13 @@
   .personProfile {
     background: var(--color-primary);
   }
+
+  @media only screen and (min-width: 64em) {
+    .personProfile {
+      width: 55rem;
+    }
+  }
+
   .DescriptionBox {
     max-width: 70ch;
     margin-top: -1rem;
@@ -217,58 +224,58 @@
         text={'Add a picture so its easyer to recognise you.'} />
     </div>
   {/if}
+  <section class="inputs">
+    <!-- personCard: user enterd his name - render PersonCard Comp with photo prop to update later. -->
+    {#if ($eventDataStore.currentUser && $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.name) || $eventDataStore.personImgPreview}
+      <section class="personCard">
+        {#if (!$eventDataStore.currentUser.link && $eventDataStore.currentUser.unknown) || (!$eventDataStore.currentUser.unknown && $eventDataStore.personImgPreview)}
+          <div class="btnRemove">
+            <BtnRemove
+              width={15}
+              height={15}
+              on:removebtnclick={() => {
+                if ($eventDataStore.currentUser.unknown) {
+                  $eventDataStore.currentUser.name = undefined;
+                }
+                $eventDataStore.personImgPreview = undefined;
+                $eventDataStore.purePersonImg = undefined;
+              }} />
+          </div>
+        {/if}
+        <PersonCard
+          name={$eventDataStore.currentUser.name}
+          photo={$eventDataStore.personImgPreview} />
+      </section>
+    {/if}
 
-  <!-- personCard: user enterd his name - render PersonCard Comp with photo prop to update later. -->
-  {#if ($eventDataStore.currentUser && $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.name) || $eventDataStore.personImgPreview}
-    <section class="personCard">
-      {#if (!$eventDataStore.currentUser.link && $eventDataStore.currentUser.unknown) || (!$eventDataStore.currentUser.unknown && $eventDataStore.personImgPreview)}
-        <div class="btnRemove">
-          <BtnRemove
-            width={15}
-            height={15}
-            on:removebtnclick={() => {
-              if ($eventDataStore.currentUser.unknown) {
-                $eventDataStore.currentUser.name = undefined;
-              }
-              $eventDataStore.personImgPreview = undefined;
-              $eventDataStore.purePersonImg = undefined;
-            }} />
-        </div>
-      {/if}
-      <PersonCard
-        name={$eventDataStore.currentUser.name}
-        photo={$eventDataStore.personImgPreview} />
-    </section>
-  {/if}
+    <!-- PersonNameInput: Current user is unknown - show addPersonInput -->
+    {#if !$eventDataStore.currentUser.name}
+      <div class="addPersonInput">
+        <AddPersonInput on:addperson={handlePersonName} />
+      </div>
+    {/if}
 
-  <!-- PersonNameInput: Current user is unknown - show addPersonInput -->
-  {#if !$eventDataStore.currentUser.name}
-    <div class="addPersonInput">
-      <AddPersonInput on:addperson={handlePersonName} />
-    </div>
-  {/if}
+    <!-- PersonImg: Current user has no Img - show Add profile picture comp -->
+    {#if (!$eventDataStore.currentUser.unknown && !$eventDataStore.personImgPreview) || ($eventDataStore.currentUser.unknown && !$eventDataStore.currentUser.link && !$eventDataStore.personImgPreview)}
+      <AddPersonImg />
+    {/if}
 
-  <!-- PersonImg: Current user has no Img - show Add profile picture comp -->
-  {#if (!$eventDataStore.currentUser.unknown && !$eventDataStore.personImgPreview) || ($eventDataStore.currentUser.unknown && !$eventDataStore.currentUser.link && !$eventDataStore.personImgPreview)}
-    <AddPersonImg />
-  {/if}
-
-  <!-- LinkBox: Show this if user was unknow and got his private link -->
-  {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
-    <div class="linkBox">
-      <LinkBox
-        value={`http://localhost:5000/${$eventDataStore.slug}/${$eventDataStore.link}/${$eventDataStore.currentUser.link}`} />
-    </div>
-  {/if}
-
+    <!-- LinkBox: Show this if user was unknow and got his private link -->
+    {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
+      <div class="linkBox">
+        <LinkBox
+          value={`http://localhost:5000/${$eventDataStore.slug}/${$eventDataStore.link}/${$eventDataStore.currentUser.link}`} />
+      </div>
+    {/if}
+  </section>
   {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
     <BtnBig
       text={'go to your personal event page'}
-      clipVar={'tertiary'}
+      clipVar={'tertiary-fixed'}
       fontSize={2.8}
       on:bigbtnclick={handleLinkBtn} />
   {:else}
-    <BtnPanel clipVar={'tertiary'}>
+    <BtnPanel clipVar={'tertiary-fixed'}>
       <NormalBtn
         text={'go back'}
         type={'normal'}

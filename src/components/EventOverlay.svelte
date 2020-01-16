@@ -33,6 +33,13 @@
     z-index: 300;
     backdrop-filter: blur(5px);
   }
+
+  @media only screen and (min-width: 64em) {
+    .overlay {
+      justify-content: center;
+      align-items: center;
+    }
+  }
 </style>
 
 <div class="overlay">

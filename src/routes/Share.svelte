@@ -246,7 +246,7 @@
           minusMargin={5}
           pannelHeight={15}
           fontSize={2.8}
-          clipVar={'tertiary'} />
+          clipVar={'tertiary-fixed'} />
       {/if}
     </section>
   </section>

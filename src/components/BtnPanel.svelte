@@ -1,6 +1,5 @@
 <script>
-  export let pannelHeight = 25;
-  export let clipVar = "secondary";
+  export let clipVar = "";
 </script>
 
 <style>
@@ -16,8 +15,23 @@
     width: 100%;
     min-height: 9rem;
     margin-bottom: -3rem;
-    padding-top: 3.5rem;
+    padding-top: 4.5rem;
     background: linear-gradient(112.82deg, #0364af 7.85%, #0d8ff2 96.54%);
+    clip-path: var(--clip-secondary);
+  }
+
+  .pannel--tertiary {
+    clip-path: var(--clip-tertiary);
+  }
+
+  @media only screen and (min-width: 24em) {
+    .pannel {
+      clip-path: var(--clip-secondary-fixed);
+    }
+
+    .pannel--tertiary-fixed {
+      clip-path: var(--clip-tertiary-fixed);
+    }
   }
 
   .btnWrapper {
@@ -29,9 +43,7 @@
 </style>
 
 <div class="pannelWrapper">
-  <div
-    class="pannel"
-    style="height: {pannelHeight}vw; clip-path: var(--clip-{clipVar});">
+  <div class="pannel pannel--{clipVar}">
     <div class="btnWrapper">
       <slot />
     </div>
