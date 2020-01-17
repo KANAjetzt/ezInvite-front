@@ -271,11 +271,11 @@
   {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
     <BtnBig
       text={'go to your personal event page'}
-      clipVar={'tertiary-fixed'}
+      clipVar={'tertiary'}
       fontSize={2.8}
       on:bigbtnclick={handleLinkBtn} />
   {:else}
-    <BtnPanel clipVar={'tertiary-fixed'}>
+    <BtnPanel clipVar={'tertiary'}>
       <NormalBtn
         text={'go back'}
         type={'normal'}

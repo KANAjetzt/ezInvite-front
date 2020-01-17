@@ -44,7 +44,13 @@
     );
     background-size: cover;
     cursor: pointer;
-    clip-path: var(--clip-primary-fixed);
+    clip-path: var(--clip-primary);
+  }
+
+  @media only screen and (min-width: 24em) {
+    .personImgUploadBtn {
+      clip-path: var(--clip-primary-fixed);
+    }
   }
 
   .personImgUploadBtn span {

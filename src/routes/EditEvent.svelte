@@ -481,7 +481,10 @@
         </section>
       {/if}
       <section>
-        <BtnBig text={'GO !'} on:bigbtnclick={handleCTABtnClick} />
+        <BtnBig
+          text={'GO !'}
+          on:bigbtnclick={handleCTABtnClick}
+          clipVar={'tertiary'} />
       </section>
     </form>
   {/await}
