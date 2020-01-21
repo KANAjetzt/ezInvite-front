@@ -29,7 +29,7 @@
       clip-path: var(--clip-secondary-fixed);
     }
 
-    .pannel--tertiary-fixed {
+    .pannel--tertiary {
       clip-path: var(--clip-tertiary-fixed);
     }
   }

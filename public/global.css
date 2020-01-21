@@ -60,6 +60,10 @@ input[type="time"]::-webkit-inner-spin-button {
   --clip-tertiary-fixed: polygon(0 calc(0% + 34%), 100% 0, 100% 100%, 0 100%);
 }
 
+input:invalid {
+  box-shadow: 0 1px 0 red !important;
+}
+
 /* Sections
    ========================================================================== */
 

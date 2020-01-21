@@ -20,6 +20,7 @@
   import WidgetPicker from "../components/AddSelectWidget.svelte";
   import AddWidgets from "../components/AddWidget.svelte";
   import BtnBig from "../components/BtnBig.svelte";
+  import Message from "../components/Message.svelte";
 
   let moreVisible = false;
   let listWidgetVisible = false;
@@ -145,7 +146,20 @@
   const handleEventData = async () => {
     const input = { ...eventData };
 
-    console.log(input);
+    if (!input.name) {
+      $appStore.messages[0] = {
+        type: "Error",
+        message: "Pleas enter a title for your event."
+      };
+    }
+
+    if (!input.startDate) {
+      $appStore.messages[1] = {
+        type: "Error",
+        message: "Pleas select a start date for your event."
+      };
+    }
+
     if (input.pureHeroImg) {
       input.heroImg = input.pureHeroImg;
       delete input.pureHeroImg;
@@ -160,11 +174,14 @@
       console.log(input);
     }
 
-    // Send tilte and date to backend return new Event Document
-    return await mutate(client, {
-      mutation: CREATEEVENT,
-      variables: { input }
-    });
+    // if no messages are in store
+    if (!$appStore.messages[0]) {
+      // Send tilte and date to backend return new Event Document
+      return await mutate(client, {
+        mutation: CREATEEVENT,
+        variables: { input }
+      });
+    }
   };
 
   // Deal with form data
@@ -254,7 +271,13 @@
     font-size: 1.8rem;
     color: var(--color-text-primary);
     background: transparent;
+  }
+
+  .datePickerBtn--isChosen {
     box-shadow: 0 1px 0 var(--color-secondary);
+  }
+  .datePickerBtn--isNotChosen {
+    box-shadow: 0 1px 0 red;
   }
 
   .imgsUpload {
@@ -293,6 +316,7 @@
           <SimpleField
             name={'Title'}
             heading={'Title'}
+            required={true}
             placeholder={'What are you planing?'}
             bind:value={eventData.name} />
         </div>
@@ -310,7 +334,9 @@
             bind:selected={selectedDate}
             bind:formattedSelected
             bind:dateChosen>
-            <button class="datePickerBtn" on:click={e => e.preventDefault()}>
+            <button
+              class={`datePickerBtn ${dateChosen ? 'datePickerBtn--isChosen' : 'datePickerBtn--isNotChosen'}`}
+              on:click={e => e.preventDefault()}>
               {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
             </button>
           </Datepicker>

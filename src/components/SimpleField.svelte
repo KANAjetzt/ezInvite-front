@@ -3,6 +3,7 @@
 
   export let value = "";
   export let name;
+  export let required = false;
   export let placeholder = "";
   export let heading;
 
@@ -47,6 +48,7 @@
 
 <label for={name} class="label">{heading}</label>
 <input
+  {required}
   id={name}
   class="input"
   type="text"
