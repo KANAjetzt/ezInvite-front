@@ -146,32 +146,54 @@
   const handleEventData = async () => {
     const input = { ...eventData };
 
+    console.log(!input.name);
     if (!input.name) {
-      $appStore.messages[0] = {
-        type: "Error",
-        message: "Pleas enter a title for your event."
-      };
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputEventName",
+          message: "Pleas provide a name for your event."
+        }
+      ];
+      console.log($appStore);
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputEventName"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+      }
     }
 
     if (!input.startDate) {
-      $appStore.messages[1] = {
-        type: "Error",
-        message: "Pleas select a start date for your event."
-      };
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputStartDate",
+          message: "Pleas select a start date for your event."
+        }
+      ];
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputStartDate"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+      }
     }
 
     if (input.pureHeroImg) {
       input.heroImg = input.pureHeroImg;
       delete input.pureHeroImg;
       delete input.heroImgPreview;
-      console.log(input);
     }
 
     if (input.pureImgs) {
       delete input.imgs;
       input.imgs = input.pureImgs;
       delete input.pureImgs;
-      console.log(input);
     }
 
     // if no messages are in store
@@ -189,7 +211,6 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
-    console.log(newEventData);
     if (
       newEventData.data.createEvent.event.widgets.findIndex(
         widget => widget.type === "todo"
@@ -206,9 +227,6 @@
 
     saveLocalStorage(eventData, "eventData");
     saveLocalStorage(todos, "todos");
-
-    console.log($todoStore);
-    console.log($eventDataStore);
 
     navigate("/eventPreview");
   };
@@ -320,6 +338,10 @@
             placeholder={'What are you planing?'}
             bind:value={eventData.name} />
         </div>
+        {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+          <Message
+            messages={$appStore.messages.filter(message => message.location === 'inputEventName')} />
+        {/if}
         <div class="date">
           <span class="labelDatepicker">Date</span>
           <Datepicker
@@ -335,11 +357,15 @@
             bind:formattedSelected
             bind:dateChosen>
             <button
-              class={`datePickerBtn ${dateChosen ? 'datePickerBtn--isChosen' : 'datePickerBtn--isNotChosen'}`}
+              class={`datePickerBtn datePickerBtn--isChosen`}
               on:click={e => e.preventDefault()}>
               {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
             </button>
           </Datepicker>
+          {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+            <Message
+              messages={$appStore.messages.filter(message => message.location === 'inputStartDate')} />
+          {/if}
         </div>
       </div>
     </section>

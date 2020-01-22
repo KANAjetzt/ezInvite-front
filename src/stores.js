@@ -4,6 +4,14 @@ export const appStore = writable({
   showAddPersonProfile: false,
   showFullResponder: true,
   currentPage: undefined,
+  /* -- message array structure-- */
+  /* 
+  {
+    type: 'error' / 'warning',
+    location: 'todoInput' / 'titleInput',
+    message: 'some text'
+}
+  */
   messages: []
 });
 export const eventDataStore = writable({});

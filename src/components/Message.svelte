@@ -1,20 +1,26 @@
 <script>
   import { appStore } from "../stores.js";
+
+  export let messageBoxStyle = "";
+  export let messages = [];
 </script>
 
 <style>
   .messageBox {
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: var(--color-primary);
+    margin: 1rem;
+    padding: 1rem;
     color: var(--color-text-primary);
     font-family: var(--font-primary);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    background-color: rgba(255, 0, 0, 0.25);
+    box-shadow: 0px 0px 0 2px var(--color-error-primary);
     z-index: 500;
-    padding: 2rem 1.5rem 9rem 1.5rem;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15vw), 0 100%);
+  }
+
+  .messageBox--todoInput {
+    color: var(--color-text-primary);
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
   }
 
   .messageList {
@@ -24,9 +30,9 @@
   }
 </style>
 
-<div class="messageBox">
+<div class={`messageBox messageBox--${messageBoxStyle}`}>
   <ul class="messageList">
-    {#each $appStore.messages as message}
+    {#each messages as message}
       <li class="messageItem">{message.message}</li>
     {/each}
   </ul>

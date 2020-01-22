@@ -5,9 +5,22 @@
   import { appStore, eventDataStore, todoStore } from "../stores";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
+  import Message from "./Message.svelte";
 
   let text;
   let requiredPersons;
+  let errorMessages;
+  let todoError;
+
+  $: if (
+    errorMessages.filter(message => message.location === "inputAddTodo")[0]
+  ) {
+    todoError = true;
+  }
+
+  appStore.subscribe(newData => {
+    errorMessages = newData.messages;
+  });
 
   const client = getClient();
 
@@ -39,6 +52,28 @@
   // TODO: Check if we are on the Event page / if so save the new Thing to the DB
   const handlePersonAddBtnClick = async e => {
     e.detail.originalEvent.preventDefault();
+    console.log(errorMessages);
+    if (!text || !requiredPersons) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputAddTodo",
+          message: "Please provide text and person count."
+        }
+      ];
+
+      return;
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputAddTodo"
+      );
+      if (errorIndex !== -1) {
+        errorMessages.splice(errorIndex, 1);
+        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
+        errorMessages = errorMessages;
+      }
+    }
 
     // --- If we are on the addEvent or editEvent page ---
     if (
@@ -57,8 +92,6 @@
         ];
         return newTodos;
       });
-
-      console.log($todoStore);
     }
 
     // --- If we are on the edit event page and
@@ -83,8 +116,6 @@
           }
         }
       });
-
-      console.log(newTodo);
 
       // add ID to thing in todoStore
       $todoStore[$todoStore.length - 1].id = newTodo.data.createTodo.todo.id;
@@ -211,6 +242,7 @@
     iconStyle="z-index: 20; opacity: 0.8; transform: translateX(-0.6rem);
     grid-column: 1 / 2; grid-row: 1 / 2;" />
   <input
+    required
     class="inputBox"
     type="text"
     placeholder="Add something.."
@@ -224,6 +256,7 @@
       border={true} />
   </label>
   <input
+    required
     class="inputPersonCount"
     id="personCount"
     type="number"
@@ -232,3 +265,9 @@
     name="personCount"
     bind:value={requiredPersons} />
 </div>
+
+{#if errorMessages.filter(message => message.location === 'inputAddTodo')[0]}
+  <Message
+    messageBoxStyle={'todoInput'}
+    messages={errorMessages.filter(message => message.location === 'inputAddTodo')} />
+{/if}
