@@ -109,8 +109,6 @@
   };
 
   const handleTodoRemove = async () => {
-    console.log("remvoe Todo from DB!");
-
     // Delete thing from todo store
     todoStore.update(currentValue => {
       let newValue = [...currentValue];

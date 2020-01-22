@@ -200,16 +200,12 @@
 
     // ceck if current user responded already
     $appStore.showFullResponder = handleResponder();
-
-    console.log($eventDataStore);
   };
 
   // Check if something is in store otherwise query for the data
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
   }
-
-  console.log($eventDataStore);
 </script>
 
 <Router>

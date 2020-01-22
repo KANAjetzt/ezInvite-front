@@ -71,7 +71,6 @@
   };
 
   const handlePersonRemove = index => {
-    console.log(index);
     // delete person from store
     userStore.update(currentData => {
       let newData = [...currentData];
@@ -79,7 +78,6 @@
       saveLocalStorage(newData, "users");
       return newData;
     });
-    console.log($userStore);
     // update local storage
   };
 

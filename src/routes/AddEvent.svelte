@@ -146,7 +146,6 @@
   const handleEventData = async () => {
     const input = { ...eventData };
 
-    console.log(!input.name);
     if (!input.name) {
       $appStore.messages = [
         ...$appStore.messages,
@@ -156,7 +155,6 @@
           message: "Pleas provide a name for your event."
         }
       ];
-      console.log($appStore);
     } else {
       const errorIndex = $appStore.messages.findIndex(
         message => message.location === "inputEventName"

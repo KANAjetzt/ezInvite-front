@@ -10,13 +10,6 @@
   let text;
   let requiredPersons;
   let errorMessages;
-  let todoError;
-
-  $: if (
-    errorMessages.filter(message => message.location === "inputAddTodo")[0]
-  ) {
-    todoError = true;
-  }
 
   appStore.subscribe(newData => {
     errorMessages = newData.messages;
@@ -52,7 +45,6 @@
   // TODO: Check if we are on the Event page / if so save the new Thing to the DB
   const handlePersonAddBtnClick = async e => {
     e.detail.originalEvent.preventDefault();
-    console.log(errorMessages);
     if (!text || !requiredPersons) {
       $appStore.messages = [
         ...$appStore.messages,

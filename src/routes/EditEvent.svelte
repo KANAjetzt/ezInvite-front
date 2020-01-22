@@ -87,7 +87,6 @@
 
   $: if (dateChosen) {
     $eventDataStore.startDate = `${selectedDate.getTime()}`;
-    console.log($eventDataStore.startDate);
   }
 
   eventDataStore.subscribe(newData => {
@@ -139,7 +138,6 @@
   // HANDLE DATA
   async function handleData() {
     const data = await queryEventData();
-    console.log(data);
     const widgets = data.data.event.widgets;
     if (widgets && widgets[0]) {
       queryTodoData(
@@ -153,11 +151,9 @@
 
   // --- Query Event Data ---
   async function queryEventData() {
-    console.log("--- querying Event Data ---");
     // construct input object for mutation
     // index 4 = slug | index 5 = event link
     const pathArr = window.location.href.split("/");
-    console.log(pathArr);
 
     // Query for event
     const data = await client.query({
@@ -167,7 +163,6 @@
 
     // Update Event Data Store with queryed event Data
     eventDataStore.set(data.data.event);
-    console.log($eventDataStore);
     return data;
   }
 
@@ -181,7 +176,6 @@
 
     // Update Todo Store with queryed todo Data
     todoStore.set(todos);
-    console.log($todoStore);
   }
 
   // Render all Form Fields not shown by default
@@ -226,8 +220,6 @@
         input: { id: eventData.id, widgetTypes: eventData.widgetTypes }
       }
     });
-
-    console.log(updatedEvent);
   };
 
   const handleTodoData = async eventData => {
@@ -267,20 +259,16 @@
         };
       }, {});
 
-    console.log(input);
-
     if (input.pureHeroImg) {
       input.heroImg = input.pureHeroImg;
       delete input.pureHeroImg;
       delete input.heroImgPreview;
-      console.log(input);
     }
 
     if (input.pureImgs) {
       delete input.imgs;
       input.imgs = input.pureImgs;
       delete input.pureImgs;
-      console.log(input);
     }
 
     if (input.location) {
