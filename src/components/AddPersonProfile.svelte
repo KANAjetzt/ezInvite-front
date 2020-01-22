@@ -15,6 +15,7 @@
   import NormalBtn from "./NormalBtn.svelte";
   import BtnBig from "./BtnBig.svelte";
   import BtnRemove from "./BtnRemove.svelte";
+  import Message from "./Message.svelte";
 
   const dispatch = createEventDispatcher();
   const client = getClient();
@@ -65,10 +66,52 @@
   `;
 
   const handlePersonName = e => {
+    if (!e.detail) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputPersonName",
+          message: "Pleas enter your name."
+        }
+      ];
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputPersonName"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
+        // $appStore = $appStore
+      }
+    }
+
     $eventDataStore.currentUser.name = e.detail;
   };
 
   const handleDoneBtn = async () => {
+    if (!$eventDataStore.currentUser.name) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputPersonName",
+          message: "Pleas enter your name."
+        }
+      ];
+
+      return;
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputPersonName"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
+        // $appStore = $appStore
+      }
+    }
+
     if ($eventDataStore.currentUser.unknown) {
       // --- Handle unkonwn user ---
       // get Event ID
@@ -253,6 +296,10 @@
       <div class="addPersonInput">
         <AddPersonInput on:addperson={handlePersonName} />
       </div>
+      {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
+        <Message
+          messages={$appStore.messages.filter(message => message.location === 'inputPersonName')} />
+      {/if}
     {/if}
 
     <!-- PersonImg: Current user has no Img - show Add profile picture comp -->
