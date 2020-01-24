@@ -21,6 +21,7 @@
   import WidgetPicker from "../components/AddSelectWidget.svelte";
   import AddWidgets from "../components/AddWidget.svelte";
   import BtnBig from "../components/BtnBig.svelte";
+  import Message from "../components/Message.svelte";
 
   const client = getClient();
 
@@ -188,16 +189,17 @@
   const handleHeroImgRemove = e => {
     eventDataStore.update(currentData => {
       const currentEventData = { ...currentData };
-      currentEventData.heroImg = undefined;
-      currentEventData.heroImgPreview = undefined;
+      currentEventData.heroImg = null;
+      currentEventData.heroImgPreview = null;
       return currentEventData;
     });
+    console.log(eventData);
   };
 
   const handleImgStripeRemove = e => {
     eventDataStore.update(currentData => {
       const currentEventData = { ...currentData };
-      currentEventData.imgs = undefined;
+      currentEventData.imgs = null;
       return currentEventData;
     });
   };
@@ -259,6 +261,42 @@
         };
       }, {});
 
+    if (!input.name) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputEventName",
+          message: "Pleas provide a name for your event."
+        }
+      ];
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputEventName"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+      }
+    }
+
+    if (!input.startDate) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputStartDate",
+          message: "Pleas select a start date for your event."
+        }
+      ];
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputStartDate"
+      );
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+      }
+    }
+
     if (input.pureHeroImg) {
       input.heroImg = input.pureHeroImg;
       delete input.pureHeroImg;
@@ -275,11 +313,15 @@
       delete input.location.__typename;
     }
 
-    // Send tilte and date to backend return new Event Document
-    return await mutate(client, {
-      mutation: UPDATEEVENT,
-      variables: { input }
-    });
+    // if no messages are in store
+    if (!$appStore.messages[0]) {
+      console.log(input);
+      // Send tilte and date to backend return new Event Document
+      return await mutate(client, {
+        mutation: UPDATEEVENT,
+        variables: { input }
+      });
+    }
   };
 
   // Deal with form data
@@ -287,6 +329,9 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
+    if (!newEventData) {
+      return;
+    }
 
     // Only add stuff I need from the new event document
     eventData.id = newEventData.data.updateEvent.event.id;
@@ -405,6 +450,10 @@
               placeholder={'What are you planing?'}
               bind:value={eventData.name} />
           </div>
+          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+            <Message
+              messages={$appStore.messages.filter(message => message.location === 'inputEventName')} />
+          {/if}
           <div class="date">
             <span class="labelDatepicker">Date</span>
             <Datepicker
@@ -423,6 +472,10 @@
                 {formattedSelected}
               </button>
             </Datepicker>
+            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+              <Message
+                messages={$appStore.messages.filter(message => message.location === 'inputStartDate')} />
+            {/if}
           </div>
         </div>
       </section>
