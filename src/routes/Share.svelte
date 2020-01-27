@@ -6,7 +6,7 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
-  import { eventDataStore, todoStore, userStore } from "../stores.js";
+  import { eventDataStore, todoStore, userStore, appStore } from "../stores.js";
   import {
     getLocalStorage,
     saveLocalStorage,
@@ -21,6 +21,7 @@
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
   import BtnRemove from "../components/BtnRemove.svelte";
+  import Message from "../components/Message.svelte";
 
   // Handle Local Storage
 
@@ -61,6 +62,29 @@
 
   const handleAddPerson = e => {
     const personName = e.detail;
+
+    if (!personName) {
+      $appStore.messages = [
+        ...$appStore.messages,
+        {
+          type: "Error",
+          location: "inputPersonName",
+          message: "Please provide the name of some person."
+        }
+      ];
+      return;
+    } else {
+      const errorIndex = $appStore.messages.findIndex(
+        message => message.location === "inputPersonName"
+      );
+      console.log(errorIndex);
+      console.log($appStore.messages);
+      if (errorIndex !== -1) {
+        $appStore.messages.splice(errorIndex, 1);
+        // Make it reakt --> https://svelte.dev/tutorial/updating-arrays-and-objects
+        $appStore.messages = $appStore.messages;
+      }
+    }
 
     userStore.update(currentData => {
       let newData = currentData ? [...currentData] : [];
@@ -213,6 +237,10 @@
     </section>
     {#if !shared}
       <section class="inputAddPerson">
+        {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
+          <Message
+            messages={$appStore.messages.filter(message => message.location === 'inputPersonName')} />
+        {/if}
         <AddPerson on:addperson={handleAddPerson} />
       </section>
     {/if}
