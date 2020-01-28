@@ -10,6 +10,7 @@
   import AddEvent from "./routes/AddEvent.svelte";
   import EditEvent from "./routes/EditEvent.svelte";
   import Share from "./routes/Share.svelte";
+  import NotFound from "./routes/404.svelte";
 
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
@@ -25,7 +26,8 @@
 <Router {url}>
   <Route path="/" component={AddEvent} />
   <Route path="/edit/*eventSlug/*eventEditLink" component={EditEvent} />
-  <Route path="" component={Event} />
+  <Route path="/*eventSlug/*eventLink/*userLink" component={Event} />
   <Route path="eventPreview" component={EventPreview} />
   <Route path="share" component={Share} />
+  <Route path="/notFound" component={NotFound} />
 </Router>

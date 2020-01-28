@@ -140,6 +140,8 @@
   // HANDLE DATA
   async function handleData() {
     const data = await queryEventData();
+    // if no envet was found return
+    if (!data) return;
     const widgets = data.data.event.widgets;
     if (widgets && widgets[0]) {
       queryTodoData(
@@ -157,15 +159,19 @@
     // index 4 = slug | index 5 = event link
     const pathArr = window.location.href.split("/");
 
-    // Query for event
-    const data = await client.query({
-      query: GETEVENT,
-      variables: { input: { editLink: pathArr[5], slug: pathArr[4] } }
-    });
+    try {
+      // Query for event
+      const data = await client.query({
+        query: GETEVENT,
+        variables: { input: { editLink: pathArr[5], slug: pathArr[4] } }
+      });
 
-    // Update Event Data Store with queryed event Data
-    eventDataStore.set(data.data.event);
-    return data;
+      // Update Event Data Store with queryed event Data
+      eventDataStore.set(data.data.event);
+      return data;
+    } catch (err) {
+      navigate("/notFound");
+    }
   }
 
   // --- Query Todo Data ---

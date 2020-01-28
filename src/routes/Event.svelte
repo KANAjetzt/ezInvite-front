@@ -1,7 +1,7 @@
 <script>
   import { getClient } from "svelte-apollo";
   import { gql } from "apollo-boost";
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Link, Route, navigate } from "svelte-routing";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import Hero from "../components/Hero.svelte";
@@ -165,11 +165,18 @@
 
   const queryEventData = async input => {
     // Query for event
-    const data = await client.query({ query: GETEVENT, variables: { input } });
+    try {
+      const data = await client.query({
+        query: GETEVENT,
+        variables: { input }
+      });
 
-    // Update Event Data Store with queryed event Data
-    eventDataStore.set(data.data.event);
-    return data;
+      // Update Event Data Store with queryed event Data
+      eventDataStore.set(data.data.event);
+      return data;
+    } catch (err) {
+      navigate("/notFound");
+    }
   };
 
   const handleData = async () => {
@@ -180,6 +187,8 @@
 
     // query for event with the right link and slug
     const newEventData = await queryEventData(input);
+    // return if no event was found
+    if (!newEventData) return;
 
     // grab widgets and users from the queryed event
     const widgets = newEventData.data.event.widgets;
