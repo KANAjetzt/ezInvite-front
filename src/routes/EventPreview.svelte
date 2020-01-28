@@ -1,7 +1,7 @@
 <script>
   import { Router, navigate } from "svelte-routing";
 
-  import { eventDataStore, todoStore } from "../stores.js";
+  import { eventDataStore, todoStore, appStore } from "../stores.js";
   import {
     getLocalStorage,
     deleteLocalStorage
@@ -24,6 +24,8 @@
 
   let eventData = $eventDataStore;
   let todos = $todoStore;
+
+  $appStore.currentPage = "eventPreview";
 
   const handleShareBtn = () => {
     // delete users from local storage

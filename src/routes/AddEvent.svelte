@@ -6,6 +6,7 @@
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
+  import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -147,39 +148,25 @@
     const input = { ...eventData };
 
     if (!input.name) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputEventName",
-          message: "Pleas provide a name for your event."
-        }
-      ];
-    } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputEventName"
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputEventName",
+        "Pleas provide a name for your event."
       );
-      if (errorIndex !== -1) {
-        $appStore.messages.splice(errorIndex, 1);
-      }
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputEventName");
     }
 
     if (!input.startDate) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputStartDate",
-          message: "Pleas select a start date for your event."
-        }
-      ];
-    } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputStartDate"
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputStartDate",
+        "Pleas select a start date for your event."
       );
-      if (errorIndex !== -1) {
-        $appStore.messages.splice(errorIndex, 1);
-      }
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputStartDate");
     }
 
     if (input.pureHeroImg) {
@@ -209,6 +196,7 @@
     e.detail.preventDefault();
 
     const newEventData = await handleEventData();
+    if (!newEventData) return;
     if (
       newEventData.data.createEvent.event.widgets.findIndex(
         widget => widget.type === "todo"

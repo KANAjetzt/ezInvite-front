@@ -3,6 +3,7 @@
   import { getClient, mutate } from "svelte-apollo";
 
   import { appStore, eventDataStore, todoStore } from "../stores";
+  import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
   import Message from "./Message.svelte";
@@ -42,29 +43,29 @@
     }
   `;
 
-  // TODO: Check if we are on the Event page / if so save the new Thing to the DB
   const handlePersonAddBtnClick = async e => {
     e.detail.originalEvent.preventDefault();
-    if (!text || !requiredPersons) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputAddTodo",
-          message: "Please provide text and person count."
-        }
-      ];
 
+    if ($appStore.currentPage === "eventPreview") {
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputAddTodo",
+        "You can add / edit things later on the edit page."
+      );
+      return;
+    }
+
+    if (!text || !requiredPersons) {
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputAddTodo",
+        "Please provide text and person count."
+      );
       return;
     } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputAddTodo"
-      );
-      if (errorIndex !== -1) {
-        errorMessages.splice(errorIndex, 1);
-        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
-        errorMessages = errorMessages;
-      }
+      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
     }
 
     // --- If we are on the addEvent or editEvent page ---

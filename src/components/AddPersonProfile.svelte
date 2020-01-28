@@ -5,7 +5,7 @@
   import { navigate } from "svelte-routing";
 
   import { appStore, eventDataStore } from "../stores";
-
+  import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
@@ -67,23 +67,14 @@
 
   const handlePersonName = e => {
     if (!e.detail) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputPersonName",
-          message: "Pleas enter your name."
-        }
-      ];
-    } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputPersonName"
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputPersonName",
+        "Pleas enter your name."
       );
-      if (errorIndex !== -1) {
-        $appStore.messages.splice(errorIndex, 1);
-        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
-        // $appStore = $appStore
-      }
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     $eventDataStore.currentUser.name = e.detail;
@@ -91,25 +82,15 @@
 
   const handleDoneBtn = async () => {
     if (!$eventDataStore.currentUser.name) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputPersonName",
-          message: "Pleas enter your name."
-        }
-      ];
-
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputPersonName",
+        "Pleas enter your name."
+      );
       return;
     } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputPersonName"
-      );
-      if (errorIndex !== -1) {
-        $appStore.messages.splice(errorIndex, 1);
-        // ! make it react ! --> https://svelte.dev/tutorial/updating-arrays-and-objects
-        // $appStore = $appStore
-      }
+      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     if ($eventDataStore.currentUser.unknown) {

@@ -1,6 +1,5 @@
 <script>
   // TODO: - Add delete all Btn
-  // TODO: - Add delete one Btn
 
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { getClient, mutate } from "svelte-apollo";
@@ -12,6 +11,7 @@
     saveLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
+  import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
@@ -64,26 +64,15 @@
     const personName = e.detail;
 
     if (!personName) {
-      $appStore.messages = [
-        ...$appStore.messages,
-        {
-          type: "Error",
-          location: "inputPersonName",
-          message: "Please provide the name of some person."
-        }
-      ];
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputPersonName",
+        "Please provide the name of some person."
+      );
       return;
     } else {
-      const errorIndex = $appStore.messages.findIndex(
-        message => message.location === "inputPersonName"
-      );
-      console.log(errorIndex);
-      console.log($appStore.messages);
-      if (errorIndex !== -1) {
-        $appStore.messages.splice(errorIndex, 1);
-        // Make it reakt --> https://svelte.dev/tutorial/updating-arrays-and-objects
-        $appStore.messages = $appStore.messages;
-      }
+      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     userStore.update(currentData => {

@@ -1,32 +1,28 @@
-const getAllIndexes = (arr, searched) => {
-  const indexes = [];
-  arr.forEach((el, i) =>
-    el.message === searched ? (indexes = [...indexes, i]) : null
+export const removeMessage = (messages, location) => {
+  const errorIndex = messages.findIndex(
+    message => message.location === location
   );
-  return indexes;
-};
-
-const removeMessages = indexArr => {
-  indexArr.forEach(index => $appStore.messages.splice(index, 1));
-  // Make it reakt --> https://svelte.dev/tutorial/updating-arrays-and-objects
-  $appStore.messages = $appStore.messages;
-};
-
-const handleError = (value, type, location, message) => {
-  if (!value) {
-    $appStore.messages = [
-      ...$appStore.messages,
-      {
-        type: type,
-        location: location,
-        message: message
-      }
-    ];
-    return;
+  if (errorIndex !== -1) {
+    messages.splice(errorIndex, 1);
+    return messages;
   } else {
-    const indexes = getAllIndexes($appStore.messages, location);
-    removeMessages(indexes);
+    return messages;
   }
 };
 
-export default handleError;
+export const addMessage = (messages, type, location, message) => {
+  // If the message doesn't exist already
+  if (messages.findIndex(m => m.message === message) === -1) {
+    // Add the new error message to the array
+    return [
+      ...messages,
+      {
+        type,
+        location,
+        message
+      }
+    ];
+  } else {
+    return messages;
+  }
+};
