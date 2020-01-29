@@ -62,6 +62,22 @@ input[type="time"]::-webkit-inner-spin-button {
   --clip-tertiary-fixed: polygon(0 calc(0% + 34%), 100% 0, 100% 100%, 0 100%);
 }
 
+/* Used to style autofill / suggestions */
+@keyframes autofill {
+  0%,
+  100% {
+    color: var(--color-text-primary);
+    background: transparent;
+  }
+}
+
+/* Used to style auto fill / suggestions */
+input:-webkit-autofill {
+  animation-delay: 1s;
+  animation-name: autofill;
+  animation-fill-mode: both;
+}
+
 /* Maybe add some special styling for required / invalid fields later */
 /* input:invalid {
   box-shadow: 0 1px 0 red !important;
