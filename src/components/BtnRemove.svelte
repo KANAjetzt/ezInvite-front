@@ -32,6 +32,7 @@
 </style>
 
 <button
+  type="button"
   class="removeBtn"
   on:click={e => handleremoveBtn(e)}
   style={`margin-top: ${marginTop}rem; margin-left: ${marginLeft}rem`}>

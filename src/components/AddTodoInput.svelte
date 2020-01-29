@@ -44,7 +44,7 @@
   `;
 
   const handlePersonAddBtnClick = async e => {
-    e.detail.originalEvent.preventDefault();
+    // e.detail.originalEvent.preventDefault();
 
     // --- ERROR HANDLING ---
     // If we are on the eventPreview Page - allow no input
@@ -252,7 +252,10 @@
     class="inputBox"
     type="text"
     placeholder="Add something.."
-    bind:value={text} />
+    bind:value={text}
+    on:keydown={e => {
+      if (e.keyCode === 13) handlePersonAddBtnClick();
+    }} />
   <label for="personCount">
     <PersonCountIcon
       width={25}
@@ -269,7 +272,10 @@
     min="1"
     placeholder="1"
     name="personCount"
-    bind:value={requiredPersons} />
+    bind:value={requiredPersons}
+    on:keydown={e => {
+      if (e.keyCode === 13) handlePersonAddBtnClick();
+    }} />
 </div>
 
 {#if errorMessages.filter(message => message.location === 'inputAddTodo')[0]}

@@ -67,6 +67,12 @@
       // location Name
       updateStore("address", e.result.place_name);
     });
+
+    // add button type to "clear" button (that one is invisible any way)
+    // this is needed so the enter key is not attracted to the gecodoer
+    document
+      .querySelector(".mapboxgl-ctrl-geocoder--button")
+      .setAttribute("type", "button");
   });
 </script>
 

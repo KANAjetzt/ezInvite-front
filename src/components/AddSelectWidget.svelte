@@ -64,7 +64,7 @@
 <DescriptionBox title={'Add Widgets'} text={'Need something extra?'} />
 
 <div class="widgetPicker">
-  <button class="btn" on:click={e => dispatch('listbtnclick', e)}>
+  <button type="button" class="btn" on:click={e => dispatch('listbtnclick', e)}>
     <DoneDoubleIcon
       width={80}
       height={80}

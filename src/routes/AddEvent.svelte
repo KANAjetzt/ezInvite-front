@@ -343,6 +343,7 @@
             bind:formattedSelected
             bind:dateChosen>
             <button
+              type="button"
               class={`datePickerBtn datePickerBtn--isChosen`}
               on:click={e => e.preventDefault()}>
               {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}

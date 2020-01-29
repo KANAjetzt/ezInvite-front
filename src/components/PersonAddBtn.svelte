@@ -44,6 +44,7 @@
 </style>
 
 <button
+  type="button"
   class="addBtn"
   on:click={e => {
     dispatch('personaddbtnclick', { index: index, originalEvent: e });
