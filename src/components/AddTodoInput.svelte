@@ -46,6 +46,8 @@
   const handlePersonAddBtnClick = async e => {
     e.detail.originalEvent.preventDefault();
 
+    // --- ERROR HANDLING ---
+    // If we are on the eventPreview Page - allow no input
     if ($appStore.currentPage === "eventPreview") {
       $appStore.messages = addMessage(
         $appStore.messages,
@@ -179,6 +181,16 @@
         variables: { input }
       });
     }
+
+    // Reset input fields
+
+    const textInput = document.getElementById("thingText");
+    const personCountInput = document.getElementById("personCount");
+
+    text = null;
+    textInput.value = null;
+    requiredPersons = null;
+    personCountInput.value = null;
   };
 </script>
 
@@ -236,6 +248,7 @@
     grid-column: 1 / 2; grid-row: 1 / 2;" />
   <input
     required
+    id="thingText"
     class="inputBox"
     type="text"
     placeholder="Add something.."
