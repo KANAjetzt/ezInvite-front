@@ -2,6 +2,7 @@
   export let photo = "http://localhost:3000/img/user/default.jpg";
   export let name = "unknown user";
   export let count = undefined;
+  export let imgStyle = "";
 </script>
 
 <style>
@@ -19,6 +20,11 @@
     width: 100%;
     object-fit: cover;
   }
+
+  .img--addPersonThing {
+    opacity: 0.4;
+  }
+
   .count {
     position: absolute;
     transform: translate(-135%, 78%);
@@ -30,7 +36,10 @@
 </style>
 
 <div class="imgBox">
-  <img class="img" src={photo} alt={`Profile image of ${photo}`} />
+  <img
+    class={`img img--${imgStyle}`}
+    src={photo}
+    alt={`Profile image of ${name}`} />
   {#if count}
     <span class="count">{count}..</span>
   {/if}

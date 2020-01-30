@@ -4,10 +4,11 @@
   import PersonImg from "./PersonImg.svelte";
   import PlusIcon from "./Icons/Plus.svelte";
 
-  export let photo = "default.jpg";
-  export let name = "unknown user";
+  export let photo = undefined;
+  export let name = undefined;
   export let iconStyle =
     "z-index: 20; opacity: 0.7; transform: translateX(-0.6rem); grid-column: 1 / 2; grid-row: 1 / 2;";
+  export let imgStyle = "";
   export let index;
 
   const dispatch = createEventDispatcher();
@@ -52,7 +53,7 @@
   <div class="btnContent">
     <PlusIcon style={iconStyle} width={20} height={20} fill={'#f9fafb'} />
     <div class="imgWrapper">
-      <PersonImg />
+      <PersonImg {photo} {name} {imgStyle} />
     </div>
   </div>
 </button>

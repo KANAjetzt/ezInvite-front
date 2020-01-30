@@ -163,10 +163,14 @@
 </style>
 
 <li class="todo">
-  <!-- PersonAddBtn - when the current viewing person is not partaking on this todo -->
-  {#if data.partacerCount ? data.partacerCount : 0 < data.requiredPersons}
-    <PersonAddBtn on:personaddbtnclick={handlePersonAddBtn} {index} />
-  {/if}
+
+  <PersonAddBtn
+    photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo ? $eventDataStore.currentUser.photo : undefined}
+    name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
+    imgStyle={'addPersonThing'}
+    on:personaddbtnclick={handlePersonAddBtn}
+    {index} />
+
   {#each data.users as { photo, name }, i}
     {#if i < 4}
       {#if photo === 'default.jpg'}
