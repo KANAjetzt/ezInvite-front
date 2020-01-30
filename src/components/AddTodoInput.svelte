@@ -180,6 +180,14 @@
         mutation: CREATETODO,
         variables: { input }
       });
+
+      // update todoStore with todo id
+      $todoStore[$todoStore.length - 1] = {
+        ...$todoStore[$todoStore.length - 1],
+        id: newTodo.data.createTodo.todo.id
+      };
+      $todoStore = $todoStore;
+      console.log($todoStore);
     }
 
     // Reset input fields

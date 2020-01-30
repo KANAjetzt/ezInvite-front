@@ -80,6 +80,7 @@
     }
 
     // check if requiredPersons count is met
+    console.log(data);
     if (data.partacerCount >= data.requiredPersons) {
       console.log("TODO: Visualize that this todo is done");
       return;
@@ -89,9 +90,23 @@
     // add user in todoStore
     todoStore.update(currentData => {
       const newData = [...currentData];
-      newData[e.detail].users[
-        newData[e.detail].users.findIndex(user => user.name === "unkown user")
-      ] = $eventDataStore.currentUser;
+      if (
+        newData[e.detail.index].users.findIndex(
+          user => user.name === "unkown user"
+        ) !== -1
+      ) {
+        newData[e.detail.index].users[
+          newData[e.detail.index].users.findIndex(
+            user => user.name === "unkown user"
+          )
+        ] = $eventDataStore.currentUser;
+      }
+
+      newData[e.detail.index].users = [
+        ...newData[e.detail.index].users,
+        $eventDataStore.currentUser
+      ];
+
       return newData;
     });
 
@@ -122,6 +137,8 @@
       variables: { input: { id: data.id } }
     });
   };
+
+  console.log(data);
 </script>
 
 <style>
@@ -160,7 +177,8 @@
     {/if}
   {/each}
   {#if shortenPersonImgs}
-    <PersonImg count={data.requiredPersons - data.partacerCount} />
+    <PersonImg
+      count={data.requiredPersons - data.partacerCount <= 0 ? undefined : data.requiredPersons - data.partacerCount} />
   {/if}
   <p class="text">{data.text}</p>
 </li>

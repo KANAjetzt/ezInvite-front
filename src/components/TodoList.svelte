@@ -39,7 +39,8 @@
 
     // if this thing allready has some partacing users
     if (todo.users && todo.users[0]) {
-      const partacer = todo.users.length;
+      const partacer = todo.users.filter(user => user.name !== "unkown user")
+        .length;
       const requiredPersons = todo.requiredPersons;
 
       // if the thing is done
