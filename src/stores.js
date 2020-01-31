@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 export const appStore = writable({
   showAddPersonProfile: false,
   showFullResponder: true,
+  // 'addEvent' / 'editEvent' / 'event' / 'eventPreview' / 'share'
   currentPage: undefined,
   /* -- message array structure-- */
   /* 

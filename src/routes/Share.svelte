@@ -40,6 +40,9 @@
   let users;
   let shared = false;
 
+  // Set current page
+  $appStore.currentPage = "share";
+
   // Get all that fresh data from userStore
   userStore.subscribe(newData => {
     users = newData;

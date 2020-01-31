@@ -43,21 +43,7 @@
     }
   `;
 
-  const handlePersonAddBtnClick = async e => {
-    // e.detail.originalEvent.preventDefault();
-
-    // --- ERROR HANDLING ---
-    // If we are on the eventPreview Page - allow no input
-    if ($appStore.currentPage === "eventPreview") {
-      $appStore.messages = addMessage(
-        $appStore.messages,
-        "Error",
-        "inputAddTodo",
-        "You can add / edit things later on the edit page."
-      );
-      return;
-    }
-
+  const generateErrorMessage = (text, requiredPersons) => {
     if (!text || !requiredPersons) {
       $appStore.messages = addMessage(
         $appStore.messages,
@@ -69,6 +55,46 @@
     } else {
       $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
     }
+  };
+
+  const handleAddEvnetPage = () => {};
+
+  const handlePreviewPage = () => {
+    $appStore.messages = addMessage(
+      $appStore.messages,
+      "Error",
+      "inputAddTodo",
+      "You can add / edit things later on the edit page."
+    );
+    return;
+  };
+
+  const handleEventPage = () => {};
+
+  const handleEditPage = () => {};
+
+  const handlePersonAddBtnClick = async e => {
+    // decide on witch page we are
+    switch ($appStore.currentPage) {
+      case "addEvent":
+        handleAddEvnetPage();
+        break;
+      case "eventPreview":
+        handlePreviewPage();
+        break;
+      case "event":
+        handleEventPage();
+        break;
+      case "editEvent":
+        handleEditPage();
+        break;
+      default:
+        console.log("wait what?");
+    }
+
+    // e.detail.originalEvent.preventDefault();
+
+    // --- ERROR HANDLING ---
 
     // --- If we are on the addEvent or editEvent page ---
     if (
