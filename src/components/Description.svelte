@@ -1,7 +1,5 @@
 <script>
-  import { getEventData } from "../stores";
-
-  let eventData = getEventData();
+  import { eventDataStore } from "../stores";
 </script>
 
 <style>
@@ -21,5 +19,5 @@
 </style>
 
 <div class="box">
-  <p class="description">{eventData.description}</p>
+  <p class="description">{$eventDataStore.description}</p>
 </div>

@@ -18,9 +18,3 @@ export const appStore = writable({
 export const eventDataStore = writable({});
 export const todoStore = writable([]);
 export const userStore = writable([]);
-
-export const getEventData = () => {
-  let eventData;
-  eventDataStore.subscribe(value => (eventData = value));
-  return eventData;
-};
