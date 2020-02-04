@@ -50,6 +50,7 @@
           coordinates
         }
         users {
+          id
           name
           photo
           accepted

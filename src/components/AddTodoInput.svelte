@@ -57,9 +57,58 @@
     }
   };
 
-  const handleAddEvnetPage = () => {};
+  const addToTodoStore = (text, requiredPersons) => {
+    $todoStore = [
+      ...$todoStore,
+      {
+        text,
+        requiredPersons
+      }
+    ];
+  };
+
+  const updateTodoStore = (index, key, value) => {
+    $todoStore[index][key] = value;
+    console.log($todoStore[index]);
+  };
+
+  const saveToDB = async (text, requiredPersons, userId) => {
+    // preopare input object
+    const input = {
+      widget:
+        $eventDataStore.widgets[
+          $eventDataStore.widgets.findIndex(widget => widget.type === "todo")
+        ].id,
+      text,
+      requiredPersons
+    };
+
+    if (userId) {
+      input.users = [userId];
+    }
+
+    // save new todo to DB
+    return await mutate(client, {
+      mutation: CREATETODO,
+      variables: { input }
+    });
+  };
+
+  // ########################################
+  // #########--- ADD EVENT PAGE ---#########
+  // ########################################
+
+  const handleAddEvnetPage = () => {
+    // 1) Add thing to store
+    addToTodoStore(text, requiredPersons);
+  };
+
+  // ######################################
+  // #########--- PREVIEW PAGE ---#########
+  // ######################################
 
   const handlePreviewPage = () => {
+    // 1) Show Error Message
     $appStore.messages = addMessage(
       $appStore.messages,
       "Error",
@@ -69,11 +118,81 @@
     return;
   };
 
-  const handleEventPage = () => {};
+  // ####################################
+  // #########--- EVENT PAGE ---#########
+  // ####################################
 
-  const handleEditPage = () => {};
+  const handleEventPage = async () => {
+    // Check if currentUser doesn't exists
+    if (!$eventDataStore.currentUser) {
+      // Set currentUser.unknown true
+      // This is required to handle the AddPersonProfile DoneBtn
+      $eventDataStore.currentUser = {};
+      $eventDataStore.currentUser.unknown = true;
+    }
+
+    // check if currentUser enterd a name already
+    if (!$eventDataStore.currentUser.name) {
+      // Render AddPersonProfile
+      $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
+      return;
+    }
+
+    // check if currentUser didn't accapted the invite
+    if (!$eventDataStore.currentUser.accepted) {
+      console.log("TODO: Add Mesageboard to show Error / Warings / Infos");
+      console.log("accapted your invite to help with this thing!");
+
+      // Show responder
+      $appStore.showFullResponder = !$appStore.showFullResponder;
+
+      return;
+    }
+
+    // Add thing to Store
+    addToTodoStore(text, requiredPersons);
+
+    // Save new thing to DB
+    const newTodo = await saveToDB(
+      text,
+      requiredPersons,
+      $eventDataStore.currentUser.id
+    );
+
+    // add ID to thing in todoStore
+    updateTodoStore(
+      $todoStore.length - 1,
+      "id",
+      newTodo.data.createTodo.todo.id
+    );
+  };
+
+  //##########################################
+  // #########--- EDIT EVENT PAGE ---#########
+  //##########################################
+
+  const handleEditPage = async () => {
+    addToTodoStore(text, requiredPersons);
+
+    if (
+      $eventDataStore.widgets.findIndex(widget => widget.type === "todo") !== -1
+    ) {
+      // Save new thing to DB
+      const newTodo = await saveToDB(text, requiredPersons);
+      console.log(newTodo);
+
+      // add ID to thing in todoStore
+      updateTodoStore(
+        $todoStore.length - 1,
+        "id",
+        newTodo.data.createTodo.todo.id
+      );
+    }
+  };
 
   const handlePersonAddBtnClick = async e => {
+    // e.detail.originalEvent.preventDefault();
+
     // decide on witch page we are
     switch ($appStore.currentPage) {
       case "addEvent":
@@ -92,132 +211,7 @@
         console.log("wait what?");
     }
 
-    // e.detail.originalEvent.preventDefault();
-
-    // --- ERROR HANDLING ---
-
-    // --- If we are on the addEvent or editEvent page ---
-    if (
-      $appStore.currentPage === "addEvent" ||
-      $appStore.currentPage === "editEvent"
-    ) {
-      // Update todoStore with new thing
-      todoStore.update(current => {
-        let newTodos = [...current];
-        newTodos = [
-          ...newTodos,
-          {
-            text: text,
-            requiredPersons: requiredPersons
-          }
-        ];
-        return newTodos;
-      });
-    }
-
-    // --- If we are on the edit event page and
-    //     if there is allready a todo widget ---
-    if (
-      $appStore.currentPage === "editEvent" &&
-      $eventDataStore.widgets.findIndex(widget => widget.type === "todo") !== -1
-    ) {
-      // save new todo to DB
-      const newTodo = await mutate(client, {
-        mutation: CREATETODO,
-        variables: {
-          input: {
-            widget:
-              $eventDataStore.widgets[
-                $eventDataStore.widgets.findIndex(
-                  widget => widget.type === "todo"
-                )
-              ].id,
-            text,
-            requiredPersons
-          }
-        }
-      });
-
-      // add ID to thing in todoStore
-      $todoStore[$todoStore.length - 1].id = newTodo.data.createTodo.todo.id;
-    }
-
-    // --- If we are on the event page ---
-    if ($appStore.currentPage === "event") {
-      // Check if currentUser doesn't exists
-      if (!$eventDataStore.currentUser) {
-        // Set currentUser.unknown true
-        // This is required to handle the AddPersonProfile DoneBtn
-        $eventDataStore.currentUser = {};
-        $eventDataStore.currentUser.unknown = true;
-      }
-
-      // check if currentUser enterd a name already
-      if (!$eventDataStore.currentUser.name) {
-        // Render AddPersonProfile
-        $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-        return;
-      }
-
-      // check if currentUser didn't accapted the invite
-      if (!$eventDataStore.currentUser.accepted) {
-        console.log("TODO: Add Mesageboard to show Error / Warings / Infos");
-        console.log("accapted your invite to help with this thing!");
-
-        // Show responder
-        $appStore.showFullResponder = !$appStore.showFullResponder;
-
-        return;
-      }
-
-      // Add thing to Store
-      todoStore.update(current => {
-        let newTodos = [...current];
-        newTodos = [
-          ...newTodos,
-          {
-            text: text,
-            requiredPersons: requiredPersons,
-            users: [$eventDataStore.currentUser]
-          }
-        ];
-        return newTodos;
-      });
-
-      // Save new thing to DB
-
-      // query user id
-      const user = await client.query({
-        query: QUERYUSERBYLINK,
-        variables: { link: $eventDataStore.currentUser.link }
-      });
-
-      const input = {
-        widget:
-          $eventDataStore.widgets[
-            $eventDataStore.widgets.findIndex(widget => widget.type === "todo")
-          ].id,
-        text,
-        requiredPersons,
-        users: [user.data.userByLink.id]
-      };
-
-      const newTodo = await mutate(client, {
-        mutation: CREATETODO,
-        variables: { input }
-      });
-
-      // update todoStore with todo id
-      $todoStore[$todoStore.length - 1] = {
-        ...$todoStore[$todoStore.length - 1],
-        id: newTodo.data.createTodo.todo.id
-      };
-      $todoStore = $todoStore;
-      console.log($todoStore);
-    }
-
     // Reset input fields
-
     const textInput = document.getElementById("thingText");
     const personCountInput = document.getElementById("personCount");
 
@@ -225,6 +219,7 @@
     textInput.value = null;
     requiredPersons = null;
     personCountInput.value = null;
+    textInput.focus();
   };
 </script>
 
