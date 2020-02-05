@@ -3,6 +3,8 @@
   export let name = "unknown user";
   export let count = undefined;
   export let imgStyle = "";
+
+  console.trace(photo);
 </script>
 
 <style>

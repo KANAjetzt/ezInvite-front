@@ -43,20 +43,6 @@
     }
   `;
 
-  const generateErrorMessage = (text, requiredPersons) => {
-    if (!text || !requiredPersons) {
-      $appStore.messages = addMessage(
-        $appStore.messages,
-        "Error",
-        "inputAddTodo",
-        "Please provide text and person count."
-      );
-      return;
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
-    }
-  };
-
   const addToTodoStore = (text, requiredPersons) => {
     $todoStore = [
       ...$todoStore,
@@ -65,11 +51,11 @@
         requiredPersons
       }
     ];
+    $todoStore = $todoStore;
   };
 
   const updateTodoStore = (index, key, value) => {
     $todoStore[index][key] = value;
-    console.log($todoStore[index]);
   };
 
   const saveToDB = async (text, requiredPersons, userId) => {
@@ -179,7 +165,6 @@
     ) {
       // Save new thing to DB
       const newTodo = await saveToDB(text, requiredPersons);
-      console.log(newTodo);
 
       // add ID to thing in todoStore
       updateTodoStore(
@@ -192,6 +177,32 @@
 
   const handlePersonAddBtnClick = async e => {
     // e.detail.originalEvent.preventDefault();
+
+    // Error if no text or requiredPerson count
+    if (!text || !requiredPersons) {
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputAddTodo",
+        "Please provide text and person count."
+      );
+      return;
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
+    }
+
+    // Error if requiredPerson count is over 1000
+    if (requiredPersons > 1000) {
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        "inputAddTodo",
+        "Sorry max. person count is 1000."
+      );
+      return;
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
+    }
 
     // decide on witch page we are
     switch ($appStore.currentPage) {
@@ -299,6 +310,7 @@
     id="personCount"
     type="number"
     min="1"
+    max="1000"
     placeholder="1"
     name="personCount"
     bind:value={requiredPersons}

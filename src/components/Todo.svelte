@@ -8,16 +8,10 @@
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
 
-  export let data;
+  export let todo;
   export let index;
 
-  let shortenPersonImgs = false;
-
   const client = getClient();
-
-  onMount(() => {
-    if (data.requiredPersons > 5) shortenPersonImgs = true;
-  });
 
   const QUERYUSERBYLINK = gql`
     query($link: String!) {
@@ -80,8 +74,7 @@
     }
 
     // check if requiredPersons count is met
-    console.log(data);
-    if (data.partacerCount >= data.requiredPersons) {
+    if (todo.partacerCount >= todo.requiredPersons) {
       console.log("TODO: Visualize that this todo is done");
       return;
     }
@@ -116,7 +109,7 @@
       variables: { link: $eventDataStore.currentUser.link }
     });
     // save user to thing in DB
-    const input = { id: data.id, user: user.data.userByLink.id };
+    const input = { id: todo.id, user: user.todo.userByLink.id };
     const newTodo = await mutate(client, {
       mutation: ADDUSERTOTODO,
       variables: { input }
@@ -134,11 +127,11 @@
     // delete Todo in DB
     const deleteTodo = await mutate(client, {
       mutation: DELETETODO,
-      variables: { input: { id: data.id } }
+      variables: { input: { id: todo.id } }
     });
   };
 
-  console.log(data);
+  console.log(todo);
 </script>
 
 <style>
@@ -171,22 +164,25 @@
     on:personaddbtnclick={handlePersonAddBtn}
     {index} />
 
-  {#each data.users as { photo, name }, i}
-    {#if i < 4}
-      {#if photo === 'default.jpg'}
-        <PersonImg {name} />
-      {:else}
-        <PersonImg {photo} {name} />
-      {/if}
+  <!-- PersonImgs -->
+  {#each todo.users as { photo, name }, i}
+    <!-- If more then 5 people are required, render 4 imgs, else render 5 -->
+    {#if i < (todo.requiredPersons > 5 ? 4 : 5)}
+      <PersonImg {photo} {name} />
+    {/if}
+    <!-- If more then 5 people are required, render last img with counter -->
+    {#if todo.requiredPersons > 5 && i === 4}
+      <PersonImg {photo} {name} count={todo.requiredPersons - 4} />
     {/if}
   {/each}
-  {#if shortenPersonImgs}
-    <PersonImg
-      count={data.requiredPersons - data.partacerCount <= 0 ? undefined : data.requiredPersons - data.partacerCount} />
-  {/if}
-  <p class="text">{data.text}</p>
+
+  <!-- Thing / Todo text -->
+  <p class="text">{todo.text}</p>
+
 </li>
-{#if $appStore.currentPage === 'editEvent'}
+
+<!-- Remove Btn on edit / add page -->
+{#if $appStore.currentPage === 'editEvent' || 'addEvent'}
   <RemoveBtn
     width={20}
     height={20}
