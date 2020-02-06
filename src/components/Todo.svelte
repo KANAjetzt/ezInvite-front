@@ -124,11 +124,13 @@
       return newValue;
     });
 
-    // delete Todo in DB
-    const deleteTodo = await mutate(client, {
-      mutation: DELETETODO,
-      variables: { input: { id: todo.id } }
-    });
+    if ($appStore.currentPage !== "addEvent") {
+      // delete Todo in DB
+      const deleteTodo = await mutate(client, {
+        mutation: DELETETODO,
+        variables: { input: { id: todo.id } }
+      });
+    }
   };
 
   console.log(todo);
