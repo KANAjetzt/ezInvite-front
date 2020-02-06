@@ -4,9 +4,11 @@
   import { getClient, mutate } from "svelte-apollo";
 
   import { appStore, eventDataStore, todoStore } from "../stores";
+  import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
+  import Message from "../components/Message.svelte";
 
   export let todo;
   export let index;
@@ -46,7 +48,6 @@
   `;
 
   const handlePersonAddBtn = async e => {
-    console.log("--- handling PersonAddBtn ---");
     // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
       // Set currentUser.unknown true
@@ -55,62 +56,33 @@
       $eventDataStore.currentUser.unknown = true;
     }
 
-    // check if currentUser enterd a name already
-    if (!$eventDataStore.currentUser.name) {
-      // Render AddPersonProfile
-      $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-      return;
-    }
-
     // check if currentUser didn't accapted the invite
     if (!$eventDataStore.currentUser.accepted) {
-      console.log("TODO: Add Mesageboard to show Error / Warings / Infos");
-      console.log("accapted your invite to help with this thing!");
+      // Show error message
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        `addPersonToTodo-${index}`,
+        "Pleas accapted your invite to help with this thing."
+      );
+
+      console.log($appStore);
 
       // Show responder
-      $appStore.showFullResponder = !$appStore.showFullResponder;
+      $appStore.showFullResponder = true;
 
       return;
+    } else {
+      $appStore.messages = removeMessage($appStore.messages, "inputEventName");
     }
 
-    // check if requiredPersons count is met
-    if (todo.partacerCount >= todo.requiredPersons) {
-      console.log("TODO: Visualize that this todo is done");
-      return;
-    }
-
-    // add currentUser to the thing
     // add user in todoStore
-    todoStore.update(currentData => {
-      const newData = [...currentData];
-      if (
-        newData[e.detail.index].users.findIndex(
-          user => user.name === "unkown user"
-        ) !== -1
-      ) {
-        newData[e.detail.index].users[
-          newData[e.detail.index].users.findIndex(
-            user => user.name === "unkown user"
-          )
-        ] = $eventDataStore.currentUser;
-      }
+    const todo = $todoStore[index];
+    console.log(todo);
 
-      newData[e.detail.index].users = [
-        ...newData[e.detail.index].users,
-        $eventDataStore.currentUser
-      ];
-
-      return newData;
-    });
-
-    // query user id
-    const user = await client.query({
-      query: QUERYUSERBYLINK,
-      variables: { link: $eventDataStore.currentUser.link }
-    });
-    // save user to thing in DB
-    const input = { id: todo.id, user: user.todo.userByLink.id };
-    const newTodo = await mutate(client, {
+    // save user to todo in DB
+    const input = { id: todo.id, user: $eventDataStore.currentUser.id };
+    await mutate(client, {
       mutation: ADDUSERTOTODO,
       variables: { input }
     });
@@ -132,8 +104,6 @@
       });
     }
   };
-
-  console.log(todo);
 </script>
 
 <style>
@@ -158,9 +128,8 @@
 </style>
 
 <li class="todo">
-
   <PersonAddBtn
-    photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo ? $eventDataStore.currentUser.photo : undefined}
+    photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo !== 'default.jpg' ? $eventDataStore.currentUser.photo : undefined}
     name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
     imgStyle={'addPersonThing'}
     on:personaddbtnclick={handlePersonAddBtn}
@@ -183,8 +152,13 @@
 
 </li>
 
+<!-- Error Message -->
+{#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
+  <Message location={`addPersonToTodo-${index}`} />
+{/if}
+
 <!-- Remove Btn on edit / add page -->
-{#if $appStore.currentPage === 'editEvent' || 'addEvent'}
+{#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
   <RemoveBtn
     width={20}
     height={20}

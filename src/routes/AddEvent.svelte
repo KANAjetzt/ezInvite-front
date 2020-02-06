@@ -325,8 +325,7 @@
             bind:value={eventData.name} />
         </div>
         {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
-          <Message
-            messages={$appStore.messages.filter(message => message.location === 'inputEventName')} />
+          <Message location={'inputEventName'} />
         {/if}
         <div class="date">
           <span class="labelDatepicker">Date</span>
@@ -350,8 +349,7 @@
             </button>
           </Datepicker>
           {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
-            <Message
-              messages={$appStore.messages.filter(message => message.location === 'inputStartDate')} />
+            <Message location={'inputStartDate'} />
           {/if}
         </div>
       </div>

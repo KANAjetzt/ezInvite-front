@@ -2,7 +2,12 @@
   import { appStore } from "../stores.js";
 
   export let messageBoxStyle = "";
-  export let messages = [];
+  export let location;
+
+  // filter out error messages from current location
+  const messages = $appStore.messages.filter(
+    message => message.location === location
+  );
 </script>
 
 <style>

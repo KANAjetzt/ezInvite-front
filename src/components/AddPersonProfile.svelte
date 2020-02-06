@@ -278,8 +278,7 @@
         <AddPersonInput on:addperson={handlePersonName} />
       </div>
       {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
-        <Message
-          messages={$appStore.messages.filter(message => message.location === 'inputPersonName')} />
+        <Message location={'inputPersonName'} />
       {/if}
     {/if}
 
