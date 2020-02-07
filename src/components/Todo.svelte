@@ -18,6 +18,7 @@
   export let todo;
   export let index;
 
+  console.log(todo);
   const client = getClient();
 
   const QUERYUSERBYLINK = gql`
@@ -157,7 +158,7 @@
       return counter - (4 - aktivPersons);
     }
     // if aktiv persons > 4 --> requiredPersons
-    return counter;
+    return counter * -1;
   };
 </script>
 
@@ -196,7 +197,8 @@
       <!-- If the img is not the last one -->
       {#if i === 4}
         <PersonImg
-          photo={todo.requiredPersons <= 0 ? $eventDataStore.currentPerson.photo : 'http://localhost:3000/img/user/default.jpg'}
+          photo={todo.requiredPersons <= 0 ? todo.users[4].photo : 'http://localhost:3000/img/user/default.jpg'}
+          imgStyle={todo.requiredPersons <= 0 ? 'addPersonThing' : ''}
           {name}
           count={handleCounter(todo)} />
       {:else}
