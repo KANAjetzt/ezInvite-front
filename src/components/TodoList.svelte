@@ -2,10 +2,6 @@
   import { todoStore, sortedDummyTodoStore } from "../stores";
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
-
-  sortedDummyTodoStore.subscribe(newValue => {
-    console.log(newValue);
-  });
 </script>
 
 <style>
