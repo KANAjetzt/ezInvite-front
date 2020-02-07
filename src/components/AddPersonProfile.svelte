@@ -79,7 +79,7 @@
 
     $eventDataStore.currentUser.name = e.detail;
   };
-
+  console.log($eventDataStore);
   const handleDoneBtn = async () => {
     if (!$eventDataStore.currentUser.name) {
       $appStore.messages = addMessage(
@@ -93,8 +93,8 @@
       $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
+    // --- Handle unkonwn user ---
     if ($eventDataStore.currentUser.unknown) {
-      // --- Handle unkonwn user ---
       // get Event ID
       const event = await client.query({
         query: QUERYEVENT,
@@ -117,7 +117,6 @@
       });
 
       // set createdUser to currentUser
-      delete createdUser.data.createUser.user.id;
       $eventDataStore.currentUser = createdUser.data.createUser.user;
       $eventDataStore.currentUser.unknown = true;
 
