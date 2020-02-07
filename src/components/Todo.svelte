@@ -18,7 +18,6 @@
   export let todo;
   export let index;
 
-  console.log(todo);
   const client = getClient();
 
   const QUERYUSERBYLINK = gql`
