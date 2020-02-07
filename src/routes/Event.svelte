@@ -90,76 +90,13 @@
   };
 
   const queryTodos = async widgetId => {
-    // generate Users to feed the Todo component with them
-    const generateDummyUsers = count => {
-      let dummyUsers = [];
-      if (count > 5) count = 4;
-      for (let i = 0; i < count; i++) {
-        dummyUsers = [
-          ...dummyUsers,
-          {
-            name: "unkown user",
-            photo: "http://localhost:3000/img/user/default.jpg"
-          }
-        ];
-      }
-      return dummyUsers;
-    };
-
-    // Add Dummys Users to data if needed
-    const prepareData = todo => {
-      let newTodo = { ...todo };
-      // if there are no partacing users on that thing yet
-      if (!todo.users || todo.users.length === 0) {
-        // If more than 5 people are required add 5 dummy users
-        if (todo.requiredPersons > 5) newTodo.users = generateDummyUsers(5);
-
-        // If less then 5 people are required add the ammount of requiredPersons in dummy Users
-        newTodo.users = generateDummyUsers(todo.requiredPersons);
-      }
-
-      // if this thing allready has some partacing users
-      if (todo.users && todo.users[0]) {
-        const partacer = todo.users.length;
-        const requiredPersons = todo.requiredPersons;
-
-        // if the thing is done
-        if (partacer >= requiredPersons) {
-          // add done property to todo
-          newTodo.done = true;
-        }
-
-        // add partacer count to todo
-        newTodo.partacerCount = partacer;
-
-        // get an Array of dummy users
-        const dummyUsers = generateDummyUsers(requiredPersons - partacer);
-
-        // Add the dummy users to the existing users
-        newTodo.users = newTodo.users.concat(dummyUsers);
-      }
-      return newTodo;
-    };
-
     const id = widgetId;
 
     // Query for todos with specific widget id
     const data = await client.query({ query: GETTODOS, variables: { id } });
 
-    const todos = data.data.todosForWidget;
-
     // Update Todos Store
-    todoStore.set(
-      todos
-        .map(todo => prepareData(todo))
-        // sort Todos by done or not
-        .sort((a, b) => {
-          // a and b bouth done = 0
-          // a done = false --> a,b
-          // else --> b,a
-          return a.done === b.done ? 0 : a.done ? -1 : 1;
-        })
-    );
+    todoStore.set(data.data.todosForWidget);
 
     return data;
   };

@@ -3,7 +3,12 @@
   import { gql } from "apollo-boost";
   import { getClient, mutate } from "svelte-apollo";
 
-  import { appStore, eventDataStore, todoStore } from "../stores";
+  import {
+    appStore,
+    eventDataStore,
+    todoStore,
+    sortedTodoStore
+  } from "../stores";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
@@ -56,7 +61,7 @@
       $eventDataStore.currentUser.unknown = true;
     }
 
-    // check if currentUser didn't accapted the invite
+    // --- check if currentUser didn't accapted the invite ---
     if (!$eventDataStore.currentUser.accepted) {
       // Show error message
       $appStore.messages = addMessage(
@@ -66,25 +71,52 @@
         "Pleas accapted your invite to help with this thing."
       );
 
-      console.log($appStore);
-
       // Show responder
       $appStore.showFullResponder = true;
 
       return;
     } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputEventName");
+      $appStore.messages = removeMessage(
+        $appStore.messages,
+        `addPersonToTodo-${index}`
+      );
     }
 
-    // add user in todoStore
-    const todo = $todoStore[index];
-    console.log(todo);
+    // --- update todoStore ---
+    const todo = $sortedTodoStore[e.detail.index];
+    const unsortedTodoIndex = $todoStore.findIndex(
+      unsortedTodo => unsortedTodo.id === todo.id
+    );
 
-    // save user to todo in DB
-    const input = { id: todo.id, user: $eventDataStore.currentUser.id };
+    // If no unknown persons left
+    if (todo.requiredPersons <= 0) {
+      // just add current user to todo users
+      $todoStore[unsortedTodoIndex].users = [
+        ...$todoStore[unsortedTodoIndex].users,
+        $eventDataStore.currentUser
+      ];
+    } else {
+      // Else replace unknown person with current user
+      const unknownPersonIndex = $todoStore[unsortedTodoIndex].users.findIndex(
+        user => user.name === "unknown person"
+      );
+
+      $todoStore[unsortedTodoIndex].users[unknownPersonIndex] =
+        $eventDataStore.currentUser;
+    }
+
+    // update requiredPerson count
+    $todoStore[unsortedTodoIndex].requiredPersons -= 1;
+
+    console.log($sortedTodoStore);
+    console.log($todoStore);
+
+    // --- update todo in DB ---
     await mutate(client, {
       mutation: ADDUSERTOTODO,
-      variables: { input }
+      variables: {
+        input: { id: todo.id, user: $eventDataStore.currentUser.id }
+      }
     });
   };
 
@@ -103,6 +135,29 @@
         variables: { input: { id: todo.id } }
       });
     }
+  };
+
+  // --- Handles the counter that is shown
+  //     if not all requiredPersons can fit as img ---
+  const handleCounter = todo => {
+    let counter = todo.requiredPersons;
+    const aktivPersons = todo.users.filter(
+      user => user.name !== "unknown person"
+    ).length;
+
+    console.log(aktivPersons);
+    // if no aktiv person counter -4
+    if (!aktivPersons) {
+      console.log("no no");
+      return counter - 4;
+    }
+    // if aktiv persons <= 4 --> 4 - aktiv persons
+    if (aktivPersons <= 4) {
+      console.log("yes yes");
+      return counter - (4 - aktivPersons);
+    }
+    // if aktiv persons > 4 --> requiredPersons
+    return counter;
   };
 </script>
 
@@ -143,12 +198,12 @@
     {/if}
     <!-- If more then 5 people are required, render last img with counter -->
     {#if todo.requiredPersons > 5 && i === 4}
-      <PersonImg {photo} {name} count={todo.requiredPersons - 4} />
+      <PersonImg {photo} {name} count={handleCounter(todo)} />
     {/if}
   {/each}
 
   <!-- Thing / Todo text -->
-  <p class="text">{todo.text}</p>
+  <p class="text">{todo.text} {index}</p>
 
 </li>
 
@@ -158,7 +213,7 @@
 {/if}
 
 <!-- Remove Btn on edit / add page -->
-{#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
+{#if $appStore.currentPage === 'event' || $appStore.currentPage === 'addEvent'}
   <RemoveBtn
     width={20}
     height={20}

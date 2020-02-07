@@ -59,7 +59,7 @@
   };
 
   const saveToDB = async (text, requiredPersons, userId) => {
-    // preopare input object
+    // prepare input object
     const input = {
       widget:
         $eventDataStore.widgets[
@@ -141,8 +141,8 @@
     // Save new thing to DB
     const newTodo = await saveToDB(
       text,
-      requiredPersons,
-      $eventDataStore.currentUser.id
+      requiredPersons
+      // $eventDataStore.currentUser.id
     );
 
     // add ID to thing in todoStore
