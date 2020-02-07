@@ -320,7 +320,5 @@
 </div>
 
 {#if errorMessages.filter(message => message.location === 'inputAddTodo')[0]}
-  <Message
-    messageBoxStyle={'todoInput'}
-    messages={errorMessages.filter(message => message.location === 'inputAddTodo')} />
+  <Message messageBoxStyle={'todoInput'} location={'inputAddTodo'} />
 {/if}

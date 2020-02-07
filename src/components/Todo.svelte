@@ -105,11 +105,8 @@
         $eventDataStore.currentUser;
     }
 
-    // update requiredPerson count
+    // update requiredPersons count
     $todoStore[unsortedTodoIndex].requiredPersons -= 1;
-
-    console.log($sortedTodoStore);
-    console.log($todoStore);
 
     // --- update todo in DB ---
     await mutate(client, {
@@ -140,20 +137,23 @@
   // --- Handles the counter that is shown
   //     if not all requiredPersons can fit as img ---
   const handleCounter = todo => {
-    let counter = todo.requiredPersons;
+    const counter = todo.requiredPersons;
     const aktivPersons = todo.users.filter(
       user => user.name !== "unknown person"
     ).length;
 
-    console.log(aktivPersons);
+    // if no aktiv person and requiredPersons === 5 --> counter 0
+    if (!aktivPersons && counter === 5) {
+      return counter - 5;
+    }
+
     // if no aktiv person counter -4
     if (!aktivPersons) {
-      console.log("no no");
       return counter - 4;
     }
+
     // if aktiv persons <= 4 --> 4 - aktiv persons
     if (aktivPersons <= 4) {
-      console.log("yes yes");
       return counter - (4 - aktivPersons);
     }
     // if aktiv persons > 4 --> requiredPersons
@@ -192,13 +192,17 @@
 
   <!-- PersonImgs -->
   {#each todo.users as { photo, name }, i}
-    <!-- If more then 5 people are required, render 4 imgs, else render 5 -->
-    {#if i < (todo.requiredPersons > 5 ? 4 : 5)}
-      <PersonImg {photo} {name} />
-    {/if}
-    <!-- If more then 5 people are required, render last img with counter -->
-    {#if todo.requiredPersons > 5 && i === 4}
-      <PersonImg {photo} {name} count={handleCounter(todo)} />
+    {#if i <= 4}
+      <!-- If the img is not the last one -->
+      {#if i === 4}
+        <PersonImg
+          photo={todo.requiredPersons <= 0 ? $eventDataStore.currentPerson.photo : 'http://localhost:3000/img/user/default.jpg'}
+          {name}
+          count={handleCounter(todo)} />
+      {:else}
+        <PersonImg {photo} {name} />
+      {/if}
+      <!-- If the img is the last one -->
     {/if}
   {/each}
 
@@ -213,7 +217,7 @@
 {/if}
 
 <!-- Remove Btn on edit / add page -->
-{#if $appStore.currentPage === 'event' || $appStore.currentPage === 'addEvent'}
+{#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
   <RemoveBtn
     width={20}
     height={20}
