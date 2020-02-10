@@ -200,7 +200,6 @@
       currentEventData.heroImgPreview = null;
       return currentEventData;
     });
-    console.log(eventData);
   };
 
   const handleImgStripeRemove = e => {

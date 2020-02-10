@@ -52,8 +52,6 @@
     }
   `;
 
-  console.log($eventDataStore);
-
   const handlePersonAddBtn = async e => {
     // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
