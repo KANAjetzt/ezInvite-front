@@ -22,7 +22,7 @@
   }
 
   .img--addPersonThing {
-    opacity: 0.4;
+    filter: brightness(0.6);
   }
 
   .count {

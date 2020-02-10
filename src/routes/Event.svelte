@@ -36,6 +36,7 @@
   const GETEVENT = gql`
     query($input: QueryEventInput!) {
       event(input: $input) {
+        id
         name
         startDate
         startTime

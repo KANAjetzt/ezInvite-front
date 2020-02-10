@@ -147,6 +147,11 @@
       return counter - 5;
     }
 
+    // if 5 aktiv persons
+    if (todo.users.length === 5) {
+      return null;
+    }
+
     // if no aktiv person counter -4
     if (!aktivPersons) {
       return counter - 4;
@@ -157,7 +162,7 @@
       return counter - (4 - aktivPersons);
     }
     // if aktiv persons > 4 --> requiredPersons
-    return counter * -1;
+    return todo.users.length - 4;
   };
 </script>
 
@@ -197,7 +202,7 @@
       {#if i === 4}
         <PersonImg
           photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
-          imgStyle={todo.requiredPersons <= 0 ? 'addPersonThing' : ''}
+          imgStyle={todo.users.length > 5 ? 'addPersonThing' : ''}
           {name}
           count={handleCounter(todo)} />
       {:else}
