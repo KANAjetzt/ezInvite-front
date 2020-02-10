@@ -3,6 +3,8 @@
   export let name = "unknown user";
   export let count = undefined;
   export let imgStyle = "";
+
+  console.trace(photo);
 </script>
 
 <style>
@@ -38,7 +40,7 @@
 <div class="imgBox">
   <img
     class={`img img--${imgStyle}`}
-    src={photo}
+    src={photo === null || undefined ? 'http://localhost:3000/img/user/default.jpg' : photo}
     alt={`Profile image of ${name}`} />
   {#if count}
     <span class="count">{count}..</span>

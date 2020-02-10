@@ -79,7 +79,7 @@
 
     $eventDataStore.currentUser.name = e.detail;
   };
-  console.log($eventDataStore);
+
   const handleDoneBtn = async () => {
     if (!$eventDataStore.currentUser.name) {
       $appStore.messages = addMessage(
@@ -95,18 +95,10 @@
 
     // --- Handle unkonwn user ---
     if ($eventDataStore.currentUser.unknown) {
-      // get Event ID
-      const event = await client.query({
-        query: QUERYEVENT,
-        variables: {
-          input: { link: $eventDataStore.link, slug: $eventDataStore.slug }
-        }
-      });
-
       // create new user
       const input = {
         name: $eventDataStore.currentUser.name,
-        event: event.data.event.id,
+        event: $eventDataStore.id,
         photo: $eventDataStore.purePersonImg,
         accepted: $eventDataStore.currentUser.accepted
       };

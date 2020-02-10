@@ -52,6 +52,8 @@
     }
   `;
 
+  console.log($eventDataStore);
+
   const handlePersonAddBtn = async e => {
     // --- Check if currentUser doesn't exists ---
     if (!$eventDataStore.currentUser) {
@@ -196,7 +198,7 @@
       <!-- If the img is not the last one -->
       {#if i === 4}
         <PersonImg
-          photo={todo.requiredPersons <= 0 ? todo.users[4].photo : 'http://localhost:3000/img/user/default.jpg'}
+          photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
           imgStyle={todo.requiredPersons <= 0 ? 'addPersonThing' : ''}
           {name}
           count={handleCounter(todo)} />
@@ -208,7 +210,7 @@
   {/each}
 
   <!-- Thing / Todo text -->
-  <p class="text">{todo.text} {index}</p>
+  <p class="text">{todo.text}</p>
 
 </li>
 
