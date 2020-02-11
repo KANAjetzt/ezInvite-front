@@ -458,7 +458,10 @@
               bind:selected={selectedDate}
               bind:formattedSelected
               bind:dateChosen>
-              <button class="datePickerBtn" on:click={e => e.preventDefault()}>
+              <button
+                type="button"
+                class="datePickerBtn"
+                on:click={e => e.preventDefault()}>
                 {formattedSelected}
               </button>
             </Datepicker>
