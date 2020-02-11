@@ -176,7 +176,7 @@
   };
 
   const handlePersonAddBtnClick = async e => {
-    // e.detail.originalEvent.preventDefault();
+    e.preventDefault();
 
     // Error if no text or requiredPerson count
     if (!text || !requiredPersons) {
@@ -294,7 +294,7 @@
     placeholder="Add something.."
     bind:value={text}
     on:keydown={e => {
-      if (e.keyCode === 13) handlePersonAddBtnClick();
+      if (e.keyCode === 13) handlePersonAddBtnClick(e);
     }} />
   <label for="personCount">
     <PersonCountIcon
@@ -315,7 +315,7 @@
     name="personCount"
     bind:value={requiredPersons}
     on:keydown={e => {
-      if (e.keyCode === 13) handlePersonAddBtnClick();
+      if (e.keyCode === 13) handlePersonAddBtnClick(e);
     }} />
 </div>
 
