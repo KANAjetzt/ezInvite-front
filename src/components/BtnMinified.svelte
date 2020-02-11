@@ -18,7 +18,8 @@
     background: rgba(4, 103, 179, 0.5);
     clip-path: polygon(0 0, 100% 0, 0% 100%, 0 100%);
     padding: 1rem 3rem 6rem 1.5rem;
-    width: 56%;
+    width: 100%;
+    pointer-events: auto;
   }
 </style>
 

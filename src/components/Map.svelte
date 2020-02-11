@@ -14,7 +14,7 @@
   // Load all the Map / Geocoder stuff
   onMount(async () => {
     mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrMDZjcmxmeDM2eGkzY3BrNHFtZDJtZncifQ.y_6ulnsUXBO36UyjTWmzlA";
+      "pk.eyJ1Ijoia2FuYWpldHp0IiwiYSI6ImNrNmhsM2g0ZzB4MnIzcW9qdjlnYWg5YXcifQ.NmnlSZKrvSC24BCFL-JmXA";
 
     var map = new mapboxgl.Map({
       container: "mapbox",

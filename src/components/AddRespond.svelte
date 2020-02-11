@@ -80,13 +80,18 @@
     max-width: 47rem;
   }
 
+  .respond--min {
+    grid-template-columns: 22%;
+    pointer-events: none;
+  }
+
   .descriptionBox {
     grid-row: 1 / 2;
     grid-column: 1 / 3;
   }
 </style>
 
-<div class="respond">
+<div class={$appStore.showFullResponder ? 'respond' : 'respond respond--min'}>
   {#if !$appStore.showFullResponder}
     <BtnMinified
       on:minifiedbtnclick={() => {
