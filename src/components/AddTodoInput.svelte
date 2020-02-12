@@ -126,9 +126,6 @@
 
     // check if currentUser didn't accapted the invite
     if (!$eventDataStore.currentUser.accepted) {
-      console.log("TODO: Add Mesageboard to show Error / Warings / Infos");
-      console.log("accapted your invite to help with this thing!");
-
       // Show responder
       $appStore.showFullResponder = !$appStore.showFullResponder;
 
