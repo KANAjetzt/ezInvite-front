@@ -71,7 +71,7 @@
         $appStore.messages,
         "Error",
         "inputPersonName",
-        "Pleas enter your name."
+        "Pleas enter your name. (Maybe you missed the Button on the left?)"
       );
     } else {
       $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
@@ -86,7 +86,7 @@
         $appStore.messages,
         "Error",
         "inputPersonName",
-        "Pleas enter your name."
+        "Pleas enter your name. ( Maybe you missed the button on the left? )"
       );
       return;
     } else {

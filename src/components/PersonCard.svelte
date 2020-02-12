@@ -26,5 +26,5 @@
 
 <div class="personCard">
   <PersonImg {photo} {name} />
-  <p class="name">{name}</p>
+  <p class="name">{name ? name : 'Your Name'}</p>
 </div>
