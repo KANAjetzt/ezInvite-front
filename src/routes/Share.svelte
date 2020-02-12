@@ -99,21 +99,23 @@
 
   const handleShareBtn = async e => {
     // create Input Object --> check CREATEUSERS GraphQL Docs if needed
-    const input = {
-      users: users.map(user => {
-        const newUser = { ...user };
-        newUser.event = eventData.id;
-        return newUser;
-      })
-    };
+    shared = true;
+    if (!users) return;
 
     const newUsers = await mutate(client, {
       mutation: CREATEUSERS,
-      variables: { input }
+      variables: {
+        input: {
+          users: users.map(user => {
+            const newUser = { ...user };
+            newUser.event = eventData.id;
+            return newUser;
+          })
+        }
+      }
     });
 
     userStore.set(newUsers.data.createUsers.users);
-    shared = true;
 
     // populate eventData Store with user Data
     $eventDataStore.users = $userStore;
@@ -238,7 +240,7 @@
     {#if shared}
       <section class="descriptionBoxGlobal">
         <DescriptionBox
-          title={'Or use this one to share it with whoever you want'} />
+          title={'Use this one to share it with whoever you want'} />
       </section>
       <section class="linkBoxGlobal">
         <LinkBoxGlobal
