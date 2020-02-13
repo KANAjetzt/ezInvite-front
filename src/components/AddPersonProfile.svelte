@@ -3,6 +3,7 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { navigate } from "svelte-routing";
+  import { fly } from "svelte/transition";
 
   import { appStore, eventDataStore } from "../stores";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
@@ -213,7 +214,9 @@
   }
 </style>
 
-<section class="personProfile">
+<section
+  transition:fly={{ x: -200, duration: 200, delay: 50 }}
+  class="personProfile">
 
   <!-- DescriptionBox: Current user is unknown -->
   {#if $eventDataStore.currentUser && !$eventDataStore.currentUser.name}

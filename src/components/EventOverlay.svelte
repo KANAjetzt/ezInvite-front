@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
+  import { fade } from "svelte/transition";
 
   export let ignoreClickClasses;
 
@@ -42,6 +43,6 @@
   }
 </style>
 
-<div class="overlay">
+<div transition:fade={{ duration: 200 }} class="overlay">
   <slot />
 </div>
