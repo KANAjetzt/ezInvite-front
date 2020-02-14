@@ -2,6 +2,7 @@
   import { todoStore, sortedDummyTodoStore } from "../stores";
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
+  import { flip } from "svelte/animate";
 </script>
 
 <style>
@@ -12,11 +13,18 @@
     list-style: none;
     max-width: 70rem;
   }
+
+  .todo {
+    display: flex;
+    align-items: center;
+  }
 </style>
 
 <ul class="todoList">
-  {#each $sortedDummyTodoStore as todo, index}
-    <Todo {todo} {index} />
+  {#each $sortedDummyTodoStore as todo, index (todo.id)}
+    <li animate:flip class="todo">
+      <Todo {todo} {index} />
+    </li>
   {/each}
   <AddTodoInput />
 </ul>

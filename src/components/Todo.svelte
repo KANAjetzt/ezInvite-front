@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { gql } from "apollo-boost";
   import { getClient, mutate } from "svelte-apollo";
+  import { slide } from "svelte/transition";
 
   import {
     appStore,
@@ -167,11 +168,6 @@
 </script>
 
 <style>
-  .todo {
-    display: flex;
-    align-items: center;
-  }
-
   .todo:first-child {
     margin-top: 2rem;
   }
@@ -187,35 +183,32 @@
   }
 </style>
 
-<li class="todo">
-  <PersonAddBtn
-    photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo !== 'default.jpg' ? $eventDataStore.currentUser.photo : undefined}
-    name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
-    imgStyle={'addPersonThing'}
-    on:personaddbtnclick={handlePersonAddBtn}
-    {index} />
+<PersonAddBtn
+  photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo !== 'default.jpg' ? $eventDataStore.currentUser.photo : undefined}
+  name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
+  imgStyle={'addPersonThing'}
+  on:personaddbtnclick={handlePersonAddBtn}
+  {index} />
 
-  <!-- PersonImgs -->
-  {#each todo.users as { photo, name }, i}
-    {#if i <= 4}
-      <!-- If the img is not the last one -->
-      {#if i === 4}
-        <PersonImg
-          photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
-          imgStyle={todo.users.length > 5 ? 'addPersonThing' : ''}
-          {name}
-          count={handleCounter(todo)} />
-      {:else}
-        <PersonImg {photo} {name} />
-      {/if}
-      <!-- If the img is the last one -->
+<!-- PersonImgs -->
+{#each todo.users as { photo, name }, i}
+  {#if i <= 4}
+    <!-- If the img is not the last one -->
+    {#if i === 4}
+      <PersonImg
+        photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
+        imgStyle={todo.users.length > 5 ? 'addPersonThing' : ''}
+        {name}
+        count={handleCounter(todo)} />
+    {:else}
+      <PersonImg {photo} {name} />
     {/if}
-  {/each}
+    <!-- If the img is the last one -->
+  {/if}
+{/each}
 
-  <!-- Thing / Todo text -->
-  <p class="text">{todo.text}</p>
-
-</li>
+<!-- Thing / Todo text -->
+<p class="text">{todo.text}</p>
 
 <!-- Error Message -->
 {#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
