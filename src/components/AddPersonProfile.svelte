@@ -285,7 +285,7 @@
     {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
       <div class="linkBox">
         <LinkBox
-          value={`http://localhost:5000/${$eventDataStore.slug}/${$eventDataStore.link}/${$eventDataStore.currentUser.link}`} />
+          value={`${svelteEnv.frontUrl}/${$eventDataStore.slug}/${$eventDataStore.link}/${$eventDataStore.currentUser.link}`} />
       </div>
     {/if}
   </section>

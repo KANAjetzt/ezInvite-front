@@ -34,7 +34,12 @@ export default {
       // 2 level deep object should be stringify
       svelteEnv: JSON.stringify({
         isProd: production,
-        APIUrl: "https://ezinvite.herokuapp.com/graphql"
+        APIUrl: production
+          ? "https://ezinvite.herokuapp.com/graphql"
+          : "http://localhost:3000/graphql",
+        frontUrl: production
+          ? "https://xenodochial-lamport-311f31.netlify.com"
+          : "http://localhost:5000"
       })
     }),
 

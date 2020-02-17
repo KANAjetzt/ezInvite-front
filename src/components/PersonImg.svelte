@@ -1,5 +1,5 @@
 <script>
-  export let photo = "img/default.jpg";
+  export let photo = `${svelteEnv.frontUrl}/img/default.jpg`;
   export let name = "unknown user";
   export let count = undefined;
   export let imgStyle = "";
@@ -38,7 +38,7 @@
 <div class="imgBox">
   <img
     class={`img img--${imgStyle}`}
-    src={photo === null || photo === undefined ? 'img/default.jpg' : photo}
+    src={photo === null || photo === undefined ? `${svelteEnv.frontUrl}/img/default.jpg` : photo}
     alt={`Profile image of ${name}`} />
   {#if count}
     <span class="count">{count}..</span>

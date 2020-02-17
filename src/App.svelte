@@ -15,16 +15,10 @@
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
 
-  console.log(svelteEnv.isProd);
-
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: createUploadLink({
-      uri: `${
-        svelteEnv.isProd
-          ? "https://ezinvite.herokuapp.com/graphql"
-          : "http://localhost:3000/graphql"
-      }`
+      uri: svelteEnv.APIUrl
     })
   });
 

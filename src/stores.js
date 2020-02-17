@@ -46,7 +46,7 @@ export const sortedDummyTodoStore = derived(
           ...todo.users,
           {
             name: "unknown person",
-            photo: "img/default.jpg"
+            photo: `${svelteEnv.frontUrl}/img/default.jpg`
           }
         ];
       }
