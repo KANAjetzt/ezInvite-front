@@ -334,7 +334,7 @@
     saveLocalStorage(todos, "todos");
 
     // Navigate back to the event page
-    navigate(`http://localhost:5000/${eventData.slug}/${eventData.link}`);
+    navigate(`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}`);
   };
 </script>
 

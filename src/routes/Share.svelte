@@ -122,7 +122,7 @@
   };
 
   const handleBackBtn = e => {
-    navigate(`http://localhost:5000/${eventData.slug}/${eventData.link}`);
+    navigate(`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}`);
   };
 </script>
 
@@ -223,7 +223,7 @@
             <div class="person">
               <PersonCard {name} />
               <LinkBox
-                value={`http://localhost:5000/${eventData.slug}/${eventData.link}/${link}`} />
+                value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}/${link}`} />
             </div>
           {/each}
         {/if}
@@ -244,7 +244,7 @@
       </section>
       <section class="linkBoxGlobal">
         <LinkBoxGlobal
-          value={`http://localhost:5000/${eventData.slug}/${eventData.link}`} />
+          value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}`} />
       </section>
       <section class="descriptionBoxEdit">
         <DescriptionBox
@@ -252,7 +252,7 @@
       </section>
       <section class="linkBoxEdit">
         <LinkBoxEdit
-          value={`http://localhost:5000/edit/${eventData.slug}/${eventData.editLink}`} />
+          value={`${svelteEnv.frontUrl}/edit/${eventData.slug}/${eventData.editLink}`} />
       </section>
     {/if}
     <section class="btnCta">

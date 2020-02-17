@@ -5,6 +5,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import builtins from "rollup-plugin-node-builtins";
 import autoPreprocess from "svelte-preprocess";
+import replace from "@rollup/plugin-replace";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -26,6 +27,19 @@ export default {
       dev: !production,
       preprocess: autoPreprocess({
         postcss: true
+      })
+    }),
+
+    replace({
+      // 2 level deep object should be stringify
+      svelteEnv: JSON.stringify({
+        isProd: production,
+        APIUrl: production
+          ? "https://ezinvite.herokuapp.com/graphql"
+          : "http://localhost:3000/graphql",
+        frontUrl: production
+          ? "https://xenodochial-lamport-311f31.netlify.com"
+          : "http://localhost:5000"
       })
     }),
 
