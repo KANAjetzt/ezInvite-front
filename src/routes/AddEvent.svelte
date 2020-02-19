@@ -3,6 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
+  import { fly } from "svelte/transition";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
@@ -314,7 +315,7 @@
       {/if}
 
     </section>
-    <section class="simpleFields">
+    <section transition:fly={{ duration: 2500, x: 10 }} class="simpleFields">
       <div class="FormFields">
         <div class="title">
           <SimpleField
@@ -368,51 +369,53 @@
         </BtnPanel>
       </section>
     {:else}
-      <section class="startEndTime">
-        <AddStartEndTime
-          bind:startTime={eventData.startTime}
-          bind:endTime={eventData.endTime} />
-      </section>
-      <section class="description">
-        <AddDescription bind:value={eventData.description} />
-      </section>
-      <section class="imgsUpload">
-        {#if !eventData.imgs}
-          <AddImgs bind:imgStripe />
-        {:else}
-          <ImageStripe />
-          <RemoveBtn
-            width={20}
-            height={20}
-            marginLeft={1}
-            marginTop={-2.2}
-            on:removebtnclick={() => handleImgStripeRemove()} />
-        {/if}
-      </section>
-      <section class="locationPicker">
-        <LocationPicker />
-      </section>
-      <section class="widgetPicker">
-        <WidgetPicker on:listbtnclick={handlelistBtnClick} />
-      </section>
-      {#if listWidgetVisible}
-        <section class="widgets">
-          <AddWidgets />
-          <RemoveBtn
-            width={25}
-            height={25}
-            marginLeft={1}
-            marginTop={-2.5}
-            on:removebtnclick={() => {
-              listWidgetVisible = !listWidgetVisible;
-            }} />
+      <section transition:fly={{ delay: 1500, duration: 2500, y: 1500 }}>
+        <section class="startEndTime">
+          <AddStartEndTime
+            bind:startTime={eventData.startTime}
+            bind:endTime={eventData.endTime} />
         </section>
-      {/if}
-      <section>
-        <BtnBig
-          text={'GO !'}
-          on:bigbtnclick={handleCTABtnClick}
-          clipVar={'tertiary-fixed'} />
+        <section class="description">
+          <AddDescription bind:value={eventData.description} />
+        </section>
+        <section class="imgsUpload">
+          {#if !eventData.imgs}
+            <AddImgs bind:imgStripe />
+          {:else}
+            <ImageStripe />
+            <RemoveBtn
+              width={20}
+              height={20}
+              marginLeft={1}
+              marginTop={-2.2}
+              on:removebtnclick={() => handleImgStripeRemove()} />
+          {/if}
+        </section>
+        <section class="locationPicker">
+          <LocationPicker />
+        </section>
+        <section class="widgetPicker">
+          <WidgetPicker on:listbtnclick={handlelistBtnClick} />
+        </section>
+        {#if listWidgetVisible}
+          <section class="widgets">
+            <AddWidgets />
+            <RemoveBtn
+              width={25}
+              height={25}
+              marginLeft={1}
+              marginTop={-2.5}
+              on:removebtnclick={() => {
+                listWidgetVisible = !listWidgetVisible;
+              }} />
+          </section>
+        {/if}
+        <section>
+          <BtnBig
+            text={'GO !'}
+            on:bigbtnclick={handleCTABtnClick}
+            clipVar={'tertiary-fixed'} />
+        </section>
       </section>
     {/if}
   </form>
