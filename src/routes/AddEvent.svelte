@@ -3,7 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
-  import { fly } from "svelte/transition";
+  import { slide, fly } from "svelte/transition";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
@@ -24,7 +24,8 @@
   import BtnBig from "../components/BtnBig.svelte";
   import Message from "../components/Message.svelte";
 
-  let moreVisible = false;
+  let section1 = true;
+  let section2 = false;
   let listWidgetVisible = false;
 
   let eventData = {};
@@ -93,7 +94,11 @@
   // Render all Form Fields not shown by default
   const handleNormalBtnClick = e => {
     e.detail.preventDefault();
-    moreVisible = true;
+    section1
+      ? (section1 = !section1)
+      : section2
+      ? (section2 = !section2)
+      : null;
   };
 
   // Remove Hero Img Preview
@@ -315,48 +320,54 @@
       {/if}
 
     </section>
-    <section transition:fly={{ duration: 2500, x: 10 }} class="simpleFields">
-      <div class="FormFields">
-        <div class="title">
-          <SimpleField
-            name={'Title'}
-            heading={'Title'}
-            required={true}
-            placeholder={'What are you planing?'}
-            bind:value={eventData.name} />
-        </div>
-        {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
-          <Message location={'inputEventName'} />
-        {/if}
-        <div class="date">
-          <span class="labelDatepicker">Date</span>
-          <Datepicker
-            start={new Date()}
-            end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
-            highlightColor="#047bd7"
-            dayBackgroundColor="#efefef"
-            dayTextColor="#333"
-            dayHighlightedBackgroundColor="#047bd7"
-            dayHighlightedTextColor="#fff"
-            bind:selected={selectedDate}
-            bind:formattedSelected
-            bind:dateChosen>
-            <button
-              type="button"
-              class={`datePickerBtn datePickerBtn--isChosen`}
-              on:click={e => e.preventDefault()}>
-              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
-            </button>
-          </Datepicker>
-          {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
-            <Message location={'inputStartDate'} />
+    {#if section1}
+      <section
+        style="width: 100vw"
+        transition:fly={{ duration: 250, x: -30 }}
+        on:outroend={() => (section2 = true)}>
+        <div class="FormFields">
+          <div class="title">
+            <SimpleField
+              name={'Title'}
+              heading={'Title'}
+              required={true}
+              placeholder={'What are you planing?'}
+              bind:value={eventData.name} />
+          </div>
+          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+            <Message location={'inputEventName'} />
           {/if}
+          <div class="date">
+            <span class="labelDatepicker">Date</span>
+            <Datepicker
+              start={new Date()}
+              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+              format={'#{l}, #{F} #{j}, #{Y}'}
+              highlightColor="#047bd7"
+              dayBackgroundColor="#efefef"
+              dayTextColor="#333"
+              dayHighlightedBackgroundColor="#047bd7"
+              dayHighlightedTextColor="#fff"
+              bind:selected={selectedDate}
+              bind:formattedSelected
+              bind:dateChosen>
+              <button
+                type="button"
+                class={`datePickerBtn datePickerBtn--isChosen`}
+                on:click={e => e.preventDefault()}>
+                {#if dateChosen}
+                  {formattedSelected}
+                {:else}When does it start?{/if}
+              </button>
+            </Datepicker>
+            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+              <Message location={'inputStartDate'} />
+            {/if}
+          </div>
         </div>
-      </div>
-    </section>
-    {#if !moreVisible}
-      <section class="selectBtns">
+      </section>
+
+      <section transition:fly={{ duration: 250, y: 30 }} class="selectBtns">
         <BtnPanel clipVar={'secondary-fixed'}>
           <NormalBtn
             text={'Add more'}
@@ -368,8 +379,52 @@
             on:ctabtnclick={handleCTABtnClick} />
         </BtnPanel>
       </section>
-    {:else}
-      <section transition:fly={{ delay: 1500, duration: 2500, y: 1500 }}>
+    {:else if section2}
+      <section
+        style="width: 100vw"
+        transition:slide={{ duration: 3500 }}
+        on:outroend={() => (section1 = true)}>
+        <div class="FormFields">
+          <div class="title">
+            <SimpleField
+              name={'Title'}
+              heading={'Title'}
+              required={true}
+              placeholder={'What are you planing?'}
+              bind:value={eventData.name} />
+          </div>
+          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+            <Message location={'inputEventName'} />
+          {/if}
+          <div class="date">
+            <span class="labelDatepicker">Date</span>
+            <Datepicker
+              start={new Date()}
+              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+              format={'#{l}, #{F} #{j}, #{Y}'}
+              highlightColor="#047bd7"
+              dayBackgroundColor="#efefef"
+              dayTextColor="#333"
+              dayHighlightedBackgroundColor="#047bd7"
+              dayHighlightedTextColor="#fff"
+              bind:selected={selectedDate}
+              bind:formattedSelected
+              bind:dateChosen>
+              <button
+                type="button"
+                class={`datePickerBtn datePickerBtn--isChosen`}
+                on:click={e => e.preventDefault()}>
+                {#if dateChosen}
+                  {formattedSelected}
+                {:else}When does it start?{/if}
+              </button>
+            </Datepicker>
+            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+              <Message location={'inputStartDate'} />
+            {/if}
+          </div>
+        </div>
+
         <section class="startEndTime">
           <AddStartEndTime
             bind:startTime={eventData.startTime}
