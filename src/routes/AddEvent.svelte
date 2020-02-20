@@ -3,6 +3,7 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
+  import { slide, fly } from "svelte/transition";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
@@ -23,7 +24,8 @@
   import BtnBig from "../components/BtnBig.svelte";
   import Message from "../components/Message.svelte";
 
-  let moreVisible = false;
+  let section1 = true;
+  let section2 = false;
   let listWidgetVisible = false;
 
   let eventData = {};
@@ -92,7 +94,11 @@
   // Render all Form Fields not shown by default
   const handleNormalBtnClick = e => {
     e.detail.preventDefault();
-    moreVisible = true;
+    section1
+      ? (section1 = !section1)
+      : section2
+      ? (section2 = !section2)
+      : null;
   };
 
   // Remove Hero Img Preview
@@ -314,48 +320,54 @@
       {/if}
 
     </section>
-    <section class="simpleFields">
-      <div class="FormFields">
-        <div class="title">
-          <SimpleField
-            name={'Title'}
-            heading={'Title'}
-            required={true}
-            placeholder={'What are you planing?'}
-            bind:value={eventData.name} />
-        </div>
-        {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
-          <Message location={'inputEventName'} />
-        {/if}
-        <div class="date">
-          <span class="labelDatepicker">Date</span>
-          <Datepicker
-            start={new Date()}
-            end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
-            highlightColor="#047bd7"
-            dayBackgroundColor="#efefef"
-            dayTextColor="#333"
-            dayHighlightedBackgroundColor="#047bd7"
-            dayHighlightedTextColor="#fff"
-            bind:selected={selectedDate}
-            bind:formattedSelected
-            bind:dateChosen>
-            <button
-              type="button"
-              class={`datePickerBtn datePickerBtn--isChosen`}
-              on:click={e => e.preventDefault()}>
-              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
-            </button>
-          </Datepicker>
-          {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
-            <Message location={'inputStartDate'} />
+    {#if section1}
+      <section
+        style="width: 100vw"
+        transition:fly={{ duration: 250, x: -30 }}
+        on:outroend={() => (section2 = true)}>
+        <div class="FormFields">
+          <div class="title">
+            <SimpleField
+              name={'Title'}
+              heading={'Title'}
+              required={true}
+              placeholder={'What are you planing?'}
+              bind:value={eventData.name} />
+          </div>
+          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+            <Message location={'inputEventName'} />
           {/if}
+          <div class="date">
+            <span class="labelDatepicker">Date</span>
+            <Datepicker
+              start={new Date()}
+              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+              format={'#{l}, #{F} #{j}, #{Y}'}
+              highlightColor="#047bd7"
+              dayBackgroundColor="#efefef"
+              dayTextColor="#333"
+              dayHighlightedBackgroundColor="#047bd7"
+              dayHighlightedTextColor="#fff"
+              bind:selected={selectedDate}
+              bind:formattedSelected
+              bind:dateChosen>
+              <button
+                type="button"
+                class={`datePickerBtn datePickerBtn--isChosen`}
+                on:click={e => e.preventDefault()}>
+                {#if dateChosen}
+                  {formattedSelected}
+                {:else}When does it start?{/if}
+              </button>
+            </Datepicker>
+            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+              <Message location={'inputStartDate'} />
+            {/if}
+          </div>
         </div>
-      </div>
-    </section>
-    {#if !moreVisible}
-      <section class="selectBtns">
+      </section>
+
+      <section transition:fly={{ duration: 250, y: 30 }} class="selectBtns">
         <BtnPanel clipVar={'secondary-fixed'}>
           <NormalBtn
             text={'Add more'}
@@ -367,52 +379,98 @@
             on:ctabtnclick={handleCTABtnClick} />
         </BtnPanel>
       </section>
-    {:else}
-      <section class="startEndTime">
-        <AddStartEndTime
-          bind:startTime={eventData.startTime}
-          bind:endTime={eventData.endTime} />
-      </section>
-      <section class="description">
-        <AddDescription bind:value={eventData.description} />
-      </section>
-      <section class="imgsUpload">
-        {#if !eventData.imgs}
-          <AddImgs bind:imgStripe />
-        {:else}
-          <ImageStripe />
-          <RemoveBtn
-            width={20}
-            height={20}
-            marginLeft={1}
-            marginTop={-2.2}
-            on:removebtnclick={() => handleImgStripeRemove()} />
-        {/if}
-      </section>
-      <section class="locationPicker">
-        <LocationPicker />
-      </section>
-      <section class="widgetPicker">
-        <WidgetPicker on:listbtnclick={handlelistBtnClick} />
-      </section>
-      {#if listWidgetVisible}
-        <section class="widgets">
-          <AddWidgets />
-          <RemoveBtn
-            width={25}
-            height={25}
-            marginLeft={1}
-            marginTop={-2.5}
-            on:removebtnclick={() => {
-              listWidgetVisible = !listWidgetVisible;
-            }} />
+    {:else if section2}
+      <section
+        style="width: 100vw"
+        transition:slide={{ duration: 3500 }}
+        on:outroend={() => (section1 = true)}>
+        <div class="FormFields">
+          <div class="title">
+            <SimpleField
+              name={'Title'}
+              heading={'Title'}
+              required={true}
+              placeholder={'What are you planing?'}
+              bind:value={eventData.name} />
+          </div>
+          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+            <Message location={'inputEventName'} />
+          {/if}
+          <div class="date">
+            <span class="labelDatepicker">Date</span>
+            <Datepicker
+              start={new Date()}
+              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+              format={'#{l}, #{F} #{j}, #{Y}'}
+              highlightColor="#047bd7"
+              dayBackgroundColor="#efefef"
+              dayTextColor="#333"
+              dayHighlightedBackgroundColor="#047bd7"
+              dayHighlightedTextColor="#fff"
+              bind:selected={selectedDate}
+              bind:formattedSelected
+              bind:dateChosen>
+              <button
+                type="button"
+                class={`datePickerBtn datePickerBtn--isChosen`}
+                on:click={e => e.preventDefault()}>
+                {#if dateChosen}
+                  {formattedSelected}
+                {:else}When does it start?{/if}
+              </button>
+            </Datepicker>
+            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+              <Message location={'inputStartDate'} />
+            {/if}
+          </div>
+        </div>
+
+        <section class="startEndTime">
+          <AddStartEndTime
+            bind:startTime={eventData.startTime}
+            bind:endTime={eventData.endTime} />
         </section>
-      {/if}
-      <section>
-        <BtnBig
-          text={'GO !'}
-          on:bigbtnclick={handleCTABtnClick}
-          clipVar={'tertiary-fixed'} />
+        <section class="description">
+          <AddDescription bind:value={eventData.description} />
+        </section>
+        <section class="imgsUpload">
+          {#if !eventData.imgs}
+            <AddImgs bind:imgStripe />
+          {:else}
+            <ImageStripe />
+            <RemoveBtn
+              width={20}
+              height={20}
+              marginLeft={1}
+              marginTop={-2.2}
+              on:removebtnclick={() => handleImgStripeRemove()} />
+          {/if}
+        </section>
+        <section class="locationPicker">
+          <LocationPicker />
+        </section>
+        <section class="widgetPicker">
+          <WidgetPicker on:listbtnclick={handlelistBtnClick} />
+        </section>
+        {#if listWidgetVisible}
+          <section class="widgets">
+            <AddWidgets />
+            <RemoveBtn
+              width={25}
+              height={25}
+              marginLeft={1}
+              marginTop={-2.5}
+              on:removebtnclick={() => {
+                listWidgetVisible = !listWidgetVisible;
+              }} />
+          </section>
+        {/if}
+        <section>
+          <BtnBig
+            text={'GO !'}
+            on:bigbtnclick={handleCTABtnClick}
+            clipVar={'tertiary-fixed'} />
+        </section>
       </section>
     {/if}
   </form>

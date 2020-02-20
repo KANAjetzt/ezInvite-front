@@ -22,14 +22,6 @@ export default {
     // }
   },
   plugins: [
-    svelte({
-      // enable run-time checks when not in production
-      dev: !production,
-      preprocess: autoPreprocess({
-        postcss: true
-      })
-    }),
-
     replace({
       // 2 level deep object should be stringify
       svelteEnv: JSON.stringify({
@@ -40,6 +32,13 @@ export default {
         frontUrl: production
           ? "https://xenodochial-lamport-311f31.netlify.com"
           : "http://localhost:5000"
+      })
+    }),
+    svelte({
+      // enable run-time checks when not in production
+      dev: !production,
+      preprocess: autoPreprocess({
+        postcss: true
       })
     }),
 
