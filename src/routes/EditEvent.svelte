@@ -439,7 +439,7 @@
               name={'Title'}
               heading={'Title'}
               placeholder={'What are you planing?'}
-              bind:value={eventData.name} />
+              bind:value={$eventDataStore.name} />
           </div>
           {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
             <Message location={'inputEventName'} />
@@ -474,11 +474,11 @@
 
       <section class="startEndTime">
         <AddStartEndTime
-          bind:startTime={eventData.startTime}
-          bind:endTime={eventData.endTime} />
+          bind:startTime={$eventDataStore.startTime}
+          bind:endTime={$eventDataStore.endTime} />
       </section>
       <section class="description">
-        <AddDescription bind:value={eventData.description} />
+        <AddDescription bind:value={$eventDataStore.description} />
       </section>
       <section class="imgsUpload">
         {#if !eventData.imgs || !eventData.imgs[0]}
