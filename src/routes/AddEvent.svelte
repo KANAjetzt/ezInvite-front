@@ -380,11 +380,8 @@
         </BtnPanel>
       </section>
     {:else if section2}
-      <section
-        style="width: 100vw"
-        transition:slide={{ duration: 3500 }}
-        on:outroend={() => (section1 = true)}>
-        <div class="FormFields">
+      <section style="width: 100vw">
+        <div class="FormFields" transition:fly={{ duration: 250, x: -30 }}>
           <div class="title">
             <SimpleField
               name={'Title'}
@@ -425,15 +422,17 @@
           </div>
         </div>
 
-        <section class="startEndTime">
+        <section
+          class="startEndTime"
+          transition:fly={{ duration: 250, x: -30 }}>
           <AddStartEndTime
             bind:startTime={eventData.startTime}
             bind:endTime={eventData.endTime} />
         </section>
-        <section class="description">
+        <section class="description" transition:fly={{ duration: 250, x: -30 }}>
           <AddDescription bind:value={eventData.description} />
         </section>
-        <section class="imgsUpload">
+        <section class="imgsUpload" transition:fly={{ duration: 250, x: -30 }}>
           {#if !eventData.imgs}
             <AddImgs bind:imgStripe />
           {:else}
@@ -446,14 +445,18 @@
               on:removebtnclick={() => handleImgStripeRemove()} />
           {/if}
         </section>
-        <section class="locationPicker">
+        <section
+          class="locationPicker"
+          transition:fly={{ duration: 250, x: -30 }}>
           <LocationPicker />
         </section>
-        <section class="widgetPicker">
+        <section
+          class="widgetPicker"
+          transition:fly={{ duration: 250, x: -30 }}>
           <WidgetPicker on:listbtnclick={handlelistBtnClick} />
         </section>
         {#if listWidgetVisible}
-          <section class="widgets">
+          <section class="widgets" transition:slide={{ duration: 250 }}>
             <AddWidgets />
             <RemoveBtn
               width={25}
