@@ -1,11 +1,17 @@
 <script>
-  import { eventDataStore } from "../stores";
+  import { fly } from "svelte/transition";
+  import { createEventDispatcher } from "svelte";
+
+  import { eventDataStore, appStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
+  import RemoveBtn from "./BtnRemove.svelte";
 
   export let bgImage =
     "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
+
+  const dispatch = createEventDispatcher();
 
   let eventData;
 
@@ -81,11 +87,16 @@
   }
 </style>
 
-<div class="topBar" />
+{#if $appStore.currentPage === 'event'}
+  <div class="topBar" />
+{/if}
+
 <header
   class="hero"
   style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
-  -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')">
+  -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')"
+  transition:fly={{ duration: 250, y: -300 }}
+  on:outroend={() => dispatch('outroend')}>
 
   {#if eventData.name}
     <div class="title">
@@ -110,5 +121,12 @@
       {/if}
     </div>
   {/if}
-
 </header>
+
+<!-- If on AddEvent or EditEvent Page show RemoveBtn -->
+{#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
+  <RemoveBtn
+    marginLeft={1}
+    marginTop={-2.9}
+    on:removebtnclick={() => dispatch('removebtnclick')} />
+{/if}

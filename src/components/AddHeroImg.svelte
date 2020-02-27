@@ -1,6 +1,11 @@
 <script>
+  import { fly } from "svelte/transition";
+  import { createEventDispatcher } from "svelte";
+
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
+
+  const dispatch = createEventDispatcher();
 
   // ! Handle Img upload after submitting the form in AddEvent Route !
   const handleImg = () => {
@@ -23,6 +28,8 @@
     };
 
     const dataUrl = reader.readAsDataURL(img);
+
+    dispatch("imgadded");
   };
 </script>
 
@@ -72,7 +79,11 @@
   name="heroImg"
   on:change={() => handleImg()} />
 
-<label class="imgUploadBtn" for="heroImg">
+<label
+  class="imgUploadBtn"
+  for="heroImg"
+  transition:fly={{ duration: 250, y: -350 }}
+  on:outroend={() => dispatch('outroend')}>
   <ImgAddIcon height={80} width={80} fill={'#f9fafb'} />
   <span>Add a hero image</span>
 </label>

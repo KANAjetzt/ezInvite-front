@@ -220,7 +220,7 @@
   <RemoveBtn
     width={20}
     height={20}
-    marginLeft={1}
+    marginLeft={-1}
     marginTop={-2.2}
     on:removebtnclick={handleTodoRemove} />
 {/if}
