@@ -3,6 +3,12 @@
   import Todo from "./Todo.svelte";
   import AddTodoInput from "./AddTodoInput.svelte";
   import { flip } from "svelte/animate";
+
+  let todosSortedWithDummyUsers;
+
+  sortedDummyTodoStore.subscribe(newData => {
+    todosSortedWithDummyUsers = newData;
+  });
 </script>
 
 <style>
@@ -22,7 +28,7 @@
 </style>
 
 <ul class="todoList">
-  {#each $sortedDummyTodoStore as todo, index (todo.id)}
+  {#each todosSortedWithDummyUsers as todo, index (todo.id ? todo.id : index)}
     <li animate:flip class="todo">
       <Todo {todo} {index} />
     </li>
