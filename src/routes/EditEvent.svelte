@@ -425,10 +425,6 @@
         {:else}
           <Hero
             bgImage={!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg' ? eventData.heroImgPreview : eventData.heroImg} />
-          <RemoveBtn
-            marginLeft={1}
-            marginTop={-2.9}
-            on:removebtnclick={() => handleHeroImgRemove()} />
         {/if}
 
       </section>

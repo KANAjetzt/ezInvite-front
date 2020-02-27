@@ -26,6 +26,8 @@
 
   let section1 = true;
   let section2 = false;
+  let addHeroImg = true;
+  let heroImg = false;
   let listWidgetVisible = false;
 
   let eventData = {};
@@ -101,6 +103,15 @@
       : null;
   };
 
+  // Handle Add Hero Img
+  const handleAddHeroImg = e => {
+    addHeroImg
+      ? (addHeroImg = !addHeroImg)
+      : heroImg
+      ? (heroImg = !heroImg)
+      : null;
+  };
+
   // Remove Hero Img Preview
   const handleHeroImgRemove = e => {
     eventDataStore.update(currentData => {
@@ -108,6 +119,12 @@
       currentEventData.heroImgPreview = undefined;
       return currentEventData;
     });
+
+    addHeroImg
+      ? (addHeroImg = !addHeroImg)
+      : heroImg
+      ? (heroImg = !heroImg)
+      : null;
   };
 
   const handleImgStripeRemove = e => {
@@ -308,15 +325,16 @@
     <div class="topBar" />
   {/if}
   <form class="form">
-    <section class="heroImg">
-      {#if !eventData.heroImgPreview}
-        <AddHeroImg />
-      {:else}
-        <Hero bgImage={eventData.heroImgPreview} />
-        <RemoveBtn
-          marginLeft={1}
-          marginTop={-2.9}
-          on:removebtnclick={() => handleHeroImgRemove()} />
+    <section class="heroImg" transition:fly={{ duration: 250, y: -100 }}>
+      {#if addHeroImg}
+        <AddHeroImg
+          on:imgadded={handleAddHeroImg}
+          on:outroend={() => (heroImg = true)} />
+      {:else if heroImg}
+        <Hero
+          bgImage={eventData.heroImgPreview}
+          on:removebtnclick={handleHeroImgRemove}
+          on:outroend={() => (addHeroImg = true)} />
       {/if}
 
     </section>
