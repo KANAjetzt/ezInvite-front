@@ -1,4 +1,5 @@
 <script>
+  import { fly } from "svelte/transition";
   import { eventDataStore } from "../stores";
 
   let eventData;
@@ -49,7 +50,9 @@
 </style>
 
 {#if eventData.imgs}
-  <section class="imageStripeWrapper">
+  <section
+    class="imageStripeWrapper"
+    transition:fly={{ duration: 250, x: -300 }}>
     <section class="imageStripe">
 
       {#each eventData.imgs as img}
