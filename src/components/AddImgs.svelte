@@ -1,6 +1,10 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
+
+  const dispatch = createEventDispatcher();
 
   const handleImgs = () => {
     const imgs = document.getElementById("imgs").files;
@@ -30,6 +34,8 @@
       }
     };
     readFile(imgs[0]);
+
+    dispatch("imgsadded");
   };
 </script>
 
