@@ -67,7 +67,7 @@
   `;
 
   const handlePersonName = e => {
-    if (!e.detail) {
+    if (!e.detail.personName) {
       $appStore.messages = addMessage(
         $appStore.messages,
         "Error",
@@ -78,7 +78,7 @@
       $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
-    $eventDataStore.currentUser.name = e.detail;
+    $eventDataStore.currentUser.name = e.detail.personName;
   };
 
   const handleDoneBtn = async () => {

@@ -4,6 +4,7 @@
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
+  import { flip } from "svelte/animate";
 
   import { eventDataStore, todoStore, userStore, appStore } from "../stores.js";
   import {
@@ -20,7 +21,6 @@
   import LinkBoxEdit from "../components/LinkBoxEdit.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
-  import BtnRemove from "../components/BtnRemove.svelte";
   import Message from "../components/Message.svelte";
 
   // Handle Local Storage
@@ -64,7 +64,7 @@
   `;
 
   const handleAddPerson = e => {
-    const personName = e.detail;
+    const { personName, key } = e.detail;
 
     if (!personName) {
       $appStore.messages = addMessage(
@@ -80,21 +80,10 @@
 
     userStore.update(currentData => {
       let newData = currentData ? [...currentData] : [];
-      newData = [...newData, { name: personName }];
+      newData = [...newData, { name: personName, key }];
       saveLocalStorage(newData, "users");
       return newData;
     });
-  };
-
-  const handlePersonRemove = index => {
-    // delete person from store
-    userStore.update(currentData => {
-      let newData = [...currentData];
-      newData.splice(index, 1);
-      saveLocalStorage(newData, "users");
-      return newData;
-    });
-    // update local storage
   };
 
   const handleShareBtn = async e => {
@@ -207,15 +196,9 @@
     <section class="persons">
       {#if users}
         {#if !shared}
-          {#each users as { name }, index}
-            <div class="personBevoreShare">
-              <PersonCard {name} />
-              <BtnRemove
-                width={20}
-                height={20}
-                marginTop={-2}
-                marginLeft={-1}
-                on:removebtnclick={() => handlePersonRemove(index)} />
+          {#each users as { name, key }, index (key)}
+            <div class="personBevoreShare" animate:flip={{ duration: 250 }}>
+              <PersonCard {name} {index} />
             </div>
           {/each}
         {:else}

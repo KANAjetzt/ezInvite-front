@@ -9,7 +9,7 @@
 
   const handleAddPerson = e => {
     const input = document.getElementById("personName");
-    dispatch("addperson", personName);
+    dispatch("addperson", { personName, key: Date.now() });
     personName = undefined;
     input.value = null;
   };
