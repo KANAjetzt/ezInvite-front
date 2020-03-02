@@ -57,24 +57,6 @@
 
   const client = getClient();
 
-  const [send, receive] = crossfade({
-    duration: d => Math.sqrt(d * 200),
-
-    fallback(node, params) {
-      const style = getComputedStyle(node);
-      const transform = style.transform === "none" ? "" : style.transform;
-
-      return {
-        duration: 600,
-        easing: quintOut,
-        css: t => `
-					transform: ${transform} scale(${t});
-					opacity: ${t}
-				`
-      };
-    }
-  });
-
   const CREATEEVENT = gql`
     mutation($input: CreateEventInput!) {
       createEvent(input: $input) {

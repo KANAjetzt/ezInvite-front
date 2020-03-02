@@ -40,12 +40,12 @@
     bounds.extend(location.coordinates);
 
     map.fitBounds(bounds, {
-      maxZoom: 12,
+      maxZoom: 14,
       padding: {
-        top: 200,
-        bottom: 150,
-        left: 100,
-        right: 100
+        top: 20,
+        bottom: 15,
+        left: 10,
+        right: 10
       }
     });
   });
@@ -69,7 +69,7 @@
   }
 
   :global(.marker) {
-    background-image: url("img/LocationPin.svg");
+    background-image: url("/img/LocationPin.svg");
     background-size: cover;
     width: 25px;
     height: 36px;
