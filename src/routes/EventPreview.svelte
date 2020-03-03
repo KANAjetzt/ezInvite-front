@@ -6,6 +6,7 @@
     getLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
+  import { send, receive } from "../utils/crossfade.js";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
@@ -36,22 +37,30 @@
 </script>
 
 <Router>
-  <BtnShare on:sharebtnclick={handleShareBtn} />
-  <Hero bgImage={eventData.heroImgPreview} />
-  <QuickFacts />
-  {#if eventData.description}
-    <Description />
-  {/if}
-  {#if eventData.imgs}
-    <ImageStripe />
-  {/if}
-  {#if eventData.location && eventData.location.coordinates[0]}
-    <Map />
-  {/if}
-  {#if todos.length}
-    <Widget />
-  {/if}
+  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
 
-  <Answers />
+    <BtnShare on:sharebtnclick={handleShareBtn} />
+    <section
+      class="hero"
+      out:send={{ key: 'hero' }}
+      in:receive={{ key: 'hero' }}>
+      <Hero bgImage={eventData.heroImgPreview} />
+    </section>
+    <QuickFacts />
+    {#if eventData.description}
+      <Description />
+    {/if}
+    {#if eventData.imgs}
+      <ImageStripe />
+    {/if}
+    {#if eventData.location && eventData.location.coordinates[0]}
+      <Map />
+    {/if}
+    {#if todos.length}
+      <Widget />
+    {/if}
 
+    <Answers />
+
+  </main>
 </Router>

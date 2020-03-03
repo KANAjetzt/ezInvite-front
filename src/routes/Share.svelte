@@ -4,6 +4,7 @@
   import { Router, Link, Route, navigate } from "svelte-routing";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
+  import { flip } from "svelte/animate";
 
   import { eventDataStore, todoStore, userStore, appStore } from "../stores.js";
   import {
@@ -12,6 +13,7 @@
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { send, receive } from "../utils/crossfade.js";
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
@@ -20,7 +22,6 @@
   import LinkBoxEdit from "../components/LinkBoxEdit.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
-  import BtnRemove from "../components/BtnRemove.svelte";
   import Message from "../components/Message.svelte";
 
   // Handle Local Storage
@@ -64,7 +65,7 @@
   `;
 
   const handleAddPerson = e => {
-    const personName = e.detail;
+    const { personName, key } = e.detail;
 
     if (!personName) {
       $appStore.messages = addMessage(
@@ -80,21 +81,10 @@
 
     userStore.update(currentData => {
       let newData = currentData ? [...currentData] : [];
-      newData = [...newData, { name: personName }];
+      newData = [...newData, { name: personName, key }];
       saveLocalStorage(newData, "users");
       return newData;
     });
-  };
-
-  const handlePersonRemove = index => {
-    // delete person from store
-    userStore.update(currentData => {
-      let newData = [...currentData];
-      newData.splice(index, 1);
-      saveLocalStorage(newData, "users");
-      return newData;
-    });
-    // update local storage
   };
 
   const handleShareBtn = async e => {
@@ -109,6 +99,7 @@
           users: users.map(user => {
             const newUser = { ...user };
             newUser.event = eventData.id;
+            delete newUser.key;
             return newUser;
           })
         }
@@ -193,81 +184,82 @@
 </style>
 
 <Router>
+  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
 
-  <section class="share">
-    <Hero bgImage={eventData.heroImgPreview} />
-    <section class="descriptionBox">
-      {#if !shared}
-        <DescriptionBox title={'Ivite your freands to your event!'} />
-      {:else}
-        <DescriptionBox
-          title={'Send your Invites out, by sharing the following links with your freands'} />
-      {/if}
-    </section>
-    <section class="persons">
-      {#if users}
+    <section class="share">
+      <section
+        class="hero"
+        out:send={{ key: 'hero' }}
+        in:receive={{ key: 'hero' }}>
+        <Hero bgImage={eventData.heroImgPreview} />
+      </section>
+      <section class="descriptionBox">
         {#if !shared}
-          {#each users as { name }, index}
-            <div class="personBevoreShare">
-              <PersonCard {name} />
-              <BtnRemove
-                width={20}
-                height={20}
-                marginTop={-2}
-                marginLeft={-1}
-                on:removebtnclick={() => handlePersonRemove(index)} />
-            </div>
-          {/each}
+          <DescriptionBox title={'Ivite your freands to your event!'} />
         {:else}
-          {#each users as { name, link }}
-            <div class="person">
-              <PersonCard {name} />
-              <LinkBox
-                value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}/${link}`} />
-            </div>
-          {/each}
+          <DescriptionBox
+            title={'Send your Invites out, by sharing the following links with your freands'} />
         {/if}
-      {/if}
-    </section>
-    {#if !shared}
-      <section class="inputAddPerson">
-        {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
-          <Message location={'inputPersonName'} />
+      </section>
+      <section class="persons">
+        {#if users}
+          {#if !shared}
+            {#each users as { name, key }, index (key)}
+              <div class="personBevoreShare" animate:flip={{ duration: 250 }}>
+                <PersonCard {name} {index} />
+              </div>
+            {/each}
+          {:else}
+            {#each users as { name, link }}
+              <div class="person">
+                <PersonCard {name} />
+                <LinkBox
+                  value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}/${link}`} />
+              </div>
+            {/each}
+          {/if}
         {/if}
-        <AddPerson on:addperson={handleAddPerson} />
       </section>
-    {/if}
-    {#if shared}
-      <section class="descriptionBoxGlobal">
-        <DescriptionBox
-          title={'Use this one to share it with whoever you want'} />
-      </section>
-      <section class="linkBoxGlobal">
-        <LinkBoxGlobal
-          value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}`} />
-      </section>
-      <section class="descriptionBoxEdit">
-        <DescriptionBox
-          title={'Save this Link to eventually edit your event later!'} />
-      </section>
-      <section class="linkBoxEdit">
-        <LinkBoxEdit
-          value={`${svelteEnv.frontUrl}/edit/${eventData.slug}/${eventData.editLink}`} />
-      </section>
-    {/if}
-    <section class="btnCta">
       {#if !shared}
-        <BigBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
-      {:else}
-        <BigBtn
-          text={'Back to your page'}
-          on:bigbtnclick={handleBackBtn}
-          minusMargin={5}
-          pannelHeight={15}
-          fontSize={2.8}
-          clipVar={'tertiary-fixed'} />
+        <section class="inputAddPerson">
+          {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
+            <Message location={'inputPersonName'} />
+          {/if}
+          <AddPerson on:addperson={handleAddPerson} />
+        </section>
       {/if}
+      {#if shared}
+        <section class="descriptionBoxGlobal">
+          <DescriptionBox
+            title={'Use this one to share it with whoever you want'} />
+        </section>
+        <section class="linkBoxGlobal">
+          <LinkBoxGlobal
+            value={`${svelteEnv.frontUrl}/${eventData.slug}/${eventData.link}`} />
+        </section>
+        <section class="descriptionBoxEdit">
+          <DescriptionBox
+            title={'Save this Link to eventually edit your event later!'} />
+        </section>
+        <section class="linkBoxEdit">
+          <LinkBoxEdit
+            value={`${svelteEnv.frontUrl}/edit/${eventData.slug}/${eventData.editLink}`} />
+        </section>
+      {/if}
+      <section class="btnCta">
+        {#if !shared}
+          <BigBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
+        {:else}
+          <BigBtn
+            text={'Back to your page'}
+            on:bigbtnclick={handleBackBtn}
+            minusMargin={5}
+            pannelHeight={15}
+            fontSize={2.8}
+            clipVar={'tertiary-fixed'} />
+        {/if}
+      </section>
     </section>
-  </section>
 
+  </main>
 </Router>

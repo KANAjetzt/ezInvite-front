@@ -8,6 +8,7 @@
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { send, receive } from "../utils/crossfade.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -412,109 +413,111 @@
 </style>
 
 <Router>
-  {#await eventData}
-    ..loading...
-  {:then eventData}
-    {#if !eventData.heroImgPreview && !eventData.heroImg}
-      <div class="topBar" />
-    {/if}
-    <form class="form">
-      <section class="heroImg">
-        {#if !eventData.heroImgPreview && (!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg')}
-          <AddHeroImg />
-        {:else}
-          <Hero
-            bgImage={!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg' ? eventData.heroImgPreview : eventData.heroImg} />
-        {/if}
-
-      </section>
-      <section class="simpleFields">
-        <div class="FormFields">
-          <div class="title">
-            <SimpleField
-              name={'Title'}
-              heading={'Title'}
-              placeholder={'What are you planing?'}
-              bind:value={$eventDataStore.name} />
-          </div>
-          {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
-            <Message location={'inputEventName'} />
-          {/if}
-          <div class="date">
-            <span class="labelDatepicker">Date</span>
-            <Datepicker
-              start={new Date()}
-              end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-              format={'#{l}, #{F} #{j}, #{Y}'}
-              highlightColor="#047bd7"
-              dayBackgroundColor="#efefef"
-              dayTextColor="#333"
-              dayHighlightedBackgroundColor="#047bd7"
-              dayHighlightedTextColor="#fff"
-              bind:selected={selectedDate}
-              bind:formattedSelected
-              bind:dateChosen>
-              <button
-                type="button"
-                class="datePickerBtn"
-                on:click={e => e.preventDefault()}>
-                {formattedSelected}
-              </button>
-            </Datepicker>
-            {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
-              <Message location={'inputStartDate'} />
-            {/if}
-          </div>
-        </div>
-      </section>
-
-      <section class="startEndTime">
-        <AddStartEndTime
-          bind:startTime={$eventDataStore.startTime}
-          bind:endTime={$eventDataStore.endTime} />
-      </section>
-      <section class="description">
-        <AddDescription bind:value={$eventDataStore.description} />
-      </section>
-      <section class="imgsUpload">
-        {#if !eventData.imgs || !eventData.imgs[0]}
-          <AddImgs bind:imgStripe />
-        {:else}
-          <ImageStripe />
-          <RemoveBtn
-            width={20}
-            height={20}
-            marginLeft={1}
-            marginTop={-2.2}
-            on:removebtnclick={() => handleImgStripeRemove()} />
-        {/if}
-      </section>
-      <section class="locationPicker">
-        <LocationPicker />
-      </section>
-      <section class="widgetPicker">
-        <WidgetPicker on:listbtnclick={handlelistBtnClick} />
-      </section>
-      {#if listWidgetVisible || $todoStore[0]}
-        <section class="widgets">
-          <AddWidgets />
-          <RemoveBtn
-            width={25}
-            height={25}
-            marginLeft={1}
-            marginTop={-2.5}
-            on:removebtnclick={() => {
-              listWidgetVisible = false;
-              $todoStore = [];
-            }} />
-        </section>
+  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+    {#await eventData}
+      ..loading...
+    {:then eventData}
+      {#if !eventData.heroImgPreview && !eventData.heroImg}
+        <div class="topBar" />
       {/if}
-      <section>
-        <BtnBig
-          text={'GO !'}
-          on:bigbtnclick={handleCTABtnClick}
-          clipVar={'tertiary'} />
-      </section>
-    </form>
-  {/await}
+      <form class="form">
+        <section class="heroImg">
+          {#if !eventData.heroImgPreview && (!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg')}
+            <AddHeroImg />
+          {:else}
+            <Hero
+              bgImage={!eventData.heroImg || eventData.heroImg === 'defaultHero.jpg' ? eventData.heroImgPreview : eventData.heroImg} />
+          {/if}
+
+        </section>
+        <section class="simpleFields">
+          <div class="FormFields">
+            <div class="title">
+              <SimpleField
+                name={'Title'}
+                heading={'Title'}
+                placeholder={'What are you planing?'}
+                bind:value={$eventDataStore.name} />
+            </div>
+            {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+              <Message location={'inputEventName'} />
+            {/if}
+            <div class="date">
+              <span class="labelDatepicker">Date</span>
+              <Datepicker
+                start={new Date()}
+                end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+                format={'#{l}, #{F} #{j}, #{Y}'}
+                highlightColor="#047bd7"
+                dayBackgroundColor="#efefef"
+                dayTextColor="#333"
+                dayHighlightedBackgroundColor="#047bd7"
+                dayHighlightedTextColor="#fff"
+                bind:selected={selectedDate}
+                bind:formattedSelected
+                bind:dateChosen>
+                <button
+                  type="button"
+                  class="datePickerBtn"
+                  on:click={e => e.preventDefault()}>
+                  {formattedSelected}
+                </button>
+              </Datepicker>
+              {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+                <Message location={'inputStartDate'} />
+              {/if}
+            </div>
+          </div>
+        </section>
+
+        <section class="startEndTime">
+          <AddStartEndTime
+            bind:startTime={$eventDataStore.startTime}
+            bind:endTime={$eventDataStore.endTime} />
+        </section>
+        <section class="description">
+          <AddDescription bind:value={$eventDataStore.description} />
+        </section>
+        <section class="imgsUpload">
+          {#if !eventData.imgs || !eventData.imgs[0]}
+            <AddImgs bind:imgStripe />
+          {:else}
+            <ImageStripe />
+            <RemoveBtn
+              width={20}
+              height={20}
+              marginLeft={1}
+              marginTop={-2.2}
+              on:removebtnclick={() => handleImgStripeRemove()} />
+          {/if}
+        </section>
+        <section class="locationPicker">
+          <LocationPicker />
+        </section>
+        <section class="widgetPicker">
+          <WidgetPicker on:listbtnclick={handlelistBtnClick} />
+        </section>
+        {#if listWidgetVisible || $todoStore[0]}
+          <section class="widgets">
+            <AddWidgets />
+            <RemoveBtn
+              width={25}
+              height={25}
+              marginLeft={1}
+              marginTop={-2.5}
+              on:removebtnclick={() => {
+                listWidgetVisible = false;
+                $todoStore = [];
+              }} />
+          </section>
+        {/if}
+        <section>
+          <BtnBig
+            text={'GO !'}
+            on:bigbtnclick={handleCTABtnClick}
+            clipVar={'tertiary'} />
+        </section>
+      </form>
+    {/await}
+  </main>
 </Router>

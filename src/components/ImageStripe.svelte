@@ -1,6 +1,6 @@
 <script>
   import { fly } from "svelte/transition";
-  import { eventDataStore } from "../stores";
+  import { eventDataStore, appStore } from "../stores";
 
   let eventData;
 
@@ -52,7 +52,7 @@
 {#if eventData.imgs}
   <section
     class="imageStripeWrapper"
-    transition:fly={{ duration: 250, x: -300 }}>
+    transition:fly={$appStore.currentPage === 'addEvent' ? { duration: 250, x: -300 } : { duration: 0 }}>
     <section class="imageStripe">
 
       {#each eventData.imgs as img}
