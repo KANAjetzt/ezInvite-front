@@ -8,6 +8,7 @@
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { send, receive } from "../utils/crossfade.js";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -330,28 +331,84 @@
 </style>
 
 <Router>
-  {#if !heroImgPreview}
-    <div class="topBar" />
-  {/if}
-  <form class="form">
-    <section class="heroImg" transition:fly={{ duration: 250, y: -100 }}>
-      {#if addHeroImg}
-        <AddHeroImg
-          on:imgadded={handleAddHeroImg}
-          on:outroend={() => (heroImg = true)} />
-      {:else if heroImg}
-        <Hero
-          bgImage={eventData.heroImgPreview}
-          on:removebtnclick={handleHeroImgRemove}
-          on:outroend={() => (addHeroImg = true)} />
-      {/if}
+  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+    {#if !heroImgPreview}
+      <div class="topBar" />
+    {/if}
+    <form class="form">
+      <section class="heroImg" transition:fly={{ duration: 250, y: -100 }}>
+        {#if addHeroImg}
+          <AddHeroImg
+            on:imgadded={handleAddHeroImg}
+            on:outroend={() => (heroImg = true)} />
+        {:else if heroImg}
+          <Hero
+            bgImage={eventData.heroImgPreview}
+            on:removebtnclick={handleHeroImgRemove}
+            on:outroend={() => (addHeroImg = true)} />
+        {/if}
 
-    </section>
-    {#if section1}
-      <section
-        transition:fly={{ duration: 250, x: -30 }}
-        on:outroend={() => (section2 = true)}>
-        <div class="FormFields">
+      </section>
+      {#if section1}
+        <section
+          transition:fly={{ duration: 250, x: -30 }}
+          on:outroend={() => (section2 = true)}>
+          <div class="FormFields">
+            <div class="title">
+              <SimpleField
+                name={'Title'}
+                heading={'Title'}
+                required={true}
+                placeholder={'What are you planing?'}
+                bind:value={eventData.name} />
+            </div>
+            {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
+              <Message location={'inputEventName'} />
+            {/if}
+            <div class="date">
+              <span class="labelDatepicker">Date</span>
+              <Datepicker
+                start={new Date()}
+                end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
+                format={'#{l}, #{F} #{j}, #{Y}'}
+                highlightColor="#047bd7"
+                dayBackgroundColor="#efefef"
+                dayTextColor="#333"
+                dayHighlightedBackgroundColor="#047bd7"
+                dayHighlightedTextColor="#fff"
+                bind:selected={selectedDate}
+                bind:formattedSelected
+                bind:dateChosen>
+                <button
+                  type="button"
+                  class={`datePickerBtn datePickerBtn--isChosen`}
+                  on:click={e => e.preventDefault()}>
+                  {#if dateChosen}
+                    {formattedSelected}
+                  {:else}When does it start?{/if}
+                </button>
+              </Datepicker>
+              {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
+                <Message location={'inputStartDate'} />
+              {/if}
+            </div>
+          </div>
+        </section>
+
+        <section transition:fly={{ duration: 250, y: 30 }} class="selectBtns">
+          <BtnPanel clipVar={'secondary-fixed'}>
+            <NormalBtn
+              text={'Add more'}
+              type={'normal'}
+              on:normalbtnclick={handleNormalBtnClick} />
+            <NormalBtn
+              text={'GO !'}
+              type={'cta'}
+              on:ctabtnclick={handleCTABtnClick} />
+          </BtnPanel>
+        </section>
+      {:else if section2}
+        <div class="FormFields" transition:fly={{ duration: 250, x: -30 }}>
           <div class="title">
             <SimpleField
               name={'Title'}
@@ -391,120 +448,72 @@
             {/if}
           </div>
         </div>
-      </section>
 
-      <section transition:fly={{ duration: 250, y: 30 }} class="selectBtns">
-        <BtnPanel clipVar={'secondary-fixed'}>
-          <NormalBtn
-            text={'Add more'}
-            type={'normal'}
-            on:normalbtnclick={handleNormalBtnClick} />
-          <NormalBtn
-            text={'GO !'}
-            type={'cta'}
-            on:ctabtnclick={handleCTABtnClick} />
-        </BtnPanel>
-      </section>
-    {:else if section2}
-      <div class="FormFields" transition:fly={{ duration: 250, x: -30 }}>
-        <div class="title">
-          <SimpleField
-            name={'Title'}
-            heading={'Title'}
-            required={true}
-            placeholder={'What are you planing?'}
-            bind:value={eventData.name} />
-        </div>
-        {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
-          <Message location={'inputEventName'} />
-        {/if}
-        <div class="date">
-          <span class="labelDatepicker">Date</span>
-          <Datepicker
-            start={new Date()}
-            end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
-            highlightColor="#047bd7"
-            dayBackgroundColor="#efefef"
-            dayTextColor="#333"
-            dayHighlightedBackgroundColor="#047bd7"
-            dayHighlightedTextColor="#fff"
-            bind:selected={selectedDate}
-            bind:formattedSelected
-            bind:dateChosen>
-            <button
-              type="button"
-              class={`datePickerBtn datePickerBtn--isChosen`}
-              on:click={e => e.preventDefault()}>
-              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
-            </button>
-          </Datepicker>
-          {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
-            <Message location={'inputStartDate'} />
+        <section
+          class="startEndTime"
+          transition:fly={{ duration: 250, x: -30 }}>
+          <AddStartEndTime
+            bind:startTime={eventData.startTime}
+            bind:endTime={eventData.endTime} />
+        </section>
+        <section class="description" transition:fly={{ duration: 250, x: -30 }}>
+          <AddDescription bind:value={eventData.description} />
+        </section>
+        <section class="imgsUpload" transition:fly={{ duration: 250, x: -30 }}>
+          {#if addImgs}
+            <section
+              transition:fly={{ duration: 250, x: -30 }}
+              on:outroend={() => (imgs = true)}>
+              <AddImgs bind:imgStripe on:imgsadded={handleImgStripeAdded} />
+            </section>
+          {:else if imgs}
+            <section
+              transition:fly={{ duration: 250, x: -300 }}
+              on:outroend={() => (addImgs = true)}>
+              <ImageStripe />
+              <div
+                in:fly={{ delay: 250, duration: 250, x: -30 }}
+                out:fly={{ duration: 250, x: -300 }}>
+                <RemoveBtn
+                  width={20}
+                  height={20}
+                  marginLeft={1}
+                  marginTop={-2.2}
+                  on:removebtnclick={() => handleImgStripeRemove()} />
+              </div>
+            </section>
           {/if}
-        </div>
-      </div>
-
-      <section class="startEndTime" transition:fly={{ duration: 250, x: -30 }}>
-        <AddStartEndTime
-          bind:startTime={eventData.startTime}
-          bind:endTime={eventData.endTime} />
-      </section>
-      <section class="description" transition:fly={{ duration: 250, x: -30 }}>
-        <AddDescription bind:value={eventData.description} />
-      </section>
-      <section class="imgsUpload" transition:fly={{ duration: 250, x: -30 }}>
-        {#if addImgs}
-          <section
-            transition:fly={{ duration: 250, x: -30 }}
-            on:outroend={() => (imgs = true)}>
-            <AddImgs bind:imgStripe on:imgsadded={handleImgStripeAdded} />
-          </section>
-        {:else if imgs}
-          <section
-            transition:fly={{ duration: 250, x: -300 }}
-            on:outroend={() => (addImgs = true)}>
-            <ImageStripe />
-            <div
-              in:fly={{ delay: 250, duration: 250, x: -30 }}
-              out:fly={{ duration: 250, x: -300 }}>
-              <RemoveBtn
-                width={20}
-                height={20}
-                marginLeft={1}
-                marginTop={-2.2}
-                on:removebtnclick={() => handleImgStripeRemove()} />
-            </div>
+        </section>
+        <section
+          class="locationPicker"
+          transition:fly={{ duration: 250, x: -30 }}>
+          <LocationPicker />
+        </section>
+        <section
+          class="widgetPicker"
+          transition:fly={{ duration: 250, x: -30 }}>
+          <WidgetPicker on:listbtnclick={handlelistBtnClick} />
+        </section>
+        {#if listWidgetVisible}
+          <section class="widgets" transition:slide={{ duration: 250 }}>
+            <AddWidgets />
+            <RemoveBtn
+              width={25}
+              height={25}
+              marginLeft={1}
+              marginTop={-2.5}
+              on:removebtnclick={() => {
+                listWidgetVisible = !listWidgetVisible;
+              }} />
           </section>
         {/if}
-      </section>
-      <section
-        class="locationPicker"
-        transition:fly={{ duration: 250, x: -30 }}>
-        <LocationPicker />
-      </section>
-      <section class="widgetPicker" transition:fly={{ duration: 250, x: -30 }}>
-        <WidgetPicker on:listbtnclick={handlelistBtnClick} />
-      </section>
-      {#if listWidgetVisible}
-        <section class="widgets" transition:slide={{ duration: 250 }}>
-          <AddWidgets />
-          <RemoveBtn
-            width={25}
-            height={25}
-            marginLeft={1}
-            marginTop={-2.5}
-            on:removebtnclick={() => {
-              listWidgetVisible = !listWidgetVisible;
-            }} />
+        <section>
+          <BtnBig
+            text={'GO !'}
+            on:bigbtnclick={handleCTABtnClick}
+            clipVar={'tertiary-fixed'} />
         </section>
       {/if}
-      <section>
-        <BtnBig
-          text={'GO !'}
-          on:bigbtnclick={handleCTABtnClick}
-          clipVar={'tertiary-fixed'} />
-      </section>
-    {/if}
-  </form>
+    </form>
+  </main>
 </Router>

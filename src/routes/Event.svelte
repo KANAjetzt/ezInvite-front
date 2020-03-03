@@ -4,6 +4,7 @@
   import { Router, Link, Route, navigate } from "svelte-routing";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
+  import { send, receive } from "../utils/crossfade.js";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -157,38 +158,40 @@
 </script>
 
 <Router>
-  {#await eventData}
-    <p>loading</p>
-  {:then event}
-    <Hero bgImage={event.heroImg ? event.heroImg : event.heroImgPreview} />
-    <QuickFacts />
-    {#if event.description}
-      <Description />
-    {/if}
-    {#if event.imgs && event.imgs[0]}
-      <ImageStripe />
-    {/if}
-    {#if event.location && event.location.coordinates[0]}
-      <Map />
-    {/if}
-    {#if (event.widgetTypes && event.widgetTypes[0]) || (event.widgets && event.widgets[0])}
-      <Widget />
-    {/if}
-    {#if event.users && event.users[0]}
-      <Answers />
-    {/if}
-    {#if $appStore.showAddPersonProfile}
-      <EventOverlay
-        ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn, .addBtn'}
-        on:clickoutside={() => {
-          $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-        }}>
-        <AddPersonProfile
-          on:donebtnclick={() => {
+  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+    {#await eventData}
+      <p>loading</p>
+    {:then event}
+      <Hero bgImage={event.heroImg ? event.heroImg : event.heroImgPreview} />
+      <QuickFacts />
+      {#if event.description}
+        <Description />
+      {/if}
+      {#if event.imgs && event.imgs[0]}
+        <ImageStripe />
+      {/if}
+      {#if event.location && event.location.coordinates[0]}
+        <Map />
+      {/if}
+      {#if (event.widgetTypes && event.widgetTypes[0]) || (event.widgets && event.widgets[0])}
+        <Widget />
+      {/if}
+      {#if event.users && event.users[0]}
+        <Answers />
+      {/if}
+      {#if $appStore.showAddPersonProfile}
+        <EventOverlay
+          ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn, .addBtn'}
+          on:clickoutside={() => {
             $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-          }} />
-      </EventOverlay>
-    {/if}
-    <AddRespond />
-  {/await}
+          }}>
+          <AddPersonProfile
+            on:donebtnclick={() => {
+              $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
+            }} />
+        </EventOverlay>
+      {/if}
+      <AddRespond />
+    {/await}
+  </main>
 </Router>
