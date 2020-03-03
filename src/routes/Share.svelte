@@ -98,6 +98,7 @@
           users: users.map(user => {
             const newUser = { ...user };
             newUser.event = eventData.id;
+            delete newUser.key;
             return newUser;
           })
         }
