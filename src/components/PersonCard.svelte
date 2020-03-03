@@ -45,7 +45,9 @@
   }
 </style>
 
-<div class="personCard" transition:fly={{ duration: 150, x: -100 }}>
+<div
+  class="personCard"
+  transition:fly={$appStore.currentPage === 'share' ? { duration: 150, x: -100 } : null}>
   <PersonImg {photo} {name} />
   <p class="name">{name ? name : 'Your Name'}</p>
 </div>

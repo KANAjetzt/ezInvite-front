@@ -95,7 +95,7 @@
   class="hero"
   style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
   -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')"
-  transition:fly={{ duration: 250, y: -300 }}
+  transition:fly={$appStore.currentPage === 'addEvent' ? { duration: 250, y: -300 } : { duration: 0 }}
   on:outroend={() => dispatch('outroend')}>
 
   {#if eventData.name}
