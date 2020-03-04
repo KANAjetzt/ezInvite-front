@@ -1,3 +1,7 @@
+<script>
+  export let style;
+</script>
+
 <style>
   .loaderWrapper,
   .loader {
@@ -5,6 +9,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+  }
+
+  .loaderWrapper-fullPageCentered {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
   }
 
   .loader {
@@ -73,7 +84,7 @@
   }
 </style>
 
-<div class="loaderWrapper">
+<div class={`loaderWrapper loaderWrapper-${style}`}>
   <div class="loader">
     <div class="loader-bar-1" />
     <div class="loader-bar-2" />

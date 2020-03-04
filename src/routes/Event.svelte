@@ -164,7 +164,7 @@
 
 <Router>
   {#if loading}
-    <Loader />
+    <Loader style={'fullPageCentered'} />
   {:else}
     <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
       <Hero
