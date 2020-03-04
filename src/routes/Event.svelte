@@ -15,10 +15,12 @@
   import EventOverlay from "../components/EventOverlay.svelte";
   import AddPersonProfile from "../components/AddPersonProfile.svelte";
   import AddRespond from "../components/AddRespond.svelte";
+  import Loader from "../components/Loader.svelte";
 
   let appData;
   let eventData;
   let todos;
+  let loading = true;
 
   $appStore.currentPage = "event";
 
@@ -149,6 +151,9 @@
 
     // ceck if current user responded already
     $appStore.showFullResponder = handleResponder();
+
+    // set loading to false
+    loading = false;
   };
 
   // Check if something is in store otherwise query for the data
@@ -158,25 +163,26 @@
 </script>
 
 <Router>
-  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
-    {#await eventData}
-      <p>loading</p>
-    {:then event}
-      <Hero bgImage={event.heroImg ? event.heroImg : event.heroImgPreview} />
+  {#if loading}
+    <Loader />
+  {:else}
+    <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+      <Hero
+        bgImage={eventData.heroImg ? eventData.heroImg : eventData.heroImgPreview} />
       <QuickFacts />
-      {#if event.description}
+      {#if eventData.description}
         <Description />
       {/if}
-      {#if event.imgs && event.imgs[0]}
+      {#if eventData.imgs && eventData.imgs[0]}
         <ImageStripe />
       {/if}
-      {#if event.location && event.location.coordinates[0]}
+      {#if eventData.location && eventData.location.coordinates[0]}
         <Map />
       {/if}
-      {#if (event.widgetTypes && event.widgetTypes[0]) || (event.widgets && event.widgets[0])}
+      {#if (eventData.widgetTypes && eventData.widgetTypes[0]) || (eventData.widgets && eventData.widgets[0])}
         <Widget />
       {/if}
-      {#if event.users && event.users[0]}
+      {#if eventData.users && eventData.users[0]}
         <Answers />
       {/if}
       {#if $appStore.showAddPersonProfile}
@@ -192,6 +198,7 @@
         </EventOverlay>
       {/if}
       <AddRespond />
-    {/await}
-  </main>
+
+    </main>
+  {/if}
 </Router>

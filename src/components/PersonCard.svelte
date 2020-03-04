@@ -47,7 +47,7 @@
 
 <div
   class="personCard"
-  transition:fly={$appStore.currentPage === 'share' ? { duration: 150, x: -100 } : null}>
+  transition:fly={$appStore.currentPage === 'share' ? { duration: 150, x: -100 } : { duration: 0 }}>
   <PersonImg {photo} {name} />
   <p class="name">{name ? name : 'Your Name'}</p>
 </div>
