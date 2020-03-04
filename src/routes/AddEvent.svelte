@@ -24,6 +24,7 @@
   import AddWidgets from "../components/AddWidget.svelte";
   import BtnBig from "../components/BtnBig.svelte";
   import Message from "../components/Message.svelte";
+  import Loader from "../components/Loader.svelte";
 
   let section1 = true;
   let section2 = false;
@@ -32,6 +33,7 @@
   let addImgs = true;
   let imgs = false;
   let listWidgetVisible = false;
+  let loading = false;
 
   let eventData = {};
   let todos;
@@ -228,6 +230,8 @@
   const handleCTABtnClick = async e => {
     e.detail.preventDefault();
 
+    loading = true;
+
     const newEventData = await handleEventData();
     if (!newEventData) return;
     if (
@@ -328,6 +332,10 @@
   .widgets {
     margin-top: 2rem;
   }
+
+  .loaderWrapper {
+    grid-column: span 2;
+  }
 </style>
 
 <Router>
@@ -397,14 +405,20 @@
 
         <section transition:fly={{ duration: 250, y: 30 }} class="selectBtns">
           <BtnPanel clipVar={'secondary-fixed'}>
-            <NormalBtn
-              text={'Add more'}
-              type={'normal'}
-              on:normalbtnclick={handleNormalBtnClick} />
-            <NormalBtn
-              text={'GO !'}
-              type={'cta'}
-              on:ctabtnclick={handleCTABtnClick} />
+            {#if !loading}
+              <NormalBtn
+                text={'Add more'}
+                type={'normal'}
+                on:normalbtnclick={handleNormalBtnClick} />
+              <NormalBtn
+                text={'GO !'}
+                type={'cta'}
+                on:ctabtnclick={handleCTABtnClick} />
+            {:else}
+              <div class="loaderWrapper">
+                <Loader />
+              </div>
+            {/if}
           </BtnPanel>
         </section>
       {:else if section2}
@@ -511,7 +525,8 @@
           <BtnBig
             text={'GO !'}
             on:bigbtnclick={handleCTABtnClick}
-            clipVar={'tertiary-fixed'} />
+            clipVar={'tertiary-fixed'}
+            bind:loading />
         </section>
       {/if}
     </form>
