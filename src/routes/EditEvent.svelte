@@ -24,6 +24,7 @@
   import AddWidgets from "../components/AddWidget.svelte";
   import BtnBig from "../components/BtnBig.svelte";
   import Message from "../components/Message.svelte";
+  import Loader from "../components/Loader.svelte";
 
   const client = getClient();
 
@@ -76,6 +77,7 @@
 
   let moreVisible = false;
   let listWidgetVisible = false;
+  let loading = true;
 
   let eventData = handleData();
   let todos;
@@ -152,6 +154,8 @@
 
     // set event date in date picker
     selectedDate = new Date(data.data.event.startDate * 1);
+
+    loading = false;
   }
 
   // --- Query Event Data ---
@@ -413,10 +417,10 @@
 </style>
 
 <Router>
-  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
-    {#await eventData}
-      ..loading...
-    {:then eventData}
+  {#if loading}
+    <Loader style={'fullPageCentered'} />
+  {:else}
+    <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
       {#if !eventData.heroImgPreview && !eventData.heroImg}
         <div class="topBar" />
       {/if}
@@ -518,6 +522,6 @@
             clipVar={'tertiary'} />
         </section>
       </form>
-    {/await}
-  </main>
+    </main>
+  {/if}
 </Router>

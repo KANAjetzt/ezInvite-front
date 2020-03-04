@@ -9,13 +9,15 @@
   import { eventDataStore } from "../stores.js";
   import SimpleField from "./SimpleField.svelte";
 
+  let mounted = false;
   let geocoder;
   let initQuery = false;
 
   $: if (
     $eventDataStore.location &&
     $eventDataStore.location.address &&
-    !initQuery
+    !initQuery &&
+    mounted
   ) {
     geocoder.query($eventDataStore.location.address);
     initQuery = true;
@@ -73,6 +75,8 @@
     document
       .querySelector(".mapboxgl-ctrl-geocoder--button")
       .setAttribute("type", "button");
+
+    mounted = true;
   });
 </script>
 
