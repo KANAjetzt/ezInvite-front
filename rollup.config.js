@@ -30,7 +30,7 @@ export default {
           ? "https://ezinvite.herokuapp.com/graphql"
           : "http://localhost:3000/graphql",
         frontUrl: production
-          ? "https://corrogo.kana.jetzt/"
+          ? "https://corrogo.kana.jetzt"
           : "http://localhost:5000"
       })
     }),
