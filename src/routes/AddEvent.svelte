@@ -497,9 +497,7 @@
             transition:fly|local={{ duration: 250, x: -300 }}
             on:outroend={() => (addImgs = true)}>
             <ImageStripe />
-            <div
-              in:fly={{ delay: 250, duration: 250, x: -30 }}
-              out:fly={{ duration: 250, x: -300 }}>
+            <div transition:fly|local={{ duration: 250, x: -300 }}>
               <RemoveBtn
                 width={20}
                 height={20}
