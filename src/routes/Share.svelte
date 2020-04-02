@@ -15,6 +15,7 @@
   } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import { send, receive } from "../utils/crossfade.js";
+  import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
   import PersonCard from "../components/PersonCard.svelte";
@@ -191,7 +192,7 @@
   }
 </style>
 
-<main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+<PageTransition>
 
   <section class="share">
     <section
@@ -268,4 +269,4 @@
     </section>
   </section>
 
-</main>
+</PageTransition>

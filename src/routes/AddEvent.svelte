@@ -3,13 +3,14 @@
   import { gql } from "apollo-boost";
   import { Router, Route, navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
-  import { slide, fly, crossfade } from "svelte/transition";
+  import { slide, fly, crossfade, fade } from "svelte/transition";
   import { onMount } from "svelte";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
   import { send, receive } from "../utils/crossfade.js";
+  import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
   import RemoveBtn from "../components/BtnRemove.svelte";
@@ -346,7 +347,7 @@
   }
 </style>
 
-<main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+<PageTransition>
   {#if !heroImgPreview}
     <div class="topBar" />
   {/if}
@@ -541,4 +542,4 @@
       </section>
     {/if}
   </form>
-</main>
+</PageTransition>

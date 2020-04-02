@@ -8,6 +8,7 @@
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
   import { send, receive } from "../utils/crossfade.js";
+  import PageTransition from "../components/PageTransition.svelte";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
@@ -44,7 +45,7 @@
   };
 </script>
 
-<main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+<PageTransition>
 
   <BtnShare on:sharebtnclick={handleShareBtn} />
   <section class="hero" transition:fly|local={{ duration: 250, y: -100 }}>
@@ -66,4 +67,4 @@
 
   <Answers />
 
-</main>
+</PageTransition>
