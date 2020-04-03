@@ -47,12 +47,12 @@
 
 <div
   class="personCard"
-  transition:fly={$appStore.currentPage === 'share' ? { duration: 150, x: -100 } : { duration: 0 }}>
+  transition:fly|local={$appStore.currentPage === 'share' ? { duration: 150, x: -100 } : { duration: 0 }}>
   <PersonImg {photo} {name} />
   <p class="name">{name ? name : 'Your Name'}</p>
 </div>
 {#if $appStore.currentPage === 'share'}
-  <div transition:fly={{ duration: 150, x: -100 }}>
+  <div transition:fly|local={{ duration: 150, x: -100 }}>
     <BtnRemove
       width={20}
       height={20}
