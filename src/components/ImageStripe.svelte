@@ -52,7 +52,7 @@
 {#if eventData.imgs}
   <section
     class="imageStripeWrapper"
-    transition:fly={$appStore.currentPage === 'addEvent' ? { duration: 250, x: -300 } : { duration: 0 }}>
+    transition:fly|local={$appStore.currentPage === 'addEvent' ? { duration: 250, x: -300 } : { duration: 0 }}>
     <section class="imageStripe">
 
       {#each eventData.imgs as img}

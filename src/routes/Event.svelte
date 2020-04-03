@@ -1,10 +1,10 @@
 <script>
   import { getClient } from "svelte-apollo";
   import { gql } from "apollo-boost";
-  import { Router, Link, Route, navigate } from "svelte-routing";
+  import { navigate } from "svelte-routing";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
-  import { send, receive } from "../utils/crossfade.js";
+  import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
   import Description from "../components/Description.svelte";
@@ -159,46 +159,46 @@
   // Check if something is in store otherwise query for the data
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
+  } else {
+    loading = false;
   }
 </script>
 
-<Router>
-  {#if loading}
-    <Loader style={'fullPageCentered'} />
-  {:else}
-    <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
-      <Hero
-        bgImage={eventData.heroImg ? eventData.heroImg : eventData.heroImgPreview} />
-      <QuickFacts />
-      {#if eventData.description}
-        <Description />
-      {/if}
-      {#if eventData.imgs && eventData.imgs[0]}
-        <ImageStripe />
-      {/if}
-      {#if eventData.location && eventData.location.coordinates[0]}
-        <Map />
-      {/if}
-      {#if (eventData.widgetTypes && eventData.widgetTypes[0]) || (eventData.widgets && eventData.widgets[0])}
-        <Widget />
-      {/if}
-      {#if eventData.users && eventData.users[0]}
-        <Answers />
-      {/if}
-      {#if $appStore.showAddPersonProfile}
-        <EventOverlay
-          ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn, .addBtn'}
-          on:clickoutside={() => {
+{#if loading}
+  <Loader style={'fullPageCentered'} />
+{:else}
+  <PageTransition>
+    <Hero
+      bgImage={eventData.heroImg ? eventData.heroImg : eventData.heroImgPreview} />
+    <QuickFacts />
+    {#if eventData.description}
+      <Description />
+    {/if}
+    {#if eventData.imgs && eventData.imgs[0]}
+      <ImageStripe />
+    {/if}
+    {#if eventData.location && eventData.location.coordinates[0]}
+      <Map />
+    {/if}
+    {#if (eventData.widgetTypes && eventData.widgetTypes[0]) || (eventData.widgets && eventData.widgets[0])}
+      <Widget />
+    {/if}
+    {#if eventData.users && eventData.users[0]}
+      <Answers />
+    {/if}
+    {#if $appStore.showAddPersonProfile}
+      <EventOverlay
+        ignoreClickClasses={'.personProfile, .respond, .btnConfirm, .btnDecline,  .removeBtn, .personAddBtn, .addBtn'}
+        on:clickoutside={() => {
+          $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
+        }}>
+        <AddPersonProfile
+          on:donebtnclick={() => {
             $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-          }}>
-          <AddPersonProfile
-            on:donebtnclick={() => {
-              $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;
-            }} />
-        </EventOverlay>
-      {/if}
-      <AddRespond />
+          }} />
+      </EventOverlay>
+    {/if}
+    <AddRespond />
 
-    </main>
-  {/if}
-</Router>
+  </PageTransition>
+{/if}

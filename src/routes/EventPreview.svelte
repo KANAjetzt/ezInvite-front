@@ -1,12 +1,12 @@
 <script>
-  import { Router, navigate } from "svelte-routing";
-
+  import { navigate } from "svelte-routing";
+  import { fly } from "svelte/transition";
   import { eventDataStore, todoStore, appStore } from "../stores.js";
   import {
     getLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
-  import { send, receive } from "../utils/crossfade.js";
+  import PageTransition from "../components/PageTransition.svelte";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
@@ -36,31 +36,26 @@
   };
 </script>
 
-<Router>
-  <main out:send={{ key: 'main' }} in:receive={{ key: 'main' }}>
+<PageTransition>
 
-    <BtnShare on:sharebtnclick={handleShareBtn} />
-    <section
-      class="hero"
-      out:send={{ key: 'hero' }}
-      in:receive={{ key: 'hero' }}>
-      <Hero bgImage={eventData.heroImgPreview} />
-    </section>
-    <QuickFacts />
-    {#if eventData.description}
-      <Description />
-    {/if}
-    {#if eventData.imgs}
-      <ImageStripe />
-    {/if}
-    {#if eventData.location && eventData.location.coordinates[0]}
-      <Map />
-    {/if}
-    {#if todos.length}
-      <Widget />
-    {/if}
+  <BtnShare on:sharebtnclick={handleShareBtn} />
+  <section class="hero" transition:fly|local={{ duration: 250, y: -100 }}>
+    <Hero bgImage={eventData.heroImgPreview} />
+  </section>
+  <QuickFacts />
+  {#if eventData.description}
+    <Description />
+  {/if}
+  {#if eventData.imgs}
+    <ImageStripe />
+  {/if}
+  {#if eventData.location && eventData.location.coordinates[0]}
+    <Map />
+  {/if}
+  {#if todos.length}
+    <Widget />
+  {/if}
 
-    <Answers />
+  <Answers />
 
-  </main>
-</Router>
+</PageTransition>
