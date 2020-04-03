@@ -22,6 +22,7 @@
     border: none;
     box-shadow: 0 1px 0 var(--color-secondary);
     transition: all 0.05s ease-in-out;
+    appearance: none;
   }
 
   .input::placeholder {
