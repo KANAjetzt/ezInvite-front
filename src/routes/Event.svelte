@@ -1,10 +1,9 @@
 <script>
   import { getClient } from "svelte-apollo";
   import { gql } from "apollo-boost";
-  import { Router, Link, Route, navigate } from "svelte-routing";
+  import { navigate } from "svelte-routing";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
-  import { send, receive } from "../utils/crossfade.js";
   import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";

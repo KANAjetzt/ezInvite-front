@@ -1,7 +1,7 @@
 <script>
   // TODO: - Add delete all Btn
 
-  import { Router, Link, Route, navigate } from "svelte-routing";
+  import { navigate } from "svelte-routing";
   import { onMount } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
@@ -25,13 +25,6 @@
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
   import Message from "../components/Message.svelte";
-
-  onMount(() => {
-    console.log("mounted Share");
-    return () => {
-      console.log("detroyed Share");
-    };
-  });
 
   // Handle Local Storage
 

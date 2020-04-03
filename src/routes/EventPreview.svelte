@@ -1,13 +1,11 @@
 <script>
-  import { Router, navigate } from "svelte-routing";
-  import { onMount } from "svelte";
+  import { navigate } from "svelte-routing";
   import { fly } from "svelte/transition";
   import { eventDataStore, todoStore, appStore } from "../stores.js";
   import {
     getLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
-  import { send, receive } from "../utils/crossfade.js";
   import PageTransition from "../components/PageTransition.svelte";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
@@ -17,13 +15,6 @@
   import Map from "../components/Map.svelte";
   import Widget from "../components/Widget.svelte";
   import Answers from "../components/Answers.svelte";
-
-  onMount(() => {
-    console.log("mounted EventPreview");
-    return () => {
-      console.log("detroyed EventPreview");
-    };
-  });
 
   if (Object.keys($eventDataStore).length === 0) {
     eventDataStore.set(getLocalStorage("eventData"));

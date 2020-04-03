@@ -1,15 +1,13 @@
 <script>
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
-  import { Router, Route, navigate } from "svelte-routing";
+  import { navigate } from "svelte-routing";
   import Datepicker from "svelte-calendar";
-  import { slide, fly, crossfade, fade } from "svelte/transition";
-  import { onMount } from "svelte";
+  import { slide, fly } from "svelte/transition";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
-  import { send, receive } from "../utils/crossfade.js";
   import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
@@ -44,13 +42,6 @@
   let formattedSelected;
   let selectedDate;
   let dateChosen;
-
-  onMount(() => {
-    console.log("mounted AddEvent");
-    return () => {
-      console.log("detroyed AddEvent");
-    };
-  });
 
   $appStore.currentPage = "addEvent";
 
