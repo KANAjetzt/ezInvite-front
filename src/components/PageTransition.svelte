@@ -1,7 +1,7 @@
 <script>
-  import { fade } from "svelte/transition";
+  import { fly } from "svelte/transition";
 </script>
 
-<main in:fade={{ duration: 2000 }}>
+<main in:fly={{ duration: 550, x: -500 }}>
   <slot />
 </main>

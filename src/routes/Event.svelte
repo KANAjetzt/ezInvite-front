@@ -22,6 +22,8 @@
   let todos;
   let loading = true;
 
+  console.log(loading);
+
   $appStore.currentPage = "event";
 
   appStore.subscribe(newData => {
@@ -159,6 +161,8 @@
   // Check if something is in store otherwise query for the data
   if (Object.keys(eventData).length === 0 && eventData.constructor === Object) {
     handleData();
+  } else {
+    loading = false;
   }
 </script>
 
