@@ -7,6 +7,11 @@
 
 <style>
   .imgBox {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
     max-width: 4.5rem;
     max-height: 4.5rem;
     border: solid 4px var(--color-primary);
@@ -23,15 +28,18 @@
 
   .img--addPersonThing {
     filter: brightness(0.6);
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
   }
 
   .count {
-    position: absolute;
-    transform: translate(-135%, 78%);
     font-size: 1.5rem;
     font-family: var(--font-primary);
     font-weight: 700;
     color: var(--color-text-primary);
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    text-align: center;
   }
 </style>
 
