@@ -40,6 +40,7 @@
     grid-row: 1 / 2;
     grid-column: 1 / 2;
     text-align: center;
+    z-index: 250;
   }
 </style>
 
