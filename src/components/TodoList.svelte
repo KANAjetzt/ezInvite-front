@@ -33,5 +33,6 @@
       <Todo {todo} {index} />
     </li>
   {/each}
-  <AddTodoInput />
 </ul>
+
+<AddTodoInput />
