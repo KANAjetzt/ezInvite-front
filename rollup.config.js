@@ -16,7 +16,7 @@ export default {
     sourcemap: true,
     format: "iife",
     name: "app",
-    file: "public/bundle.js"
+    file: "public/bundle.js",
     // globals: {
     //   MapboxGeocoder: "MapboxGeocoder"
     // }
@@ -31,15 +31,16 @@ export default {
           : "http://localhost:3000/graphql",
         frontUrl: production
           ? "https://corrogo.kana.jetzt"
-          : "http://localhost:5000"
-      })
+          : "http://localhost:5000",
+        cloudinaryUrl: "https://res.cloudinary.com/kana/image/upload/",
+      }),
     }),
     svelte({
       // enable run-time checks when not in production
       dev: !production,
       preprocess: autoPreprocess({
-        postcss: true
-      })
+        postcss: true,
+      }),
     }),
 
     // If you have external dependencies installed from
@@ -50,8 +51,8 @@ export default {
     builtins(),
     resolve({
       browser: true,
-      dedupe: importee =>
-        importee === "svelte" || importee.startsWith("svelte/")
+      dedupe: (importee) =>
+        importee === "svelte" || importee.startsWith("svelte/"),
     }),
     commonjs(),
 
@@ -61,9 +62,9 @@ export default {
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
-    production && terser()
+    production && terser(),
   ],
   watch: {
-    clearScreen: false
-  }
+    clearScreen: false,
+  },
 };
