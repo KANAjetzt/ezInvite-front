@@ -8,12 +8,10 @@
 <style>
   .imgBox {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
+    grid-template-columns: 4.5rem;
+    grid-template-rows: 4.5rem;
     align-items: center;
     justify-items: center;
-    max-width: 4.5rem;
-    max-height: 4.5rem;
     border: solid 4px var(--color-primary);
     border-radius: 100%;
     overflow: hidden;

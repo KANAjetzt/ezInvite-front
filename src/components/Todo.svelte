@@ -171,6 +171,10 @@
   .todo:first-child {
     margin-top: 2rem;
   }
+  .personImgs {
+    display: flex;
+  }
+
   .text {
     background-color: var(--color-primary-light);
     padding: 0.5rem 1.5rem;
@@ -183,29 +187,31 @@
   }
 </style>
 
-<PersonAddBtn
-  photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo !== 'default.jpg' ? $eventDataStore.currentUser.photo : undefined}
-  name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
-  imgStyle={'addPersonThing'}
-  on:personaddbtnclick={handlePersonAddBtn}
-  {index} />
+<div class="personImgs">
+  <PersonAddBtn
+    photo={$eventDataStore.currentUser && $eventDataStore.currentUser.photo !== 'default.jpg' ? $eventDataStore.currentUser.photo : undefined}
+    name={$eventDataStore.currentUser ? $eventDataStore.currentUser.name : undefined}
+    imgStyle={'addPersonThing'}
+    on:personaddbtnclick={handlePersonAddBtn}
+    {index} />
 
-<!-- PersonImgs -->
-{#each todo.users as { photo, name }, i}
-  {#if i <= 4}
-    <!-- If the img is not the last one -->
-    {#if i === 4}
-      <PersonImg
-        photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
-        imgStyle={todo.users.length > 5 ? 'addPersonThing' : ''}
-        {name}
-        count={handleCounter(todo)} />
-    {:else}
-      <PersonImg {photo} {name} />
+  <!-- PersonImgs -->
+  {#each todo.users as { photo, name }, i}
+    {#if i <= 4}
+      <!-- If the img is not the last one -->
+      {#if i === 4}
+        <PersonImg
+          photo={todo.requiredPersons <= 0 ? todo.users[4].photo : undefined}
+          imgStyle={todo.users.length > 5 ? 'addPersonThing' : ''}
+          {name}
+          count={handleCounter(todo)} />
+      {:else}
+        <PersonImg {photo} {name} />
+      {/if}
+      <!-- If the img is the last one -->
     {/if}
-    <!-- If the img is the last one -->
-  {/if}
-{/each}
+  {/each}
+</div>
 
 <!-- Thing / Todo text -->
 <p class="text">{todo.text}</p>
