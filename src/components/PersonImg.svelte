@@ -20,8 +20,9 @@
   }
 
   .img {
-    width: 100%;
+    width: 110%;
     object-fit: cover;
+    z-index: 200;
   }
 
   .img--addPersonThing {

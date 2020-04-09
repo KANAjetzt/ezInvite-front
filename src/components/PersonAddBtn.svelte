@@ -7,7 +7,7 @@
   export let photo = undefined;
   export let name = undefined;
   export let iconStyle =
-    "z-index: 20; opacity: 0.7; transform: translateX(-0.6rem); grid-column: 1 / 2; grid-row: 1 / 2;";
+    "z-index: 250; opacity: 0.7; transform: translateX(-0.6rem); grid-column: 1 / 2; grid-row: 1 / 2;";
   export let imgStyle = "";
   export let index;
 

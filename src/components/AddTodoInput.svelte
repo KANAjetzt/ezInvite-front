@@ -282,7 +282,7 @@
 <div class="inputWrapper">
   <PersonAddBtn
     on:personaddbtnclick={handlePersonAddBtnClick}
-    iconStyle="z-index: 20; opacity: 0.8; transform: translateX(-0.6rem);
+    iconStyle="z-index: 250; opacity: 0.8; transform: translateX(-0.6rem);
     grid-column: 1 / 2; grid-row: 1 / 2;" />
   <input
     required
