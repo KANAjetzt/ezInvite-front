@@ -48,6 +48,20 @@
         right: 10
       }
     });
+
+    map.dragPan.disable();
+    map.scrollZoom.disable();
+
+    map.on("touchstart", event => {
+      const e = event.originalEvent;
+      if (e && "touches" in e) {
+        if (e.touches.length > 1) {
+          map.dragPan.enable();
+        } else {
+          map.dragPan.disable();
+        }
+      }
+    });
   });
 </script>
 
