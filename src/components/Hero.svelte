@@ -2,14 +2,14 @@
   import { fly } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
 
+  import handleImgSrc from "../utils/handleImgSrc.js";
   import { eventDataStore, appStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
 
-  export let bgImage =
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
+  export let bgImage;
 
   const dispatch = createEventDispatcher();
 
@@ -94,7 +94,7 @@
 <header
   class="hero"
   style="background-image: linear-gradient( 89.87deg, hsla(206, 96%, 25%, 0.85)
-  -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{bgImage}')"
+  -2.53%, hsla(206, 96%, 25%, 0.85) 112.27% ), url('{handleImgSrc(bgImage)}')"
   transition:fly={$appStore.currentPage === 'addEvent' ? { duration: 250, y: -300 } : { duration: 0 }}
   on:outroend={() => dispatch('outroend')}>
 
