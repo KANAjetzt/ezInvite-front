@@ -72,6 +72,9 @@
     width: 100%;
     grid-row: 2 / 3;
     grid-column: 1 / 3;
+  }
+
+  :global(.timer__shrinking) {
     animation-name: shrink;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
@@ -83,7 +86,7 @@
       /* width: 100%; */
     }
     100% {
-      transform: translate3d(-337px, 0, 0);
+      transform: translate3d(var(--timerWidth), 0, 0);
       /* width: 0; */
     }
   }
@@ -94,9 +97,13 @@
     class="toasti"
     transition:fly={{ x: -150, duration: 200 }}
     on:introend={() => {
-      const timer = document.querySelector('.timer').getBoundingClientRect();
+      const timer = document.querySelector('.timer');
+      const timerBoundingClient = timer.getBoundingClientRect();
       console.log(timer);
-      timerWidth = timer.width;
+      timerWidth = timerBoundingClient.width;
+      console.log(document.documentElement);
+      document.documentElement.style.setProperty('--timerWidth', `-${timerWidth}px`);
+      timer.classList.add('timer__shrinking');
     }}>
 
     <ErrorIcon width="30px" height="30px" fill="#fff" />
