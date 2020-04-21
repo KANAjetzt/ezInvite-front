@@ -14,10 +14,13 @@
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
-  import Message from "../components/Message.svelte";
+  import Message from "./Message.svelte";
+  import ToastMessage from "./ToastMessage.svelte";
 
   export let todo;
   export let index;
+
+  let addPersonToTodoImgError = false;
 
   const client = getClient();
 
@@ -81,6 +84,15 @@
         $appStore.messages,
         `addPersonToTodo-${index}`
       );
+    }
+
+    // --- check if currentUser has no img ---
+    if (!$eventDataStore.currentUser.photo) {
+      addPersonToTodoImgError = true;
+      $appStore.showAddPersonProfile = true;
+      return;
+    } else {
+      addPersonToTodoImgError = false;
     }
 
     // --- update todoStore ---
@@ -185,6 +197,10 @@
     font-size: 1.6rem;
     color: var(--color-text-primary);
   }
+
+  .messagebox {
+    width: 100%;
+  }
 </style>
 
 <div class="personImgs">
@@ -216,10 +232,26 @@
 <!-- Thing / Todo text -->
 <p class="text">{todo.text}</p>
 
-<!-- Error Message -->
-{#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
-  <Message location={`addPersonToTodo-${index}`} />
-{/if}
+<div class="messagebox">
+  <!-- Error Message -->
+
+  {#if addPersonToTodoImgError}
+    <ToastMessage
+      messageType={'Error'}
+      messageTag={`addPersonToTodoImg-${index}`}
+      message={'Please add an image to help with this thing.'}
+      timeout={10} />
+  {/if}
+
+  {#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
+    <Message location={`addPersonToTodo-${index}`} />
+  {/if}
+
+  <!-- Error Message -->
+  <!-- {#if $appStore.messages.filter(message => message.location === `addPersonToTodoImg-${index}`)[0]}
+    <Message location={`addPersonToTodoImg-${index}`} />
+  {/if} -->
+</div>
 
 <!-- Remove Btn on edit / add page -->
 {#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
