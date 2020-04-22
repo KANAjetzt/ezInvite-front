@@ -17,7 +17,6 @@
   import ToastMessage from "./ToastMessage.svelte";
 
   export let todo;
-  console.log(todo);
   export let index;
 
   const client = getClient();
@@ -147,16 +146,14 @@
   // --- Handles the counter that is shown
   //     if not all requiredPersons can fit as img ---
   const handleCounter = todo => {
-    console.log(todo);
     const counter = todo.requiredPersons;
-    console.log(todo.users.filter(user => user.name !== "unknown person"));
     const aktivPersons = todo.users.filter(
       user => user.name !== "unknown person"
     ).length;
 
     // if no aktiv person and requiredPersons === 5 --> counter 0
     if (!aktivPersons && counter === 5) {
-      return counter - 5;
+      return `${counter - 5}..`;
     }
 
     // if 5 aktiv persons
@@ -166,19 +163,18 @@
 
     // if no aktiv person counter -4
     if (!aktivPersons) {
-      return counter - 4;
+      return `${counter - 4}..`;
     }
 
     // if aktiv persons <= 4 --> 4 - aktiv persons
     if (aktivPersons <= 4) {
-      console.log("I'm aktive now!");
-      return counter - (4 - aktivPersons);
+      return `${counter - (4 - aktivPersons)}..`;
     }
     if (counter <= 0) {
-      return aktivPersons - 4;
+      return `+${aktivPersons - 4}`;
     }
     // if aktiv persons > 4 --> requiredPersons
-    return counter;
+    return `${counter}..`;
   };
 </script>
 

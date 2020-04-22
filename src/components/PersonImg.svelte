@@ -56,6 +56,6 @@
     src={handleImgSrc(photo)}
     alt={`Profile image of ${name}`} />
   {#if count}
-    <span class="count">{count}..</span>
+    <span class="count">{count}</span>
   {/if}
 </div>
