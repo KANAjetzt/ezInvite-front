@@ -276,7 +276,9 @@
         $appStore.messages,
         "Error",
         "inputEventName",
-        "Pleas provide a name for your event."
+        "Pleas provide a name for your event.",
+        6,
+        false
       );
     } else {
       $appStore.messages = removeMessage($appStore.messages, "inputEventName");
@@ -287,7 +289,9 @@
         $appStore.messages,
         "Error",
         "inputStartDate",
-        "Pleas select a start date for your event."
+        "Pleas select a start date for your event.",
+        6,
+        false
       );
     } else {
       $appStore.messages = removeMessage($appStore.messages, "inputStartDate");

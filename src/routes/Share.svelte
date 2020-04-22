@@ -13,7 +13,7 @@
     saveLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/errorHandler.js";
   import { send, receive } from "../utils/crossfade.js";
   import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
@@ -24,7 +24,6 @@
   import LinkBoxEdit from "../components/LinkBoxEdit.svelte";
   import AddPerson from "../components/AddPerson.svelte";
   import BigBtn from "../components/BtnBig.svelte";
-  import Message from "../components/Message.svelte";
 
   // Handle Local Storage
 
@@ -77,8 +76,6 @@
         "Please provide the name of some person."
       );
       return;
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     userStore.update(currentData => {
@@ -223,9 +220,6 @@
     </section>
     {#if !shared}
       <section class="inputAddPerson">
-        {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
-          <Message location={'inputPersonName'} />
-        {/if}
         <AddPerson on:addperson={handleAddPerson} />
       </section>
     {/if}

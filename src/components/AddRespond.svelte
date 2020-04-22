@@ -37,7 +37,7 @@
     if (
       !$eventDataStore.currentUser ||
       !$eventDataStore.currentUser.name ||
-      $eventDataStore.currentUser.photo === "default.jpg"
+      $eventDataStore.currentUser.photo === null
     ) {
       // render AddUserProfile Component / Overlay
       $appStore.showAddPersonProfile = !$appStore.showAddPersonProfile;

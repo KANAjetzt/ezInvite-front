@@ -10,11 +10,11 @@
     todoStore,
     sortedTodoStore
   } from "../stores";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/errorHandler.js";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
-  import Message from "../components/Message.svelte";
+  import ToastMessage from "./ToastMessage.svelte";
 
   export let todo;
   export let index;
@@ -69,18 +69,26 @@
         $appStore.messages,
         "Error",
         `addPersonToTodo-${index}`,
-        "Pleas accapted your invite to help with this thing."
+        "Please accapted your invite to help with this thing."
       );
 
       // Show responder
       $appStore.showFullResponder = true;
 
       return;
-    } else {
-      $appStore.messages = removeMessage(
+    }
+
+    // --- check if currentUser has no img ---
+    if (!$eventDataStore.currentUser.photo) {
+      $appStore.messages = addMessage(
         $appStore.messages,
-        `addPersonToTodo-${index}`
+        "Error",
+        `addPersonToTodoImg-${index}`,
+        "Please add an image to help with this thing.",
+        6
       );
+      $appStore.showAddPersonProfile = true;
+      return;
     }
 
     // --- update todoStore ---
@@ -185,6 +193,10 @@
     font-size: 1.6rem;
     color: var(--color-text-primary);
   }
+
+  .messagebox {
+    width: 100%;
+  }
 </style>
 
 <div class="personImgs">
@@ -215,11 +227,6 @@
 
 <!-- Thing / Todo text -->
 <p class="text">{todo.text}</p>
-
-<!-- Error Message -->
-{#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
-  <Message location={`addPersonToTodo-${index}`} />
-{/if}
 
 <!-- Remove Btn on edit / add page -->
 {#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}

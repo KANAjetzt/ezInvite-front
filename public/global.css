@@ -60,6 +60,7 @@ input[type="time"]::-webkit-inner-spin-button {
   );
   --clip-tertiary: polygon(0 calc(0% + 15vw), 100% 0, 100% 100%, 0 100%);
   --clip-tertiary-fixed: polygon(0 calc(0% + 34%), 100% 0, 100% 100%, 0 100%);
+  --timerWidth: 0px;
 }
 
 /* Used to style autofill / suggestions */

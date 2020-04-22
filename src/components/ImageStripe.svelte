@@ -1,6 +1,7 @@
 <script>
   import { fly } from "svelte/transition";
   import { eventDataStore, appStore } from "../stores";
+  import handleImgSrc from "../utils/handleImgSrc.js";
 
   let eventData;
 
@@ -59,7 +60,7 @@
         <div class="imgBox">
           <img
             class="img"
-            src={img.startsWith('data:') ? img : `${img}`}
+            src={handleImgSrc(img)}
             alt="Will be added later via API" />
         </div>
       {/each}

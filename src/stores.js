@@ -11,16 +11,18 @@ export const appStore = writable({
     type: 'error' / 'warning',
     location: 'todoInput' / 'titleInput',
     message: 'some text'
+    timeout: 6
+    toast: true / false
 }
   */
-  messages: []
+  messages: [],
 });
 export const eventDataStore = writable({});
 // ###############################################
 
 export const todoStore = writable([]);
 
-export const sortedTodoStore = derived(todoStore, $todoStore => {
+export const sortedTodoStore = derived(todoStore, ($todoStore) => {
   // create copy of todoStore so todoStore is not sorted
   const currentTodoStore = [...$todoStore];
 
@@ -29,13 +31,13 @@ export const sortedTodoStore = derived(todoStore, $todoStore => {
 
 export const sortedDummyTodoStore = derived(
   sortedTodoStore,
-  $sortedTodoStore => {
+  ($sortedTodoStore) => {
     // Add Dummy Users for todos
 
     // create a copy for safety reasons
     const currentStore = [...$sortedTodoStore];
 
-    currentStore.map(todo => {
+    currentStore.map((todo) => {
       const dummyCount = todo.users
         ? todo.requiredPersons - todo.users.length
         : todo.requiredPersons;
@@ -46,8 +48,8 @@ export const sortedDummyTodoStore = derived(
           ...todo.users,
           {
             name: "unknown person",
-            photo: `${svelteEnv.frontUrl}/img/default.jpg`
-          }
+            photo: `${svelteEnv.frontUrl}/img/default.jpg`,
+          },
         ];
       }
       return todo;
