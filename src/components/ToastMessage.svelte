@@ -6,31 +6,14 @@
   import { appStore } from "../stores";
   import ErrorIcon from "./Icons/ExclamationMark.svelte";
 
-  export let messageType;
-  export let messageTag;
   export let message;
-  export let timeout = 3;
-
   let timerWidth;
 
-  // filter out error messages from current location
-  // const messages = $appStore.messages.filter(
-  //   message => message.location === location
-  // );
-
   onMount(() => {
-    // Show error message
-    $appStore.messages = addMessage(
-      $appStore.messages,
-      messageType,
-      messageTag,
-      message
-    );
-
     setTimeout(() => {
       // remove Message
-      $appStore.messages = removeMessage($appStore.messages, messageTag);
-    }, timeout * 1000);
+      $appStore.messages = removeMessage($appStore.messages, message.location);
+    }, message.timeout * 1000);
   });
 </script>
 
@@ -83,11 +66,9 @@
   @keyframes shrink {
     0% {
       transform: translate3d(0, 0, 0);
-      /* width: 100%; */
     }
     100% {
       transform: translate3d(var(--timerWidth), 0, 0);
-      /* width: 0; */
     }
   }
 </style>
@@ -99,16 +80,15 @@
     on:introend={() => {
       const timer = document.querySelector('.timer');
       const timerBoundingClient = timer.getBoundingClientRect();
-      console.log(timer);
       timerWidth = timerBoundingClient.width;
-      console.log(document.documentElement);
       document.documentElement.style.setProperty('--timerWidth', `-${timerWidth}px`);
       timer.classList.add('timer__shrinking');
     }}>
 
     <ErrorIcon width="30px" height="30px" fill="#fff" />
-
-    <p class="message">{message}</p>
-    <div class="timer" style="animation-duration: {timeout * 1000}ms;" />
+    <p class="message">{message.message}</p>
+    <div
+      class="timer"
+      style="animation-duration: {message.timeout * 1000}ms;" />
   </div>
 {/if}

@@ -3,10 +3,9 @@
   import { getClient, mutate } from "svelte-apollo";
 
   import { appStore, eventDataStore, todoStore } from "../stores";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/errorHandler.js";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
-  import Message from "./Message.svelte";
 
   let text;
   let requiredPersons;
@@ -184,8 +183,6 @@
         "Please provide text and person count."
       );
       return;
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
     }
 
     // Error if requiredPerson count is over 1000
@@ -197,8 +194,6 @@
         "Sorry max. person count is 1000."
       );
       return;
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputAddTodo");
     }
 
     // decide on witch page we are
@@ -316,7 +311,3 @@
       if (e.keyCode === 13) handlePersonAddBtnClick(e);
     }} />
 </div>
-
-{#if errorMessages.filter(message => message.location === 'inputAddTodo')[0]}
-  <Message messageBoxStyle={'todoInput'} location={'inputAddTodo'} />
-{/if}

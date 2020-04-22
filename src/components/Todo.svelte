@@ -10,17 +10,14 @@
     todoStore,
     sortedTodoStore
   } from "../stores";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/errorHandler.js";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
-  import Message from "./Message.svelte";
   import ToastMessage from "./ToastMessage.svelte";
 
   export let todo;
   export let index;
-
-  let addPersonToTodoImgError = false;
 
   const client = getClient();
 
@@ -79,20 +76,19 @@
       $appStore.showFullResponder = true;
 
       return;
-    } else {
-      $appStore.messages = removeMessage(
-        $appStore.messages,
-        `addPersonToTodo-${index}`
-      );
     }
 
     // --- check if currentUser has no img ---
     if (!$eventDataStore.currentUser.photo) {
-      addPersonToTodoImgError = true;
+      $appStore.messages = addMessage(
+        $appStore.messages,
+        "Error",
+        `addPersonToTodoImg-${index}`,
+        "Please add an image to help with this thing.",
+        6
+      );
       $appStore.showAddPersonProfile = true;
       return;
-    } else {
-      addPersonToTodoImgError = false;
     }
 
     // --- update todoStore ---
@@ -231,27 +227,6 @@
 
 <!-- Thing / Todo text -->
 <p class="text">{todo.text}</p>
-
-<div class="messagebox">
-  <!-- Error Message -->
-
-  {#if addPersonToTodoImgError}
-    <ToastMessage
-      messageType={'Error'}
-      messageTag={`addPersonToTodoImg-${index}`}
-      message={'Please add an image to help with this thing.'}
-      timeout={10} />
-  {/if}
-
-  {#if $appStore.messages.filter(message => message.location === `addPersonToTodo-${index}`)[0]}
-    <Message location={`addPersonToTodo-${index}`} />
-  {/if}
-
-  <!-- Error Message -->
-  <!-- {#if $appStore.messages.filter(message => message.location === `addPersonToTodoImg-${index}`)[0]}
-    <Message location={`addPersonToTodoImg-${index}`} />
-  {/if} -->
-</div>
 
 <!-- Remove Btn on edit / add page -->
 {#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}

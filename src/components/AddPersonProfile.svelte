@@ -6,7 +6,7 @@
   import { fly } from "svelte/transition";
 
   import { appStore, eventDataStore } from "../stores";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/errorHandler.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
@@ -74,8 +74,6 @@
         "inputPersonName",
         "Pleas enter your name. (Maybe you missed the Button on the left?)"
       );
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     $eventDataStore.currentUser.name = e.detail.personName;
@@ -87,11 +85,10 @@
         $appStore.messages,
         "Error",
         "inputPersonName",
-        "Pleas enter your name. ( Maybe you missed the button on the left? )"
+        "Pleas enter your name. ( Maybe you missed the button on the left? )",
+        10
       );
       return;
-    } else {
-      $appStore.messages = removeMessage($appStore.messages, "inputPersonName");
     }
 
     // --- Handle unkonwn user ---
@@ -271,9 +268,6 @@
       <div class="addPersonInput">
         <AddPersonInput on:addperson={handlePersonName} />
       </div>
-      {#if $appStore.messages.filter(message => message.location === 'inputPersonName')[0]}
-        <Message location={'inputPersonName'} />
-      {/if}
     {/if}
 
     <!-- PersonImg: Current user has no Img - show Add profile picture comp -->
