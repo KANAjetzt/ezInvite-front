@@ -69,7 +69,7 @@
         $appStore.messages,
         "Error",
         `addPersonToTodo-${index}`,
-        "Pleas accapted your invite to help with this thing."
+        "Please accapted your invite to help with this thing."
       );
 
       // Show responder

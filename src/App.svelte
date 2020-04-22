@@ -29,7 +29,9 @@
 
 {#if $appStore.messages[0]}
   {#each $appStore.messages as message}
-    <TostMessage {message} />
+    {#if message.toast}
+      <TostMessage {message} />
+    {/if}
   {/each}
 {/if}
 

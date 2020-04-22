@@ -10,7 +10,14 @@ export const removeMessage = (messages, location) => {
   }
 };
 
-export const addMessage = (messages, type, location, message, timeout = 6) => {
+export const addMessage = (
+  messages,
+  type,
+  location,
+  message,
+  timeout = 6,
+  toast = true
+) => {
   // If the message doesn't exist already
   if (messages.findIndex((m) => m.message === message) === -1) {
     // Add the new error message to the array
@@ -21,6 +28,7 @@ export const addMessage = (messages, type, location, message, timeout = 6) => {
         location,
         message,
         timeout,
+        toast,
       },
     ];
   } else {
