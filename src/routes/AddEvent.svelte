@@ -227,6 +227,8 @@
         mutation: CREATEEVENT,
         variables: { input }
       });
+    } else {
+      loading = false;
     }
   };
 

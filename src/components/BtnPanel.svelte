@@ -1,5 +1,29 @@
 <script>
+  import { onMount } from "svelte";
+
+  import { appStore } from "../stores";
+
   export let clipVar = "";
+
+  $: if (
+    $appStore.messages.filter(
+      message =>
+        message.location === "inputEventName" ||
+        message.location === "inputStartDate"
+    )[0]
+  ) {
+    //get BtnWrapper
+    const btnWrapper = document.querySelector(".btnWrapper");
+
+    // add error class
+    btnWrapper.classList.add("btnWrapper__error");
+
+    // Listen for Animationend
+    btnWrapper.addEventListener("animationend", () => {
+      // remove error class
+      btnWrapper.classList.remove("btnWrapper__error");
+    });
+  }
 </script>
 
 <style>
@@ -39,6 +63,10 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 3rem;
     width: 90%;
+  }
+
+  :global(.btnWrapper__error) {
+    animation: wiggle 0.8s;
   }
 </style>
 
