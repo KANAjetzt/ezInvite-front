@@ -153,7 +153,7 @@
 
     // if no aktiv person and requiredPersons === 5 --> counter 0
     if (!aktivPersons && counter === 5) {
-      return counter - 5;
+      return `${counter - 5}..`;
     }
 
     // if 5 aktiv persons
@@ -163,15 +163,18 @@
 
     // if no aktiv person counter -4
     if (!aktivPersons) {
-      return counter - 4;
+      return `${counter - 4}..`;
     }
 
     // if aktiv persons <= 4 --> 4 - aktiv persons
     if (aktivPersons <= 4) {
-      return counter - (4 - aktivPersons);
+      return `${counter - (4 - aktivPersons)}..`;
+    }
+    if (counter <= 0) {
+      return `+${aktivPersons - 4}`;
     }
     // if aktiv persons > 4 --> requiredPersons
-    return todo.users.length - 4;
+    return `${counter}..`;
   };
 </script>
 

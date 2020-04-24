@@ -31,6 +31,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     padding: 0.8rem 0;
     margin: 0;
     border: none;

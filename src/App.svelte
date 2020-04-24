@@ -13,6 +13,7 @@
   import Share from "./routes/Share.svelte";
   import NotFound from "./routes/404.svelte";
   import TostMessage from "./components/ToastMessage.svelte";
+  import Feedback from "./components/Feedback.svelte";
 
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
@@ -43,3 +44,5 @@
   <Route path="share" component={Share} />
   <Route path="/notFound" component={NotFound} />
 </Router>
+
+<Feedback />

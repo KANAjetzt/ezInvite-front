@@ -25,11 +25,17 @@
     align-items: center;
     padding: 0.5rem 0;
   }
+
+  :global(.todo__done) {
+    opacity: 0.5;
+  }
 </style>
 
 <ul class="todoList">
   {#each todosSortedWithDummyUsers as todo, index (todo.id ? todo.id : index)}
-    <li animate:flip class="todo">
+    <li
+      animate:flip
+      class={`todo ${todo.requiredPersons <= 0 ? 'todo__done' : ''}`}>
       <Todo {todo} {index} />
     </li>
   {/each}

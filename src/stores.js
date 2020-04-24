@@ -5,6 +5,7 @@ export const appStore = writable({
   showFullResponder: true,
   // 'addEvent' / 'editEvent' / 'event' / 'eventPreview' / 'share'
   currentPage: undefined,
+  feedbackGiven: false,
   /* -- message array structure-- */
   /* 
   {
