@@ -4,6 +4,7 @@
   import { navigate } from "svelte-routing";
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
+  import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
   import QuickFacts from "../components/QuickFacts.svelte";
@@ -163,6 +164,8 @@
     loading = false;
   }
 </script>
+
+<Head title={eventData.name ? `Corrogo - ${eventData.name}` : `Corrogo -`} />
 
 {#if loading}
   <Loader style={'fullPageCentered'} />

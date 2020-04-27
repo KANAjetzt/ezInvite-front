@@ -15,6 +15,7 @@
   } from "../utils/localStorageHandler.js";
   import { addMessage } from "../utils/errorHandler.js";
   import { send, receive } from "../utils/crossfade.js";
+  import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
   import DescriptionBox from "../components/DescriptionBox.svelte";
@@ -181,6 +182,8 @@
     margin-top: auto;
   }
 </style>
+
+<Head title={`Corrogo - Share ${eventData.name}`} />
 
 <PageTransition>
 

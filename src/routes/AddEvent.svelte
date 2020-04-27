@@ -8,6 +8,7 @@
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
@@ -343,6 +344,9 @@
     grid-column: span 2;
   }
 </style>
+
+<Head
+  title={eventData.name ? `Corrogo - Creating ${eventData.name}` : `Corrogo - Create Event`} />
 
 <PageTransition>
   {#if !heroImgPreview}

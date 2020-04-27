@@ -6,6 +6,7 @@
     getLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
+  import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import BtnShare from "../components/BtnShare.svelte";
   import Hero from "../components/Hero.svelte";
@@ -35,6 +36,9 @@
     navigate("/share");
   };
 </script>
+
+<Head
+  title={eventData.name ? `Corrogo - Preview ${eventData.name}` : `Corrogo - Preview`} />
 
 <PageTransition>
 

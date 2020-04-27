@@ -7,6 +7,7 @@
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
   import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
   import Hero from "../components/Hero.svelte";
@@ -418,6 +419,9 @@
     margin-top: 2rem;
   }
 </style>
+
+<Head
+  title={eventData.name ? `Corrogo - Edit ${eventData.name}` : `Corrogo - Edit`} />
 
 {#if loading}
   <Loader style={'fullPageCentered'} />
