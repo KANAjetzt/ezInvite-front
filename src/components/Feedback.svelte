@@ -44,7 +44,7 @@
       });
 
       // Say thanks
-      text = "thanks! :)";
+      text = "thanks! :D";
 
       setTimeout(() => {
         // update appStore
