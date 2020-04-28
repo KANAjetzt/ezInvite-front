@@ -151,14 +151,14 @@
       user => user.name !== "unknown person"
     ).length;
 
-    // if no aktiv person and requiredPersons === 5 --> counter 0
-    if (!aktivPersons && counter === 5) {
-      return `${counter - 5}..`;
-    }
-
     // if 5 aktiv persons
     if (todo.users.length === 5) {
       return null;
+    }
+
+    // if no aktiv person and requiredPersons === 5 --> counter 0
+    if (!aktivPersons && counter === 5) {
+      return `${counter - 5}..`;
     }
 
     // if no aktiv person counter -4
