@@ -25,9 +25,14 @@
   <meta
     property="og:description"
     content={$eventDataStore.description ? $eventDataStore.description : ''} />
+  <meta property="og:image:width" content={560} />
+  <meta property="og:image:height" content={300} />
   <meta
     property="og:image"
-    content={$eventDataStore.heroImg ? getImg($eventDataStore.heroImg, 'c_thumb,w_560,g_face/v1588149527/') : ''} />
+    content={$eventDataStore.heroImg ? getImg($eventDataStore.heroImg, 'c_thumb,w_560,h_300,g_face/v1588149527/') : ''} />
+  <meta
+    property="og:image:secure_url"
+    content={$eventDataStore.heroImg ? getImg($eventDataStore.heroImg, 'c_thumb,w_560,h_300,g_face/v1588149527/') : ''} />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
