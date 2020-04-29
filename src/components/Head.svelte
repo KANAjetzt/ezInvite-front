@@ -27,7 +27,7 @@
     content={$eventDataStore.description ? $eventDataStore.description : ''} />
   <meta
     property="og:image"
-    content={$eventDataStore.heroImg ? getImg($eventDataStore.heroImg) : ''} />
+    content={$eventDataStore.heroImg ? getImg($eventDataStore.heroImg, 'c_thumb,w_560,g_face/v1588149527/') : ''} />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
