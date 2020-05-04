@@ -33,6 +33,7 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 300;
     backdrop-filter: blur(5px);
+    overflow-y: scroll;
   }
 
   @media only screen and (min-width: 64em) {

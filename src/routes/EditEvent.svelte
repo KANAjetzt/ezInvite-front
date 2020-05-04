@@ -277,7 +277,7 @@
         $appStore.messages,
         "Error",
         "inputEventName",
-        "Pleas provide a name for your event.",
+        "Please provide a name for your event.",
         6,
         false
       );
@@ -290,7 +290,7 @@
         $appStore.messages,
         "Error",
         "inputStartDate",
-        "Pleas select a start date for your event.",
+        "Please select a start date for your event.",
         6,
         false
       );
@@ -446,7 +446,7 @@
             <SimpleField
               name={'Title'}
               heading={'Title'}
-              placeholder={'What are you planing?'}
+              placeholder={'What are you planning?'}
               bind:value={$eventDataStore.name} />
           </div>
           {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}

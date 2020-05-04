@@ -72,7 +72,7 @@
       bg={true} />
     <h4 class="btnTitle">List</h4>
     <p class="btnText">
-      Tell your freands what you need, and let them tell you what they bring
+      Tell your friends what you need, and let them tell you what they bring
     </p>
   </button>
 </div>
