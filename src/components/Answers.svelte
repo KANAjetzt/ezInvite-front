@@ -83,7 +83,7 @@
   <!-- Accepted === FALSE -->
   <h3 class="h3">
     <CrossIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
-    <span>Sorry no Time</span>
+    <span>Sorry no time</span>
   </h3>
 
   {#if canceledUsers}
@@ -97,7 +97,7 @@
   <!-- Accepted === UNDEFINED -->
   <h3 class="h3">
     <QuestionmarkIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
-    <span>Waiting for an Answer</span>
+    <span>Waiting for an answer</span>
   </h3>
 
   {#if pendingUsers}

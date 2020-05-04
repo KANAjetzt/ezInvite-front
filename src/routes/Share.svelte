@@ -196,10 +196,10 @@
     </section>
     <section class="descriptionBox">
       {#if !shared}
-        <DescriptionBox title={'Ivite your freands to your event!'} />
+        <DescriptionBox title={'Invite your friends to your event!'} />
       {:else}
         <DescriptionBox
-          title={'Send your Invites out, by sharing the following links with your freands'} />
+          title={'Send your invites out, by sharing the following links with your friends'} />
       {/if}
     </section>
     <section class="persons">
@@ -237,7 +237,7 @@
       </section>
       <section class="descriptionBoxEdit">
         <DescriptionBox
-          title={'Save this Link to eventually edit your event later!'} />
+          title={'Save this link to eventually edit your event later!'} />
       </section>
       <section class="linkBoxEdit">
         <LinkBoxEdit

@@ -72,7 +72,7 @@
         $appStore.messages,
         "Error",
         "inputPersonName",
-        "Pleas enter your name. (Maybe you missed the Button on the left?)"
+        "Please enter your name. (Maybe you missed the button on the left?)"
       );
     }
 
@@ -85,7 +85,7 @@
         $appStore.messages,
         "Error",
         "inputPersonName",
-        "Pleas enter your name. ( Maybe you missed the button on the left? )",
+        "Please enter your name. ( Maybe you missed the button on the left? )",
         10
       );
       return;
