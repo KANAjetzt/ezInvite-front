@@ -1,9 +1,14 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { navigate } from "svelte-routing";
   import { fly } from "svelte/transition";
+  import {
+    disableBodyScroll,
+    enableBodyScroll,
+    clearAllBodyScrollLocks
+  } from "body-scroll-lock";
 
   import { appStore, eventDataStore } from "../stores";
   import { addMessage } from "../utils/errorHandler.js";
@@ -20,6 +25,15 @@
 
   const dispatch = createEventDispatcher();
   const client = getClient();
+
+  onMount(() => {
+    const overlay = document.querySelector(".personProfile");
+    disableBodyScroll(overlay);
+
+    return () => {
+      enableBodyScroll(overlay);
+    };
+  });
 
   const QUERYUSERBYLINK = gql`
     query($link: String!) {
@@ -172,6 +186,8 @@
 <style>
   .personProfile {
     background: var(--color-primary);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 
   @media only screen and (min-width: 64em) {
