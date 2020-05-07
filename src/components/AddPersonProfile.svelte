@@ -191,9 +191,10 @@
     transform: translate3d(0, 0, 0);
   }
 
-  @media only screen and (min-width: 64em) {
+  @media only screen and (min-width: 36em) {
     .personProfile {
       width: 55rem;
+      overflow-y: unset;
     }
   }
 

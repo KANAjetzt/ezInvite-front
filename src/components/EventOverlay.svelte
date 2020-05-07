@@ -46,9 +46,8 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  @media only screen and (min-width: 64em) {
+  @media only screen and (min-width: 36em) {
     .overlay {
-      justify-content: center;
       align-items: center;
     }
   }
