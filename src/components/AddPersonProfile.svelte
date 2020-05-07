@@ -1,9 +1,14 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
   import { navigate } from "svelte-routing";
   import { fly } from "svelte/transition";
+  import {
+    disableBodyScroll,
+    enableBodyScroll,
+    clearAllBodyScrollLocks
+  } from "body-scroll-lock";
 
   import { appStore, eventDataStore } from "../stores";
   import { addMessage } from "../utils/errorHandler.js";
@@ -20,6 +25,15 @@
 
   const dispatch = createEventDispatcher();
   const client = getClient();
+
+  onMount(() => {
+    const overlay = document.querySelector(".personProfile");
+    disableBodyScroll(overlay);
+
+    return () => {
+      enableBodyScroll(overlay);
+    };
+  });
 
   const QUERYUSERBYLINK = gql`
     query($link: String!) {
@@ -172,11 +186,15 @@
 <style>
   .personProfile {
     background: var(--color-primary);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
   }
 
-  @media only screen and (min-width: 64em) {
+  @media only screen and (min-width: 36em) {
     .personProfile {
       width: 55rem;
+      overflow-y: unset;
     }
   }
 
@@ -208,6 +226,16 @@
 
   .linkBox > {
     text-align: center;
+  }
+
+  .btns {
+    padding-bottom: 10rem;
+  }
+
+  @media only screen and (min-width: 36em) {
+    .btns {
+      padding-bottom: unset;
+    }
   }
 </style>
 
@@ -283,20 +311,24 @@
       </div>
     {/if}
   </section>
-  {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
-    <BtnBig
-      text={'go to your personal event page'}
-      clipVar={'tertiary'}
-      fontSize={2.8}
-      on:bigbtnclick={handleLinkBtn} />
-  {:else}
-    <BtnPanel clipVar={'tertiary'}>
-      <NormalBtn
-        text={'go back'}
-        type={'normal'}
-        on:normalbtnclick={handleBackBtn} />
-      <NormalBtn text={'Done !'} type={'cta'} on:ctabtnclick={handleDoneBtn} />
-    </BtnPanel>
-  {/if}
-
+  <section class="btns">
+    {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
+      <BtnBig
+        text={'go to your personal event page'}
+        clipVar={'tertiary'}
+        fontSize={2.8}
+        on:bigbtnclick={handleLinkBtn} />
+    {:else}
+      <BtnPanel clipVar={'tertiary'}>
+        <NormalBtn
+          text={'go back'}
+          type={'normal'}
+          on:normalbtnclick={handleBackBtn} />
+        <NormalBtn
+          text={'Done !'}
+          type={'cta'}
+          on:ctabtnclick={handleDoneBtn} />
+      </BtnPanel>
+    {/if}
+  </section>
 </section>

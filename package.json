@@ -28,6 +28,7 @@
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
     "apollo-upload-client": "^11.0.0",
+    "body-scroll-lock": "^3.0.2",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "mapbox-gl": "^1.6.0",
