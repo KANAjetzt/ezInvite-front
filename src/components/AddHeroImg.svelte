@@ -1,6 +1,7 @@
 <script>
   import { fly } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
+  import compressImg from "../utils/compressImage.js";
 
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
@@ -8,10 +9,12 @@
   const dispatch = createEventDispatcher();
 
   // ! Handle Img upload after submitting the form in AddEvent Route !
-  const handleImg = () => {
+  const handleImg = async () => {
     const img = document.getElementById("heroImg").files[0];
 
     const reader = new FileReader();
+
+    const downScaledImg = await compressImg(img, 1280, 720);
 
     // When img is loaded set result to heroImgPreview
     // heroImgPreview is bound in AddEvent to heroImgPreview
@@ -22,7 +25,7 @@
       eventDataStore.update(currentData => {
         const currentEventData = { ...currentData };
         currentEventData.heroImgPreview = imgData;
-        currentEventData.pureHeroImg = img;
+        currentEventData.pureHeroImg = downScaledImg;
         return currentEventData;
       });
     };
