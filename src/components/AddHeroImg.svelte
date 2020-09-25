@@ -14,7 +14,7 @@
 
     const reader = new FileReader();
 
-    const downScaledImg = await compressImg(img, 1280, 720);
+    const downScaledImg = await compressImg(img, 1280);
 
     // When img is loaded set result to heroImgPreview
     // heroImgPreview is bound in AddEvent to heroImgPreview

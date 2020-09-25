@@ -28,7 +28,7 @@ const asyncImgOnLoad = (img) => {
   });
 };
 
-const compressImg = async (sourceImage, newWidth, newHeight) => {
+const compressImg = async (sourceImage, newWidth) => {
   reader.readAsDataURL(sourceImage);
 
   const img = new Image();
@@ -37,15 +37,20 @@ const compressImg = async (sourceImage, newWidth, newHeight) => {
 
   img.src = result;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = newWidth;
-  canvas.height = newHeight;
-
-  const ctx = canvas.getContext("2d");
-
   await asyncImgOnLoad(img);
 
-  ctx.drawImage(img, 0, 0, newWidth, newHeight);
+  // if img resolution is lower then compress with --> return sourceImage
+  if (img.width <= newWidth) return sourceImage;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const scaleFactor = newWidth / img.width;
+
+  canvas.width = newWidth;
+  canvas.height = img.height * scaleFactor;
+
+  ctx.drawImage(img, 0, 0, newWidth, img.height * scaleFactor);
 
   const blob = await asyncCanvasBlob(ctx.canvas);
 
