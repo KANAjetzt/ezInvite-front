@@ -2,6 +2,7 @@
   import { fly } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import compressImg from "../utils/compressImage.js";
+  import rotateImg from "../utils/rotateImage.js";
 
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
@@ -16,6 +17,8 @@
 
     const downScaledImg = await compressImg(img, 1280);
 
+    const [file, dataUrll] = await rotateImg(downScaledImg);
+
     // When img is loaded set result to heroImgPreview
     // heroImgPreview is bound in AddEvent to heroImgPreview
     // heroImgPreview is send to Hero.svelte as backgroundImg prop
@@ -25,7 +28,7 @@
       eventDataStore.update(currentData => {
         const currentEventData = { ...currentData };
         currentEventData.heroImgPreview = imgData;
-        currentEventData.pureHeroImg = downScaledImg;
+        currentEventData.pureHeroImg = file;
         return currentEventData;
       });
     };
