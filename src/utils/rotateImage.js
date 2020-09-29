@@ -43,6 +43,9 @@ const rotateImg = async (sourceImage, clockwise = false) => {
   const canvas = document.getElementById("testCanvas");
   const ctx = canvas.getContext("2d");
 
+  canvas.width = img.width;
+  canvas.height = img.height;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
   ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -58,8 +61,6 @@ const rotateImg = async (sourceImage, clockwise = false) => {
   }); //output image as a file
 
   const dataUrl = canvas.toDataURL();
-
-  console.log(dataUrl);
 
   return [file, dataUrl];
 };

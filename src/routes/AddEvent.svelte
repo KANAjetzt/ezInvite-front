@@ -349,7 +349,7 @@
   title={eventData.name ? `Corrogo - Creating ${eventData.name}` : `Corrogo - Create Event`} />
 
 <PageTransition>
-  <canvas id="testCanvas" />
+  <canvas id="testCanvas" width="600" height="600" />
   {#if !heroImgPreview}
     <div class="topBar" />
   {/if}

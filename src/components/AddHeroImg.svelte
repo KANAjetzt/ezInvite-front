@@ -27,7 +27,7 @@
 
       eventDataStore.update(currentData => {
         const currentEventData = { ...currentData };
-        currentEventData.heroImgPreview = imgData;
+        currentEventData.heroImgPreview = dataUrll;
         currentEventData.pureHeroImg = file;
         return currentEventData;
       });
