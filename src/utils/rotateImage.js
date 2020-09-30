@@ -39,8 +39,7 @@ const rotateImg = async (sourceImage, clockwise = false) => {
 
   await asyncImgOnLoad(img);
 
-  // const canvas = document.createElement("canvas");
-  const canvas = document.getElementById("testCanvas");
+  const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
   canvas.width = img.width;

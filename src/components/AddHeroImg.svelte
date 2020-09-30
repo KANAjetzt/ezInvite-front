@@ -17,8 +17,6 @@
 
     const downScaledImg = await compressImg(img, 1280);
 
-    const [file, dataUrll] = await rotateImg(downScaledImg);
-
     // When img is loaded set result to heroImgPreview
     // heroImgPreview is bound in AddEvent to heroImgPreview
     // heroImgPreview is send to Hero.svelte as backgroundImg prop
@@ -27,8 +25,8 @@
 
       eventDataStore.update(currentData => {
         const currentEventData = { ...currentData };
-        currentEventData.heroImgPreview = dataUrll;
-        currentEventData.pureHeroImg = file;
+        currentEventData.heroImgPreview = imgData;
+        currentEventData.pureHeroImg = downScaledImg;
         return currentEventData;
       });
     };
