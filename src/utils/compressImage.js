@@ -59,7 +59,7 @@ const compressImg = async (sourceImage, newWidth) => {
     lastModified: Date.now(),
   }); //output image as a file
 
-  const dataUrl = canvas.toDataURL();
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.2);
 
   return [file, dataUrl];
 };
