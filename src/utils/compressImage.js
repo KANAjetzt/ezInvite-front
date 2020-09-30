@@ -59,7 +59,9 @@ const compressImg = async (sourceImage, newWidth) => {
     lastModified: Date.now(),
   }); //output image as a file
 
-  return file;
+  const dataUrl = canvas.toDataURL();
+
+  return [file, dataUrl];
 };
 
 export default compressImg;
