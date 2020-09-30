@@ -15,7 +15,7 @@
 
     const reader = new FileReader();
 
-    const downScaledImg = await compressImg(img, 1280);
+    const [downScaledImg, downScaledDataUrl] = await compressImg(img, 1280);
 
     // When img is loaded set result to heroImgPreview
     // heroImgPreview is bound in AddEvent to heroImgPreview
@@ -25,7 +25,7 @@
 
       eventDataStore.update(currentData => {
         const currentEventData = { ...currentData };
-        currentEventData.heroImgPreview = imgData;
+        currentEventData.heroImgPreview = downScaledDataUrl;
         currentEventData.pureHeroImg = downScaledImg;
         return currentEventData;
       });
