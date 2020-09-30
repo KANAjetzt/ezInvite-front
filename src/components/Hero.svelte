@@ -3,11 +3,13 @@
   import { createEventDispatcher } from "svelte";
 
   import handleImgSrc from "../utils/handleImgSrc.js";
+  import rotateImg from "../utils/rotateImage.js";
   import { eventDataStore, appStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import LocationPinIcon from "./Icons/LocationPin.svelte";
   import Date from "./Date.svelte";
   import RemoveBtn from "./BtnRemove.svelte";
+  import RotateBtn from "../components/BtnRotateImg.svelte";
 
   export let bgImage;
 
@@ -18,6 +20,12 @@
   eventDataStore.subscribe(newValue => {
     eventData = newValue;
   });
+
+  const handleRotateBtn = async () => {
+    const [file, dataUrl] = await rotateImg($eventDataStore.pureHeroImg);
+    $eventDataStore.pureHeroImg = file;
+    $eventDataStore.heroImgPreview = dataUrl;
+  };
 </script>
 
 <style>
@@ -85,6 +93,12 @@
     display: flex;
     align-items: center;
   }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+  }
 </style>
 
 {#if $appStore.currentPage === 'event'}
@@ -125,8 +139,10 @@
 
 <!-- If on AddEvent or EditEvent Page show RemoveBtn -->
 {#if $appStore.currentPage === 'editEvent' || $appStore.currentPage === 'addEvent'}
-  <RemoveBtn
-    marginLeft={1}
-    marginTop={-2.9}
-    on:removebtnclick={() => dispatch('removebtnclick')} />
+  <div class="buttons">
+    <RemoveBtn
+      marginTop={-2.9}
+      on:removebtnclick={() => dispatch('removebtnclick')} />
+    <RotateBtn marginTop={-9.5} on:rotatebtnclick={handleRotateBtn} />
+  </div>
 {/if}
