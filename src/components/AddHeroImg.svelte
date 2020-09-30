@@ -2,6 +2,7 @@
   import { fly } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import compressImg from "../utils/compressImage.js";
+  import rotateImg from "../utils/rotateImage.js";
 
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
