@@ -3,7 +3,7 @@
   import { getClient, mutate } from "svelte-apollo";
 
   import { appStore, eventDataStore, todoStore } from "../stores";
-  import { addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/messageHandler.js";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import PersonCountIcon from "./Icons/AddPerson.svelte";
 
