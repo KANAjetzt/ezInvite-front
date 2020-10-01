@@ -13,7 +13,7 @@
     saveLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler.js";
-  import { addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/messageHandler.js";
   import { send, receive } from "../utils/crossfade.js";
   import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
@@ -204,7 +204,7 @@
     </section>
     <section class="persons">
       {#if users}
-        {#if !shared}
+        {#if shared}
           {#each users as { name, key }, index (key)}
             <div class="personBevoreShare" animate:flip={{ duration: 250 }}>
               <PersonCard {name} {index} />
