@@ -1,5 +1,5 @@
 <script>
-  import { appStore } from "../stores.js";
+  import { appStore, eventDataStore } from "../stores.js";
   import { addMessage } from "../utils/messageHandler.js";
   import SingleShareBtn from "./BtnSingleShare.svelte";
 
@@ -15,6 +15,27 @@
       "Copyed to clipboard!",
       1
     );
+  };
+
+  const handleSingleShareBtnClick = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: $eventDataStore.name,
+          text: $eventDataStore.description,
+          url: value
+        })
+        .then()
+        .catch(
+          err =>
+            ($appStore.messages = addMessage(
+              $appStore.messages,
+              "error",
+              "shareLinkShareAPI",
+              "Something went wrong sorry :("
+            ))
+        );
+    }
   };
 </script>
 
@@ -52,5 +73,12 @@
     readonly
     bind:value
     on:click={handleInputClick} />
-  <SingleShareBtn width={25} height={25} marginTop={-2} marginLeft={-2} />
+  {#if navigator.share}
+    <SingleShareBtn
+      width={25}
+      height={25}
+      marginTop={-2}
+      marginLeft={-2}
+      on:singlesharebtnclick={handleSingleShareBtnClick} />
+  {/if}
 </div>
