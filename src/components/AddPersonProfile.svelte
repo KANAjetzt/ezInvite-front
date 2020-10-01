@@ -11,7 +11,7 @@
   } from "body-scroll-lock";
 
   import { appStore, eventDataStore } from "../stores";
-  import { addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/messageHandler.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";

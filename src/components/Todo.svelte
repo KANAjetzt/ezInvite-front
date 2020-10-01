@@ -10,7 +10,7 @@
     todoStore,
     sortedTodoStore
   } from "../stores";
-  import { addMessage } from "../utils/errorHandler.js";
+  import { addMessage } from "../utils/messageHandler.js";
   import PersonImg from "./PersonImg.svelte";
   import PersonAddBtn from "./PersonAddBtn.svelte";
   import RemoveBtn from "./BtnRemove.svelte";

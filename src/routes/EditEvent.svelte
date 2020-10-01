@@ -6,7 +6,7 @@
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { removeMessage, addMessage } from "../utils/messageHandler.js";
   import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
