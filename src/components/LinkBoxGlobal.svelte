@@ -1,5 +1,6 @@
 <script>
   import GlobeIcon from "../components/Icons/Globe.svelte";
+  import SingleShareBtn from "../components/BtnSingleShare.svelte";
 
   export let value;
 </script>
@@ -41,4 +42,6 @@
     name="linkBoxGlobal"
     readonly
     bind:value />
+
+  <SingleShareBtn width={25} height={25} marginLeft={-2} {value} />
 </div>
