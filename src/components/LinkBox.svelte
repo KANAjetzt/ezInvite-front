@@ -4,6 +4,7 @@
   import SingleShareBtn from "./BtnSingleShare.svelte";
 
   export let value;
+  let sharing = false;
 
   const handleInputClick = async () => {
     await navigator.clipboard.writeText(value);
@@ -17,24 +18,26 @@
     );
   };
 
-  const handleSingleShareBtnClick = () => {
+  const handleSingleShareBtnClick = async () => {
+    sharing = true;
     if (navigator.share) {
-      navigator
-        .share({
+      try {
+        await navigator.share({
           title: $eventDataStore.name,
           text: $eventDataStore.description,
           url: value
-        })
-        .then()
-        .catch(
-          err =>
-            ($appStore.messages = addMessage(
-              $appStore.messages,
-              "error",
-              "shareLinkShareAPI",
-              "Something went wrong sorry :("
-            ))
+        });
+        sharing = false;
+      } catch (err) {
+        console.log(err);
+        $appStore.messages = addMessage(
+          $appStore.messages,
+          "error",
+          "shareLinkShareAPI",
+          "Something went wrong :("
         );
+        sharing = false;
+      }
     }
   };
 </script>
@@ -73,7 +76,7 @@
     readonly
     bind:value
     on:click={handleInputClick} />
-  {#if navigator.share}
+  {#if navigator.share && !sharing}
     <SingleShareBtn
       width={25}
       height={25}
