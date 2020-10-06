@@ -20,6 +20,9 @@
 
   const handleSingleShareBtnClick = async () => {
     sharing = true;
+    setTimeout(() => {
+      sharing = false;
+    }, 1000);
     if (navigator.share) {
       try {
         await navigator.share({
@@ -27,7 +30,6 @@
           text: $eventDataStore.description,
           url: value
         });
-        sharing = false;
       } catch (err) {
         console.log(err);
         $appStore.messages = addMessage(
@@ -36,7 +38,6 @@
           "shareLinkShareAPI",
           "Something went wrong :("
         );
-        sharing = false;
       }
     }
   };
