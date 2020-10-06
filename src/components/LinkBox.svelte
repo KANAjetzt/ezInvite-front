@@ -83,6 +83,6 @@
       height={25}
       marginTop={-2}
       marginLeft={-2}
-      on:singlesharebtnclick={handleSingleShareBtnClick} />
+      on:singlesharebtnclick|once={handleSingleShareBtnClick} />
   {/if}
 </div>
