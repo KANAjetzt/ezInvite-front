@@ -1,8 +1,13 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  import { appStore, eventDataStore } from "../stores.js";
+  import { addMessage } from "../utils/messageHandler.js";
+
   import ShareIcon from "./Icons/Share.svelte";
 
+  export let value;
+  export let defaultBehavior = true;
   export let marginTop = 0;
   export let marginLeft = 0;
   export let width = 25;
@@ -10,10 +15,45 @@
 
   const dispatch = createEventDispatcher();
 
-  // Remove Preview Img --> simple dispatch an event and handle it where it get used.
-  const handleSingleShareBtn = e => {
-    e.preventDefault();
-    dispatch("singlesharebtnclick");
+  const copyToClipboard = async textValue => {
+    await navigator.clipboard.writeText(textValue);
+
+    $appStore.messages = addMessage(
+      $appStore.messages,
+      "info",
+      "shareLinkCopyedToClipboard",
+      "Copyed to clipboard!",
+      1
+    );
+  };
+
+  const handleSingleShareBtn = async e => {
+    if (defaultBehavior) {
+      // if we have the web share API try to use it
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: $eventDataStore.name,
+            text: $eventDataStore.description,
+            url: value
+          });
+        } catch (err) {
+          console.log(err);
+          // At the moment the share dialog only works one time,
+          // then it throw a user agent error
+          // https://stackoverflow.com/questions/64055853/navigator-share-only-working-once-in-ios-second-click-throws-error-request-is
+          // so we copy the url to the clipboard instead :/
+
+          await copyToClipboard(value);
+        }
+        // else just copy to clipboard
+      } else {
+        await copyToClipboard(value);
+      }
+    } else {
+      e.preventDefault();
+      dispatch("singlesharebtnclick");
+    }
   };
 </script>
 

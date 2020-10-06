@@ -1,5 +1,6 @@
 <script>
   import EditIcon from "../components/Icons/Edit.svelte";
+  import SingleShareBtn from "../components/BtnSingleShare.svelte";
 
   export let value;
 </script>
@@ -41,4 +42,5 @@
     name="linkBoxEdit"
     readonly
     bind:value />
+  <SingleShareBtn width={25} height={25} marginLeft={-2} {value} />
 </div>
