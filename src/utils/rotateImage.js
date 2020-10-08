@@ -28,7 +28,7 @@ const asyncImgOnLoad = (img) => {
   });
 };
 
-const rotateImg = async (sourceImage, clockwise = false) => {
+const rotateImg = async (sourceImage) => {
   reader.readAsDataURL(sourceImage);
 
   const img = new Image();
@@ -39,18 +39,21 @@ const rotateImg = async (sourceImage, clockwise = false) => {
 
   await asyncImgOnLoad(img);
 
+  // create canvas
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = img.width;
-  canvas.height = img.height;
+  // make canvas the size of the image
+  canvas.width = img.height;
+  canvas.height = img.width;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.rotate((180 * Math.PI) / 180);
-  ctx.drawImage(img, -img.width / 2, -img.height / 2);
-  ctx.restore();
+  // rotate the context bei 90 degrees
+  ctx.rotate((90 * Math.PI) / 180);
+  // translate the context (x: 0, y: -theHeightOfTheImage) to put the center(0,0) back in the canvas top left
+  // Visualized here: https://codepen.io/kanajetzt/pen/BaKeowQ
+  ctx.translate(0, img.height * -1);
+  // draw the image to the rotated and translated context
+  ctx.drawImage(img, 0, 0);
 
   const blob = await asyncCanvasBlob(ctx.canvas);
 
