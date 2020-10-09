@@ -31,8 +31,6 @@
   let section2 = false;
   let addHeroImg = true;
   let heroImg = false;
-  let addImgs = true;
-  let imgs = false;
   let listWidgetVisible = false;
   let loading = false;
 
@@ -131,21 +129,6 @@
       : heroImg
       ? (heroImg = !heroImg)
       : null;
-  };
-
-  const handleImgStripeAdded = e => {
-    addImgs ? (addImgs = !addImgs) : imgs ? (imgs = !imgs) : null;
-  };
-
-  const handleImgStripeRemove = e => {
-    imgs ? (imgs = !imgs) : addImgs ? (addImgs = !addImgs) : null;
-    addImgs;
-
-    eventDataStore.update(currentData => {
-      const currentEventData = { ...currentData };
-      currentEventData.imgs = undefined;
-      return currentEventData;
-    });
   };
 
   const handlelistBtnClick = e => {
@@ -487,25 +470,18 @@
       <section
         class="imgsUpload"
         transition:fly|local={{ duration: 250, x: -30 }}>
-        {#if addImgs}
+        {#if $appStore.addImgs}
           <section
             transition:fly|local={{ duration: 250, x: -30 }}
-            on:outroend={() => (imgs = true)}>
-            <AddImgs bind:imgStripe on:imgsadded={handleImgStripeAdded} />
+            on:outroend={() => ($appStore.imgs = true)}>
+            <AddImgs bind:imgStripe />
           </section>
-        {:else if imgs}
+        {:else if $appStore.imgs}
           <section
             transition:fly|local={{ duration: 250, x: -300 }}
-            on:outroend={() => (addImgs = true)}>
+            on:outroend={() => ($appStore.addImgs = true)}>
             <ImageStripe />
-            <div transition:fly|local={{ duration: 250, x: -300 }}>
-              <RemoveBtn
-                width={20}
-                height={20}
-                marginLeft={1}
-                marginTop={-2.2}
-                on:removebtnclick={() => handleImgStripeRemove()} />
-            </div>
+            <div transition:fly|local={{ duration: 250, x: -300 }} />
           </section>
         {/if}
       </section>

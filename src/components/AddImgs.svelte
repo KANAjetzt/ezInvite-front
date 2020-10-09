@@ -1,15 +1,18 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import compressImg from "../utils/compressImage.js";
 
-  import { eventDataStore } from "../stores";
+  import { eventDataStore, appStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
   const dispatch = createEventDispatcher();
 
-  const handleImgs = () => {
+  const handleImgs = async () => {
     const imgs = document.getElementById("imgs").files;
     let imgsData = [];
     const reader = new FileReader();
+
+    console.log(imgs);
 
     // read File
     const readFile = img => {
@@ -34,6 +37,12 @@
       }
     };
     readFile(imgs[0]);
+
+    $appStore.addImgs
+      ? ($appStore.addImgs = !$appStore.addImgs)
+      : $appStore.imgs
+      ? ($appStore.imgs = !$appStore.imgs)
+      : null;
 
     dispatch("imgsadded");
   };

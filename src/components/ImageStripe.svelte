@@ -2,12 +2,37 @@
   import { fly } from "svelte/transition";
   import { eventDataStore, appStore } from "../stores";
   import handleImgSrc from "../utils/handleImgSrc.js";
+  import rotateImg from "../utils/rotateImage.js";
+
+  import RemoveBtn from "../components/BtnRemove.svelte";
+  import RotateBtn from "../components/BtnRotateImg.svelte";
 
   let eventData;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
   });
+
+  const handleImgStripeRemove = e => {
+    $appStore.imgs
+      ? ($appStore.imgs = !$appStore.imgs)
+      : $appStore.addImgs
+      ? ($appStore.addImgs = !$appStore.addImgs)
+      : null;
+    $appStore.addImgs;
+
+    eventDataStore.update(currentData => {
+      const currentEventData = { ...currentData };
+      currentEventData.imgs = undefined;
+      return currentEventData;
+    });
+  };
+
+  const handleRotateBtn = async () => {
+    const [file, dataUrl] = await rotateImg($eventDataStore.pureImgs);
+    $eventDataStore.pureImgs = file;
+    $eventDataStore.imgs = dataUrl;
+  };
 </script>
 
 <style>
@@ -48,6 +73,18 @@
     height: 110%;
     object-fit: cover;
   }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    transform: rotate(-8.3deg) translateY(-9vw);
+    padding: 0 1rem;
+  }
+
+  .rotateBtn,
+  .removeBtn {
+    transform: rotate(8.3deg);
+  }
 </style>
 
 {#if eventData.imgs}
@@ -64,7 +101,21 @@
             alt="Will be added later via API" />
         </div>
       {/each}
-
     </section>
   </section>
+  <div class="buttons">
+    {#each eventData.imgs as img}
+      <div class="rotateBtn">
+        <RotateBtn marginTop={0} on:rotatebtnclick={handleRotateBtn} />
+      </div>
+    {/each}
+    <div class="removeBtn">
+      <RemoveBtn
+        width={20}
+        height={20}
+        marginLeft={0}
+        marginTop={0}
+        on:removebtnclick={handleImgStripeRemove} />
+    </div>
+  </div>
 {/if}
