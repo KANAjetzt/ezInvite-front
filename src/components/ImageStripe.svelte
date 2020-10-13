@@ -2,7 +2,9 @@
   import { fly } from "svelte/transition";
   import { eventDataStore, appStore } from "../stores";
   import handleImgSrc from "../utils/handleImgSrc.js";
+  import compressImg from "../utils/compressImage.js";
   import rotateImg from "../utils/rotateImage.js";
+  import asyncMap from "../utils/asyncMap.js";
 
   import RemoveBtn from "../components/BtnRemove.svelte";
   import RotateBtn from "../components/BtnRotateImg.svelte";
@@ -11,6 +13,7 @@
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
+    console.log(newData);
   });
 
   const handleImgStripeRemove = e => {
@@ -29,9 +32,23 @@
   };
 
   const handleRotateBtn = async () => {
-    const [file, dataUrl] = await rotateImg($eventDataStore.pureImgs);
-    $eventDataStore.pureImgs = file;
-    $eventDataStore.imgs = dataUrl;
+    const imgs = await asyncMap(
+      Array.from($eventDataStore.pureImgs),
+      async img => {
+        const [imgCompressed, imgCompressedDataUrl] = await compressImg(
+          img,
+          640
+        );
+        const [rotatedImg, rotatedImgDataUrl] = await rotateImg(imgCompressed);
+
+        return { rotatedImg, rotatedImgDataUrl };
+      }
+    );
+
+    console.log(imgs);
+
+    $eventDataStore.pureImgs = imgs.map(img => img.rotatedImg);
+    $eventDataStore.imgs = imgs.map(img => img.rotatedImgDataUrl);
   };
 </script>
 

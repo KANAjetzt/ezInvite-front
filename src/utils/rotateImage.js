@@ -29,6 +29,8 @@ const asyncImgOnLoad = (img) => {
 };
 
 const rotateImg = async (sourceImage) => {
+  console.log(sourceImage)
+
   reader.readAsDataURL(sourceImage);
 
   const img = new Image();
