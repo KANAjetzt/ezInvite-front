@@ -57,15 +57,8 @@
       /* margin-bottom: -9vw; */
     }
   }
-
-  :global(.imageStripe > .removeBtn) {
-    position: absolute;
-    bottom: -1rem;
-    left: 2.5rem;
-    transform: rotate(9deg);
-  }
-
   .imgBox {
+    position: relative;
     overflow: hidden;
   }
   .img {
@@ -74,16 +67,39 @@
     object-fit: cover;
   }
 
-  .buttons {
+  .rotateBtn {
+    position: absolute;
+    top: -11px;
+    right: 12px;
+  }
+
+  .rotateBtn-0 {
+    transform: translateY(13vw);
+  }
+
+  .rotateBtn-1 {
+    transform: translateY(6vw);
+  }
+
+  .removeBtnWrapper {
     display: flex;
     justify-content: space-between;
     transform: rotate(-8.3deg) translateY(-9vw);
     padding: 0 1rem;
   }
 
-  .rotateBtn,
   .removeBtn {
     transform: rotate(8.3deg);
+  }
+
+  @media only screen and (min-width: 36em) {
+    .rotateBtn-0 {
+      transform: translateY(11vw);
+    }
+
+    .rotateBtn-1 {
+      transform: translateY(4vw);
+    }
   }
 </style>
 
@@ -93,8 +109,15 @@
     transition:fly|local={$appStore.currentPage === 'addEvent' ? { duration: 250, x: -300 } : { duration: 0 }}>
     <section class="imageStripe">
 
-      {#each eventData.imgs as img}
+      {#each eventData.imgs as img, index}
         <div class="imgBox">
+          <div class={`rotateBtn rotateBtn-${index}`}>
+            <RotateBtn
+              width={20}
+              height={20}
+              marginTop={0}
+              on:rotatebtnclick={handleRotateBtn} />
+          </div>
           <img
             class="img"
             src={handleImgSrc(img)}
@@ -103,12 +126,7 @@
       {/each}
     </section>
   </section>
-  <div class="buttons">
-    {#each eventData.imgs as img}
-      <div class="rotateBtn">
-        <RotateBtn marginTop={0} on:rotatebtnclick={handleRotateBtn} />
-      </div>
-    {/each}
+  <div class="removeBtnWrapper">
     <div class="removeBtn">
       <RemoveBtn
         width={20}
