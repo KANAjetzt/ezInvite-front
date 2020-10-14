@@ -6,6 +6,8 @@ export const appStore = writable({
   // 'addEvent' / 'editEvent' / 'event' / 'eventPreview' / 'share'
   currentPage: undefined,
   feedbackGiven: false,
+  addImgs: true,
+  imgs: false,
   /* -- message array structure-- */
   /* 
   {
