@@ -207,14 +207,6 @@
     });
   };
 
-  const handleImgStripeRemove = e => {
-    eventDataStore.update(currentData => {
-      const currentEventData = { ...currentData };
-      currentEventData.imgs = null;
-      return currentEventData;
-    });
-  };
-
   const handlelistBtnClick = async e => {
     // onlistbtnclick --> create new widget with type "todo"
     // This will need more work when we add more widgets
@@ -493,12 +485,6 @@
           <AddImgs bind:imgStripe />
         {:else}
           <ImageStripe />
-          <RemoveBtn
-            width={20}
-            height={20}
-            marginLeft={1}
-            marginTop={-2.2}
-            on:removebtnclick={() => handleImgStripeRemove()} />
         {/if}
       </section>
       <section class="locationPicker">
