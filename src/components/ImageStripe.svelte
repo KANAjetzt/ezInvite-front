@@ -2,12 +2,44 @@
   import { fly } from "svelte/transition";
   import { eventDataStore, appStore } from "../stores";
   import handleImgSrc from "../utils/handleImgSrc.js";
+  import rotateImg from "../utils/rotateImage.js";
+  import asyncMap from "../utils/asyncMap.js";
+
+  import RemoveBtn from "../components/BtnRemove.svelte";
+  import RotateBtn from "../components/BtnRotateImg.svelte";
 
   let eventData;
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
   });
+
+  const handleImgStripeRemove = e => {
+    // trigger transition
+    $appStore.imgs
+      ? ($appStore.imgs = !$appStore.imgs)
+      : $appStore.addImgs
+      ? ($appStore.addImgs = !$appStore.addImgs)
+      : null;
+    $appStore.addImgs;
+
+    // delete imgs from event data
+    $eventDataStore.imgs = null;
+  };
+
+  const handleRotateBtn = async index => {
+    const img = $eventDataStore.pureImgs[index];
+
+    // rotate img
+    const [rotatedImg, rotatedImgDataUrl] = await rotateImg(img);
+
+    // update Event Data with rotated img
+
+    // convert FileList to array
+    $eventDataStore.pureImgs = Array.from($eventDataStore.pureImgs);
+    $eventDataStore.pureImgs[index] = rotatedImg;
+    $eventDataStore.imgs[index] = rotatedImgDataUrl;
+  };
 </script>
 
 <style>
@@ -32,21 +64,49 @@
       /* margin-bottom: -9vw; */
     }
   }
-
-  :global(.imageStripe > .removeBtn) {
-    position: absolute;
-    bottom: -1rem;
-    left: 2.5rem;
-    transform: rotate(9deg);
-  }
-
   .imgBox {
+    position: relative;
     overflow: hidden;
   }
   .img {
     width: 100%;
     height: 110%;
     object-fit: cover;
+  }
+
+  .rotateBtn {
+    position: absolute;
+    top: -11px;
+    right: 12px;
+  }
+
+  .rotateBtn-0 {
+    transform: translateY(13vw);
+  }
+
+  .rotateBtn-1 {
+    transform: translateY(6vw);
+  }
+
+  .removeBtnWrapper {
+    display: flex;
+    justify-content: space-between;
+    transform: rotate(-8.3deg) translateY(-9vw);
+    padding: 0 1rem;
+  }
+
+  .removeBtn {
+    transform: rotate(8.3deg);
+  }
+
+  @media only screen and (min-width: 36em) {
+    .rotateBtn-0 {
+      transform: translateY(11vw);
+    }
+
+    .rotateBtn-1 {
+      transform: translateY(4vw);
+    }
   }
 </style>
 
@@ -56,15 +116,35 @@
     transition:fly|local={$appStore.currentPage === 'addEvent' ? { duration: 250, x: -300 } : { duration: 0 }}>
     <section class="imageStripe">
 
-      {#each eventData.imgs as img}
+      {#each eventData.imgs as img, index}
         <div class="imgBox">
+          {#if $appStore.currentPage === 'addEvent' || ($appStore.currentPage === 'editEvent' && $eventDataStore.pureImgs)}
+            <div class={`rotateBtn rotateBtn-${index}`}>
+              <RotateBtn
+                width={20}
+                height={20}
+                marginTop={0}
+                on:rotatebtnclick={() => handleRotateBtn(index)} />
+            </div>
+          {/if}
           <img
             class="img"
             src={handleImgSrc(img)}
             alt="Will be added later via API" />
         </div>
       {/each}
-
     </section>
   </section>
+  {#if $appStore.currentPage === 'addEvent' || $appStore.currentPage === 'editEvent'}
+    <div class="removeBtnWrapper">
+      <div class="removeBtn">
+        <RemoveBtn
+          width={20}
+          height={20}
+          marginLeft={0}
+          marginTop={0}
+          on:removebtnclick={handleImgStripeRemove} />
+      </div>
+    </div>
+  {/if}
 {/if}
