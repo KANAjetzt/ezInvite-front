@@ -12,25 +12,12 @@
   const handleImg = async () => {
     const img = document.getElementById("heroImg").files[0];
 
-    const reader = new FileReader();
-
+    // compress img
     const [downScaledImg, downScaledDataUrl] = await compressImg(img, 1280);
 
-    // When img is loaded set result to heroImgPreview
-    // heroImgPreview is bound in AddEvent to heroImgPreview
-    // heroImgPreview is send to Hero.svelte as backgroundImg prop
-    reader.onload = e => {
-      const imgData = reader.result;
-
-      eventDataStore.update(currentData => {
-        const currentEventData = { ...currentData };
-        currentEventData.heroImgPreview = downScaledDataUrl;
-        currentEventData.pureHeroImg = downScaledImg;
-        return currentEventData;
-      });
-    };
-
-    const dataUrl = reader.readAsDataURL(img);
+    // save img to data store
+    $eventDataStore.heroImgPreview = downScaledDataUrl;
+    $eventDataStore.pureHeroImg = downScaledImg;
 
     dispatch("imgadded");
   };
