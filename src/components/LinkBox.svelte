@@ -1,5 +1,25 @@
 <script>
+  import { appStore, eventDataStore } from "../stores.js";
+  import { addMessage } from "../utils/messageHandler.js";
+  import SingleShareBtn from "./BtnSingleShare.svelte";
+
   export let value;
+
+  const copyToClipboard = async textValue => {
+    await navigator.clipboard.writeText(textValue);
+
+    $appStore.messages = addMessage(
+      $appStore.messages,
+      "info",
+      "shareLinkCopyedToClipboard",
+      "Copyed to clipboard!",
+      1
+    );
+  };
+
+  const handleInputClick = async () => {
+    await copyToClipboard(value);
+  };
 </script>
 
 <style>
@@ -21,12 +41,27 @@
     color: var(--color-text-primary);
     opacity: 0.5;
   }
+
+  .input {
+    display: flex;
+  }
 </style>
 
-<input
-  class="linkBox"
-  id="linkBox"
-  type="text"
-  name="linkBox"
-  readonly
-  bind:value />
+<div class="input">
+  <input
+    class="linkBox"
+    id="linkBox"
+    type="text"
+    name="linkBox"
+    readonly
+    bind:value
+    on:click={handleInputClick} />
+
+  <SingleShareBtn
+    width={25}
+    height={25}
+    marginTop={-2}
+    marginLeft={-2}
+    {value} />
+
+</div>

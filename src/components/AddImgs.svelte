@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import asyncMap from "../utils/asyncMap.js";
   import compressImg from "../utils/compressImage.js";
-
   import { eventDataStore, appStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
 
@@ -9,35 +9,22 @@
 
   const handleImgs = async () => {
     const imgs = document.getElementById("imgs").files;
-    let imgsData = [];
-    const reader = new FileReader();
 
-    console.log(imgs);
+    // Compress img
+    const compressedImgs = await asyncMap(imgs, async img => {
+      const [imgCompressed, imgCompressedDataUrl] = await compressImg(
+        img,
+        1280
+      );
 
-    // read File
-    const readFile = img => {
-      return reader.readAsDataURL(img);
-    };
+      return { imgCompressed, imgCompressedDataUrl };
+    });
 
     // Save File
-    reader.onload = e => {
-      // Add File to imgsArray when its loaded
-      imgsData = [...imgsData, reader.result];
-      // Check if there are more imgs
-      if (imgsData.length < imgs.length) {
-        // if so run readFile again
-        readFile(imgs[imgsData.length]);
-      } else {
-        eventDataStore.update(currentData => {
-          const currentEventData = { ...currentData };
-          currentEventData.imgs = imgsData;
-          currentEventData.pureImgs = imgs;
-          return currentEventData;
-        });
-      }
-    };
-    readFile(imgs[0]);
+    $eventDataStore.imgs = compressedImgs.map(img => img.imgCompressedDataUrl);
+    $eventDataStore.pureImgs = compressedImgs.map(img => img.imgCompressed);
 
+    // Trigger transition
     $appStore.addImgs
       ? ($appStore.addImgs = !$appStore.addImgs)
       : $appStore.imgs

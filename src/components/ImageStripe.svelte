@@ -2,7 +2,6 @@
   import { fly } from "svelte/transition";
   import { eventDataStore, appStore } from "../stores";
   import handleImgSrc from "../utils/handleImgSrc.js";
-  import compressImg from "../utils/compressImage.js";
   import rotateImg from "../utils/rotateImage.js";
   import asyncMap from "../utils/asyncMap.js";
 
@@ -13,10 +12,10 @@
 
   eventDataStore.subscribe(newData => {
     eventData = newData;
-    console.log(newData);
   });
 
   const handleImgStripeRemove = e => {
+    // trigger transition
     $appStore.imgs
       ? ($appStore.imgs = !$appStore.imgs)
       : $appStore.addImgs
@@ -24,31 +23,22 @@
       : null;
     $appStore.addImgs;
 
-    eventDataStore.update(currentData => {
-      const currentEventData = { ...currentData };
-      currentEventData.imgs = undefined;
-      return currentEventData;
-    });
+    // delete imgs from event data
+    $eventDataStore.imgs = null;
   };
 
-  const handleRotateBtn = async () => {
-    const imgs = await asyncMap(
-      Array.from($eventDataStore.pureImgs),
-      async img => {
-        const [imgCompressed, imgCompressedDataUrl] = await compressImg(
-          img,
-          640
-        );
-        const [rotatedImg, rotatedImgDataUrl] = await rotateImg(imgCompressed);
+  const handleRotateBtn = async index => {
+    const img = $eventDataStore.pureImgs[index];
 
-        return { rotatedImg, rotatedImgDataUrl };
-      }
-    );
+    // rotate img
+    const [rotatedImg, rotatedImgDataUrl] = await rotateImg(img);
 
-    console.log(imgs);
+    // update Event Data with rotated img
 
-    $eventDataStore.pureImgs = imgs.map(img => img.rotatedImg);
-    $eventDataStore.imgs = imgs.map(img => img.rotatedImgDataUrl);
+    // convert FileList to array
+    $eventDataStore.pureImgs = Array.from($eventDataStore.pureImgs);
+    $eventDataStore.pureImgs[index] = rotatedImg;
+    $eventDataStore.imgs[index] = rotatedImgDataUrl;
   };
 </script>
 
@@ -128,13 +118,15 @@
 
       {#each eventData.imgs as img, index}
         <div class="imgBox">
-          <div class={`rotateBtn rotateBtn-${index}`}>
-            <RotateBtn
-              width={20}
-              height={20}
-              marginTop={0}
-              on:rotatebtnclick={handleRotateBtn} />
-          </div>
+          {#if $appStore.currentPage === 'addEvent' || ($appStore.currentPage === 'editEvent' && $eventDataStore.pureImgs)}
+            <div class={`rotateBtn rotateBtn-${index}`}>
+              <RotateBtn
+                width={20}
+                height={20}
+                marginTop={0}
+                on:rotatebtnclick={() => handleRotateBtn(index)} />
+            </div>
+          {/if}
           <img
             class="img"
             src={handleImgSrc(img)}
@@ -143,14 +135,16 @@
       {/each}
     </section>
   </section>
-  <div class="removeBtnWrapper">
-    <div class="removeBtn">
-      <RemoveBtn
-        width={20}
-        height={20}
-        marginLeft={0}
-        marginTop={0}
-        on:removebtnclick={handleImgStripeRemove} />
+  {#if $appStore.currentPage === 'addEvent' || $appStore.currentPage === 'editEvent'}
+    <div class="removeBtnWrapper">
+      <div class="removeBtn">
+        <RemoveBtn
+          width={20}
+          height={20}
+          marginLeft={0}
+          marginTop={0}
+          on:removebtnclick={handleImgStripeRemove} />
+      </div>
     </div>
-  </div>
+  {/if}
 {/if}

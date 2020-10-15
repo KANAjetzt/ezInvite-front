@@ -6,7 +6,7 @@
 
   import { appStore, eventDataStore, todoStore } from "../stores.js";
   import { saveLocalStorage } from "../utils/localStorageHandler.js";
-  import { removeMessage, addMessage } from "../utils/errorHandler.js";
+  import { removeMessage, addMessage } from "../utils/messageHandler.js";
   import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import AddHeroImg from "../components/AddHeroImg.svelte";
@@ -203,14 +203,6 @@
       const currentEventData = { ...currentData };
       currentEventData.heroImg = null;
       currentEventData.heroImgPreview = null;
-      return currentEventData;
-    });
-  };
-
-  const handleImgStripeRemove = e => {
-    eventDataStore.update(currentData => {
-      const currentEventData = { ...currentData };
-      currentEventData.imgs = null;
       return currentEventData;
     });
   };
@@ -493,12 +485,6 @@
           <AddImgs bind:imgStripe />
         {:else}
           <ImageStripe />
-          <RemoveBtn
-            width={20}
-            height={20}
-            marginLeft={1}
-            marginTop={-2.2}
-            on:removebtnclick={() => handleImgStripeRemove()} />
         {/if}
       </section>
       <section class="locationPicker">
