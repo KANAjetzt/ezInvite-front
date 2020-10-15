@@ -1,20 +1,17 @@
 <script>
   import { eventDataStore } from "../stores";
+  import compressImg from "../utils/compressImage.js";
   import AddPhotoIcon from "./Icons/AddPhoto.svelte";
 
-  const handlePersonImg = () => {
+  const handlePersonImg = async () => {
     const img = document.getElementById("personImgUpload").files[0];
 
-    const reader = new FileReader();
+    // compress image
+    const [compressedImg, compressedImgDataUrl] = await compressImg(img, 128);
 
-    reader.onload = e => {
-      const imgData = reader.result;
-
-      $eventDataStore.personImgPreview = imgData;
-      $eventDataStore.purePersonImg = img;
-    };
-
-    const dataUrl = reader.readAsDataURL(img);
+    // save compressed image to event data store
+    $eventDataStore.personImgPreview = compressedImgDataUrl;
+    $eventDataStore.purePersonImg = compressedImg;
   };
 </script>
 

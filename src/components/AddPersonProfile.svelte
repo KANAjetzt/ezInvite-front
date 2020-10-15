@@ -12,6 +12,7 @@
 
   import { appStore, eventDataStore } from "../stores";
   import { addMessage } from "../utils/messageHandler.js";
+  import rotateImg from "../utils/rotateImage.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
@@ -20,7 +21,7 @@
   import BtnPanel from "./BtnPanel.svelte";
   import NormalBtn from "./NormalBtn.svelte";
   import BtnBig from "./BtnBig.svelte";
-  import BtnRemove from "./BtnRemove.svelte";
+  import BtnRotate from "./BtnRotateImg.svelte";
   import Message from "./Message.svelte";
 
   const dispatch = createEventDispatcher();
@@ -91,6 +92,12 @@
     }
 
     $eventDataStore.currentUser.name = e.detail.personName;
+  };
+
+  const handleRotateBtn = async () => {
+    const [file, dataUrl] = await rotateImg($eventDataStore.purePersonImg);
+    $eventDataStore.purePersonImg = file;
+    $eventDataStore.personImgPreview = dataUrl;
   };
 
   const handleDoneBtn = async () => {
@@ -212,11 +219,11 @@
     justify-content: center;
   }
 
-  .btnRemove {
+  .btnRotate {
     margin-top: 4.8rem;
     margin-right: -1rem;
     z-index: 200;
-    opacity: 0.8;
+    opacity: 0.95;
   }
 
   .linkBox {
@@ -272,17 +279,11 @@
     {#if ($eventDataStore.currentUser && $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.name) || $eventDataStore.personImgPreview}
       <section class="personCard">
         {#if (!$eventDataStore.currentUser.link && $eventDataStore.currentUser.unknown) || (!$eventDataStore.currentUser.unknown && $eventDataStore.personImgPreview)}
-          <div class="btnRemove">
-            <BtnRemove
+          <div class="btnRotate">
+            <BtnRotate
               width={15}
               height={15}
-              on:removebtnclick={() => {
-                if ($eventDataStore.currentUser.unknown) {
-                  $eventDataStore.currentUser.name = undefined;
-                }
-                $eventDataStore.personImgPreview = undefined;
-                $eventDataStore.purePersonImg = undefined;
-              }} />
+              on:rotatebtnclick={handleRotateBtn} />
           </div>
         {/if}
         <PersonCard
