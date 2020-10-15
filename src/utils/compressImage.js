@@ -40,7 +40,7 @@ const compressImg = async (sourceImage, newWidth) => {
   await asyncImgOnLoad(img);
 
   // if img resolution is lower then compress with --> return sourceImage
-  if (img.width <= newWidth) return sourceImage;
+  if (img.width <= newWidth) return [sourceImage, reader.result];
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
