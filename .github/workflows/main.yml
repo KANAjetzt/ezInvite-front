@@ -24,7 +24,7 @@ jobs:
 
       - name: Upload CSV to Spreadsheet
         if: github.event_name == 'sheet' && startsWith(github.event.ref, 'refs/tags')
-        uses: canonical-web-and-design/csv-to-google-spreadsheet
+        uses: canonical-web-and-design/csv-to-google-spreadsheet@stable
         with:
           csv_path: public/languages.csv
           spreadsheet_id: ${{ secrets.google_spreadsheet_id }}
