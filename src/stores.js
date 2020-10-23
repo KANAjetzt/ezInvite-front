@@ -1,5 +1,14 @@
 import { writable, derived } from "svelte/store";
 
+const fetchLanguages = async () => {  
+  
+  const response = await fetch("languages.json")
+  const data = await response.json()
+
+  return data
+  
+}
+
 export const appStore = writable({
   showAddPersonProfile: false,
   showFullResponder: true,
@@ -8,6 +17,9 @@ export const appStore = writable({
   feedbackGiven: false,
   addImgs: true,
   imgs: false,
+  languages: [(async () => {
+    return await fetchLanguages()
+  })()],
   /* -- message array structure-- */
   /* 
   {

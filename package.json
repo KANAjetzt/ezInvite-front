@@ -29,6 +29,7 @@
     "apollo-link-http": "^1.5.17",
     "apollo-upload-client": "^11.0.0",
     "body-scroll-lock": "^3.1.5",
+    "csvtojson": "^2.0.10",
     "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
     "mapbox-gl": "^1.12.0",

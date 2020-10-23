@@ -1,0 +1,6 @@
+ID,Component,Title,EN,DE
+2be9c6,AddHeroImg,btnText,Add a hero image,Füge ein Bild hinzu
+a219a3,SimpleField-EventTitle,Title,Title,Name
+5da77b,SimpleField-EventTitle,placeholder,What are you planning?,Was planst du?
+b7220c,SimpleField-Date,Title,Date,Datum
+c0d7b0,SimpleField-Date,placeholder,When does it start?,Wan startet es?
