@@ -5,6 +5,7 @@
 
   import { eventDataStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
+  import LanguageStr from "../components/LanguageStr.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -75,5 +76,7 @@
   transition:fly={{ duration: 250, y: -350 }}
   on:outroend={() => dispatch('outroend')}>
   <ImgAddIcon height={80} width={80} fill={'#f9fafb'} />
-  <span>Add a hero image</span>
+  <span>
+    <LanguageStr id={'2be9c6'} />
+  </span>
 </label>

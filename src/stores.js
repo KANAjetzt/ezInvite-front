@@ -1,14 +1,5 @@
 import { writable, derived } from "svelte/store";
 
-const fetchLanguages = async () => {  
-  
-  const response = await fetch("languages.json")
-  const data = await response.json()
-
-  return data
-  
-}
-
 export const appStore = writable({
   showAddPersonProfile: false,
   showFullResponder: true,
@@ -17,9 +8,9 @@ export const appStore = writable({
   feedbackGiven: false,
   addImgs: true,
   imgs: false,
-  languages: [(async () => {
-    return await fetchLanguages()
-  })()],
+  // setLanguage: en / de
+  currentLanguage: 'en',
+  languages: [],
   /* -- message array structure-- */
   /* 
   {
@@ -72,6 +63,24 @@ export const sortedDummyTodoStore = derived(
     return currentStore;
   }
 );
+
+export const currentLanguage = derived(appStore, ($appStore) => {
+  const currentAppStore = {...$appStore}
+
+  return currentAppStore.languages.map(str => {
+    if($appStore.currentLanguage === 'en') {
+       delete str.DE
+       str.str = str.EN
+       delete str.EN
+       return str
+    } else if ($appStore.currentLanguage === 'de') {
+      delete str.EN
+      str.str = str.DE
+      delete str. DE
+      return str
+    }
+  })
+})
 
 // ###############################################
 export const userStore = writable([]);
