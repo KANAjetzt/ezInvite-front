@@ -9,7 +9,7 @@ export const appStore = writable({
   addImgs: true,
   imgs: false,
   // setLanguage: en / de
-  currentLanguage: 'en',
+  currentLanguage: "de",
   languages: [],
   /* -- message array structure-- */
   /* 
@@ -65,22 +65,22 @@ export const sortedDummyTodoStore = derived(
 );
 
 export const currentLanguage = derived(appStore, ($appStore) => {
-  const currentAppStore = {...$appStore}
+  const currentAppStore = { ...$appStore };
 
-  return currentAppStore.languages.map(str => {
-    if($appStore.currentLanguage === 'en') {
-       delete str.DE
-       str.str = str.EN
-       delete str.EN
-       return str
-    } else if ($appStore.currentLanguage === 'de') {
-      delete str.EN
-      str.str = str.DE
-      delete str. DE
-      return str
+  return currentAppStore.languages.map((str) => {
+    if ($appStore.currentLanguage === "en") {
+      delete str.DE;
+      str.str = str.EN;
+      delete str.EN;
+      return str;
+    } else if ($appStore.currentLanguage === "de") {
+      delete str.EN;
+      str.str = str.DE;
+      delete str.DE;
+      return str;
     }
-  })
-})
+  });
+});
 
 // ###############################################
 export const userStore = writable([]);
