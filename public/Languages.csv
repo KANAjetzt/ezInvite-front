@@ -4,3 +4,21 @@ a219a3,SimpleField-EventTitle,Title,Title,Name
 5da77b,SimpleField-EventTitle,placeholder,What are you planning?,Was planst du?
 b7220c,SimpleField-Date,Title,Date,Datum
 c0d7b0,SimpleField-Date,placeholder,When does it start?,Wan startet es?
+5546a7,NormalBtn-AddMore,Text,Add more,mehr hinzufügen
+f994f3,NormalBtn-GOCTA,Text,GO !,LOS !
+166e58,Feedback,Text,I like it :),Ich finds gut :)
+17c4d1,AddStartEndTime,Title,Start Time,Startet
+3235e1,AddStartEndTime,Title,End Time,Endet
+df76f7,AddDescription,Title,Description,Beschreibung
+d157a6,AddDescription,Placeholder,Describe what you are planning...,Beschreibe was du planst...
+b79b6c,AddImgs,btnText,Add more Images,Füge mehr Bilder hinzu
+462e5a,AddLocationPicker-LocationAddress,Title,Location Address,Adresse
+a160f1,AddLocationPicker-LocationAddress,Placeholder,Where is your event?,Wo ist deine Veranstaltung?
+3f7069,AddLocationPicker-LocationName,Title,Location Name,Name
+3f622e,AddLocationPicker-LocationName,Placeholder,Name your location..,Name des Veranstaltungsort..
+c16be9,AddLocationPicker-LocationDescription,Title,Location Description,Beschreibung
+212a78,AddLocationPicker-LocationDescription,Placeholder,Describe your location..,Beschreibe deinen Vernastaltungsort..
+bbc7f8,AddSelectWidget-DescriptionBox,Title,Add Widgets,Widgets hinzufügen
+1770e7,AddSelectWidget-DescriptionBox,Text,Need something extra?,Darfs noch was sein?
+ec1caa,AddSelectWidget,Title,List,Liste
+0937a5,AddSelectWidget,Text,"Tell your friends what you need, and let them tell you what they bring",Zeigt deinen Freunden was du brauchst und was mit gebracht wird.

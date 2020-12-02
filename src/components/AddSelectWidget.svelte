@@ -1,8 +1,11 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  import { appStore } from "../stores.js";
+  import getStr from "../utils/getLanguageStr.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import DoneDoubleIcon from "./Icons/DoneDouble.svelte";
+  import LanguageStr from "../components/LanguageStr.svelte";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -61,7 +64,9 @@
   }
 </style>
 
-<DescriptionBox title={'Add Widgets'} text={'Need something extra?'} />
+<DescriptionBox
+  title={$appStore.languages[0] ? getStr($appStore.languages, 'bbc7f8') : ''}
+  text={$appStore.languages[0] ? getStr($appStore.languages, '1770e7') : ''} />
 
 <div class="widgetPicker">
   <button type="button" class="btn" on:click={e => dispatch('listbtnclick', e)}>
@@ -70,9 +75,11 @@
       height={80}
       fill={'rgba(0, 0, 0, 0.85)'}
       bg={true} />
-    <h4 class="btnTitle">List</h4>
+    <h4 class="btnTitle">
+      <LanguageStr id={'ec1caa'} />
+    </h4>
     <p class="btnText">
-      Tell your friends what you need, and let them tell you what they bring
+      <LanguageStr id={'0937a5'} />
     </p>
   </button>
 </div>
