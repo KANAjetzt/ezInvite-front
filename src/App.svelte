@@ -5,7 +5,7 @@
   import { setClient } from "svelte-apollo";
   import { Router, Link, Route } from "svelte-routing";
 
-  import { appStore } from "./stores";
+  import { appStore, currentLanguage } from "./stores";
   import EventPreview from "./routes/EventPreview.svelte";
   import Event from "./routes/Event.svelte";
   import AddEvent from "./routes/AddEvent.svelte";
@@ -18,6 +18,9 @@
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
 
+  // trigger currentLanguage derived store filter action 🤐
+  let currentLanguagee = $currentLanguage;
+
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: createUploadLink({
@@ -26,6 +29,15 @@
   });
 
   setClient(client);
+
+  const fetchLanguages = async () => {
+    const response = await fetch("languages.json");
+    const data = await response.json();
+
+    $appStore.languages = data;
+  };
+
+  fetchLanguages();
 </script>
 
 {#if $appStore.messages[0]}

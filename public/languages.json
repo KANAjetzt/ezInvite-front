@@ -1,0 +1,7 @@
+[
+  {"ID":"2be9c6","Component":"AddHeroImg","Title":"btnText","EN":"Add a hero image","DE":"Füge ein Bild hinzu"},
+  {"ID":"a219a3","Component":"SimpleField-EventTitle","Title":"Title","EN":"Title","DE":"Name"},
+  {"ID":"5da77b","Component":"SimpleField-EventTitle","Title":"placeholder","EN":"What are you planning?","DE":"Was planst du?"},
+  {"ID":"b7220c","Component":"SimpleField-Date","Title":"Title","EN":"Date","DE":"Datum"},
+  {"ID":"c0d7b0","Component":"SimpleField-Date","Title":"placeholder","EN":"When does it start?","DE":"Wan startet es?"}
+]

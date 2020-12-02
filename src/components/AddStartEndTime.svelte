@@ -74,7 +74,7 @@
 
 <div class="startEndTime">
   <div class="startTime">
-    <label class="label">Start Time</label>
+    <label class="label" for="startTime">Start Time</label>
     <input
       type="time"
       id="startTime"
@@ -84,7 +84,7 @@
   </div>
   <div class="dash" />
   <div class="endTime">
-    <label class="label">End Time</label>
+    <label class="label" for="endTime">End Time</label>
     <input
       type="time"
       id="endTime"
