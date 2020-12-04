@@ -180,7 +180,7 @@
     {#if eventData.imgs && eventData.imgs[0]}
       <ImageStripe />
     {/if}
-    {#if eventData.location && eventData.location.coordinates[0]}
+    {#if eventData.location && eventData.location.coordinates && eventData.location.coordinates[0]}
       <Map />
     {/if}
     {#if (eventData.widgetTypes && eventData.widgetTypes[0]) || (eventData.widgets && eventData.widgets[0])}
