@@ -444,7 +444,10 @@
           <Datepicker
             start={new Date()}
             end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
+            format={$appStore.currentLanguage === 'de' ? $appStore.dateFormat.de : $appStore.dateFormat.en}
+            daysOfWeek={$appStore.currentLanguage === 'de' ? $appStore.daysOfWeek.de : $appStore.daysOfWeek.en}
+            monthsOfYear={$appStore.currentLanguage === 'de' ? $appStore.monthsOfYear.de : $appStore.monthsOfYear.en}
+            weekStart={$appStore.currentLanguage === 'de' ? 1 : 0}
             highlightColor="#047bd7"
             dayBackgroundColor="#efefef"
             dayTextColor="#333"
