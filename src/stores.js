@@ -119,23 +119,5 @@ export const sortedDummyTodoStore = derived(
   }
 );
 
-export const currentLanguage = derived(appStore, ($appStore) => {
-  const currentAppStore = { ...$appStore };
-
-  return currentAppStore.languages.map((str) => {
-    if ($appStore.currentLanguage === "en") {
-      delete str.DE;
-      str.str = str.EN;
-      delete str.EN;
-      return str;
-    } else if ($appStore.currentLanguage === "de") {
-      delete str.EN;
-      str.str = str.DE;
-      delete str.DE;
-      return str;
-    }
-  });
-});
-
 // ###############################################
 export const userStore = writable([]);
