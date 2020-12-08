@@ -13,6 +13,7 @@
   import { appStore, eventDataStore } from "../stores";
   import { addMessage } from "../utils/messageHandler.js";
   import rotateImg from "../utils/rotateImage.js";
+  import getStr from "../utils/getLanguageStr.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import AddPersonInput from "./AddPerson.svelte";
   import AddPersonImg from "./AddPersonImg.svelte";
@@ -254,16 +255,16 @@
   {#if $eventDataStore.currentUser && !$eventDataStore.currentUser.name}
     <div class="DescriptionBox">
       <DescriptionBox
-        title={'Welcome!'}
-        text={'Add your name and a profile picture, to answer this invite.'} />
+        title={$appStore.languages[0] ? getStr($appStore.languages, '032a13') : ''}
+        text={$appStore.languages[0] ? getStr($appStore.languages, '4ba477') : ''} />
     </div>
 
     <!-- DescriptionBox: User got created -->
   {:else if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
     <div class="DescriptionBox">
       <DescriptionBox
-        title={`Thanks ${$eventDataStore.currentUser.name.split(' ')[0]}!`}
-        text={`Use this link to communikate within this event.`} />
+        title={`${$appStore.languages[0] ? getStr($appStore.languages, '04e476') : ''} ${$eventDataStore.currentUser.name.split(' ')[0]}!`}
+        text={$appStore.languages[0] ? getStr($appStore.languages, 'd42fd9') : ''} />
     </div>
 
     <!-- DescriptionBox: Current user is known -->
@@ -271,7 +272,7 @@
     <div class="DescriptionBox">
       <DescriptionBox
         title={`Hi ${$eventDataStore.currentUser.name.split(' ')[0]}!`}
-        text={'Add a picture so its easyer to recognise you.'} />
+        text={$appStore.languages[0] ? getStr($appStore.languages, '06c37f') : ''} />
     </div>
   {/if}
   <section class="inputs">
@@ -315,18 +316,18 @@
   <section class="btns">
     {#if $eventDataStore.currentUser.unknown && $eventDataStore.currentUser.link}
       <BtnBig
-        text={'go to your personal event page'}
+        text={$appStore.languages[0] ? getStr($appStore.languages, 'b9ae41') : ''}
         clipVar={'tertiary'}
         fontSize={2.8}
         on:bigbtnclick={handleLinkBtn} />
     {:else}
       <BtnPanel clipVar={'tertiary'}>
         <NormalBtn
-          text={'go back'}
+          text={$appStore.languages[0] ? getStr($appStore.languages, '2089ee') : ''}
           type={'normal'}
           on:normalbtnclick={handleBackBtn} />
         <NormalBtn
-          text={'Done !'}
+          text={$appStore.languages[0] ? getStr($appStore.languages, '2dcc7f') : ''}
           type={'cta'}
           on:ctabtnclick={handleDoneBtn} />
       </BtnPanel>

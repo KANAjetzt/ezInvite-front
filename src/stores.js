@@ -9,7 +9,7 @@ export const appStore = writable({
   addImgs: true,
   imgs: false,
   // setLanguage: en / de
-  currentLanguage: "de",
+  currentLanguage: "en",
   languages: [],
   dateFormat: {
     de: "#{l}, #{j}. #{F}, #{Y}",

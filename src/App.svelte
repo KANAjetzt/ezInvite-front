@@ -45,9 +45,12 @@
   };
 
   const fetchLanguages = async () => {
-    const response = await fetch("languages.json");
+    const response = await fetch("/languages.json");
+    console.log(response);
+    console.log($appStore);
     const data = await response.json();
 
+    console.log(data);
     const filteredData = filterCurrentLanguage(data);
 
     $appStore.languages = filteredData;

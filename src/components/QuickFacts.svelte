@@ -1,11 +1,13 @@
 <script>
-  import { eventDataStore } from "../stores";
+  import getStr from "../utils/getLanguageStr.js";
+  import { eventDataStore, appStore } from "../stores";
   import CalendarIcon from "./Icons/Calendar.svelte";
   import WatchIcon from "./Icons/Watch.svelte";
   import EnvelopeIcon from "./Icons/Envelope.svelte";
   import DoneIcon from "./Icons/Done.svelte";
   import { formatDate } from "../utils/date.js";
   import Item from "./QuickFactsItem.svelte";
+  import LanguageStr from "./LanguageStr.svelte";
 
   let eventData;
 
@@ -46,25 +48,29 @@
 </style>
 
 <div class="box">
-  <h2 class="heading">Quick Facts</h2>
-  <Item heading="Date" content={formatDate(eventData.startDate * 1)}>
+  <h2 class="heading">
+    <LanguageStr id={'639451'} />
+  </h2>
+  <Item
+    heading={$appStore.languages[0] ? getStr($appStore.languages, '61b501') : ''}
+    content={formatDate(eventData.startDate * 1, $appStore.currentLanguage === 'de' ? 'de-DE' : 'en-US')}>
     <CalendarIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
   {#if eventData.startTime}
     <Item
-      heading="Time"
-      content={eventData.endTime ? `${eventData.startTime} - ${eventData.endTime} Uhr` : `${eventData.startTime} Uhr`}>
+      heading={$appStore.languages[0] ? getStr($appStore.languages, '7c9f73') : ''}
+      content={eventData.endTime ? `${eventData.startTime} - ${eventData.endTime} ${$appStore.languages[0] ? getStr($appStore.languages, 'd1cf0d') : ''}` : `${eventData.startTime} ${$appStore.languages[0] ? getStr($appStore.languages, 'd1cf0d') : ''}`}>
       <WatchIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
     </Item>
   {/if}
   <Item
-    heading="Invited"
-    content={`${eventData.users ? eventData.users.length : 0} people`}>
+    heading={$appStore.languages[0] ? getStr($appStore.languages, '342eed') : ''}
+    content={`${eventData.users ? eventData.users.length : 0} ${$appStore.languages[0] ? getStr($appStore.languages, '1ac2a1') : ''}`}>
     <EnvelopeIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
   <Item
-    heading="Accepted"
-    content={`${eventData.users ? getacceptedUsers() : 0} people`}>
+    heading={$appStore.languages[0] ? getStr($appStore.languages, '0345e7') : ''}
+    content={`${eventData.users ? getacceptedUsers() : 0} ${$appStore.languages[0] ? getStr($appStore.languages, '9bc8b2') : ''}`}>
     <DoneIcon width={13} height={13} fill={'#f9fafb'} bg={true} />
   </Item>
 </div>
