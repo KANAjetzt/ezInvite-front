@@ -14,6 +14,8 @@
   import NotFound from "./routes/404.svelte";
   import TostMessage from "./components/ToastMessage.svelte";
   import Feedback from "./components/Feedback.svelte";
+  import Settings from "./components/Settings.svelte";
+  import BtnSettings from "./components/BtnSettings.svelte";
 
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
@@ -26,6 +28,12 @@
   });
 
   setClient(client);
+
+  const setCurrentLanguage = () => {
+    navigator.language === "de"
+      ? ($appStore.currentLanguage = "de")
+      : ($appStore.currentLanguage = "en");
+  };
 
   const filterCurrentLanguage = languagesArray => {
     return languagesArray.map(str => {
@@ -46,18 +54,25 @@
 
   const fetchLanguages = async () => {
     const response = await fetch("/languages.json");
-    console.log(response);
-    console.log($appStore);
     const data = await response.json();
 
-    console.log(data);
     const filteredData = filterCurrentLanguage(data);
 
     $appStore.languages = filteredData;
   };
 
+  setCurrentLanguage();
   fetchLanguages();
 </script>
+
+<style>
+  .btnSettings {
+    position: fixed;
+    top: 2rem;
+    z-index: 1000;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.3));
+  }
+</style>
 
 {#if $appStore.messages[0]}
   {#each $appStore.messages as message}
@@ -66,7 +81,6 @@
     {/if}
   {/each}
 {/if}
-
 <Router {url}>
   <Route path="/" component={AddEvent} />
   <Route path="/edit/*eventSlug/*eventEditLink" component={EditEvent} />
@@ -76,4 +90,7 @@
   <Route path="/notFound" component={NotFound} />
 </Router>
 
+<div class="btnSettings">
+  <BtnSettings />
+</div>
 <Feedback />
