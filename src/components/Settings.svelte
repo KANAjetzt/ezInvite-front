@@ -1,19 +1,18 @@
 <script>
   import { appStore } from "../stores.js";
+  import { saveLocalStorage } from "../utils/localStorageHandler.js";
+  import getLangauge from "../utils/getLanguage.js";
 
-  let checked = false;
+  const setLanguage = async () => {
+    $appStore.languages = await getLangauge($appStore.currentLanguage);
 
-  const root = document.documentElement.style;
-  $: if (checked) {
-    root.setProperty("--settingsBtnNOShadowOpacity", "1");
-  } else {
-    root.setProperty("--settingsBtnNOShadowOpacity", "0");
-  }
+    saveLocalStorage($appStore, "appStore");
+  };
 </script>
 
 <style>
   .settings {
-    padding: 3rem 5rem;
+    padding: 3rem 5rem 3rem 7rem;
     background-color: var(--color-primary);
     clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
   }
@@ -30,10 +29,20 @@
     background-color: transparent;
     color: var(--color-text-primary);
   }
+
+  option {
+    background-color: var(--color-primary);
+  }
 </style>
 
 <div class="settings">
-  <select>
+  <select
+    bind:value={$appStore.currentLanguage}
+    on:input={() => {
+      setTimeout(() => {
+        setLanguage();
+      }, 0);
+    }}>
     <option value="de">Deutsch</option>
     <option value="en">English</option>
   </select>

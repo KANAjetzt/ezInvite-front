@@ -6,12 +6,6 @@
   import SettingsIcon from "./Icons/Settings.svelte";
   import Settings from "./Settings.svelte";
   import BtnRemove from "./BtnRemove.svelte";
-
-  export let marginTop = 0;
-  export let marginLeft = 0;
-  export let width = 25;
-  export let height = 25;
-
   let languageLetter = false;
   let icon = false;
 
@@ -37,7 +31,7 @@
   const handleFilterBtn = e => {
     e.preventDefault();
 
-    change();
+    changeBtnSettings();
 
     dispatch("filterbtnclick");
   };
@@ -59,6 +53,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: 100%;
     margin: 0;
     border: none;
     cursor: pointer;
@@ -77,23 +73,14 @@
 </style>
 
 {#if btn}
-  <!-- <button
-    transition:fly|local={{ duration: 150, x: 200 }}
-    on:outroend={() => (settings = true)}
-    type="button"
-    class="filterBtn"
-    on:click={e => handleFilterBtn(e)}
-    style={`margin-top: ${marginTop}rem; margin-left: ${marginLeft}rem`}>
-    <SettingsIcon {width} {height} fill={'#f9fafb'} bg={true} />
-  </button> -->
   <button
-    transition:fly|local={{ duration: 150, x: -200 }}
+    transition:fly|local={{ duration: 150, x: -100 }}
     on:outroend={() => (settings = true)}
     class="btnMinified"
     on:click={e => handleFilterBtn(e)}>
     {#if languageLetter}
       <div
-        transition:fly|local={{ duration: 250, x: -200 }}
+        transition:fly|local={{ duration: 250, x: -100 }}
         on:introend={() => {
           setTimeout(() => {
             changeLanguageLetterIcon();
@@ -111,6 +98,12 @@
     {#if icon}
       <div
         transition:fly|local={{ duration: 250, x: -200 }}
+        on:introend={() => {
+          const btnSettings = document.querySelector('.btnSettings');
+          btnSettings.style.width = 'unset';
+          btnSettings.style.height = 'unset';
+          btnSettings.classList.add('btnSettings--scaleDown');
+        }}
         on:outroend={() => (languageLetter = true)}
         class="icon">
         <SettingsIcon height={30} width={30} fill={'#fff'} />
@@ -129,6 +122,7 @@
       <BtnRemove
         width={20}
         height={20}
+        marginLeft={-6}
         on:removebtnclick={() => {
           changeBtnSettings();
         }} />
