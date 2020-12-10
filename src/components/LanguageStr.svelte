@@ -1,5 +1,5 @@
 <script>
-  import { appStore, currentLanguage } from "../stores.js";
+  import { appStore } from "../stores.js";
 
   export let id;
 

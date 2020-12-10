@@ -9,8 +9,63 @@ export const appStore = writable({
   addImgs: true,
   imgs: false,
   // setLanguage: en / de
-  currentLanguage: 'en',
+  currentLanguage: "en",
   languages: [],
+  dateFormat: {
+    de: "#{l}, #{j}. #{F}, #{Y}",
+    en: "#{l}, #{F} #{j}, #{Y}",
+  },
+  daysOfWeek: {
+    de: [
+      ["Sonntag", "So"],
+      ["Montag", "Mo"],
+      ["Dienstag", "Di"],
+      ["Mittwoch", "Mi"],
+      ["Donnerstag", "Do"],
+      ["Freitag", "Fr"],
+      ["Samstag", "Sa"],
+    ],
+    en: [
+      ["Sunday", "Sun"],
+      ["Monday", "Mon"],
+      ["Tuesday", "Tue"],
+      ["Wednesday", "Wed"],
+      ["Thursday", "Thu"],
+      ["Friday", "Fri"],
+      ["Saturday", "Sat"],
+    ],
+  },
+  monthsOfYear: {
+    de: [
+      ["Januar", "Jan"],
+      ["Februar", "Feb"],
+      ["März", "Mrz"],
+      ["April", "Apr"],
+      ["Mai", "Mai"],
+      ["Juni", "Jun"],
+      ["Juli", "Jul"],
+      ["August", "Aug"],
+      ["September", "Sep"],
+      ["Oktober", "Okt"],
+      ["November", "Nov"],
+      ["Dezember", "Dez"],
+    ],
+    en: [
+      ["January", "Jan"],
+      ["February", "Feb"],
+      ["March", "Mar"],
+      ["April", "Apr"],
+      ["May", "May"],
+      ["June", "Jun"],
+      ["July", "Jul"],
+      ["August", "Aug"],
+      ["September", "Sep"],
+      ["October", "Oct"],
+      ["November", "Nov"],
+      ["December", "Dec"],
+    ],
+  },
+
   /* -- message array structure-- */
   /* 
   {
@@ -63,24 +118,6 @@ export const sortedDummyTodoStore = derived(
     return currentStore;
   }
 );
-
-export const currentLanguage = derived(appStore, ($appStore) => {
-  const currentAppStore = {...$appStore}
-
-  return currentAppStore.languages.map(str => {
-    if($appStore.currentLanguage === 'en') {
-       delete str.DE
-       str.str = str.EN
-       delete str.EN
-       return str
-    } else if ($appStore.currentLanguage === 'de') {
-      delete str.EN
-      str.str = str.DE
-      delete str. DE
-      return str
-    }
-  })
-})
 
 // ###############################################
 export const userStore = writable([]);

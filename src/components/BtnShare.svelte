@@ -1,8 +1,11 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  import { appStore } from "../stores.js";
+  import getStr from "../utils/getLanguageStr.js";
   import DescriptionBox from "./DescriptionBox.svelte";
   import BtnBig from "./BtnBig.svelte";
+  import LanguageStr from "./LanguageStr.svelte";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -46,13 +49,13 @@
 
 <div class="shareBtn">
   <DescriptionBox
-    title={'Everything Looks good?'}
+    title={$appStore.languages[0] ? getStr($appStore.languages, '76f978') : ''}
     descriptionBoxModifier={'--shareBtn'} />
   <button
     class="bigBtn"
     on:click={e => {
       dispatch('sharebtnclick', e);
     }}>
-    Share!
+    <LanguageStr id={'6d7d67'} />
   </button>
 </div>

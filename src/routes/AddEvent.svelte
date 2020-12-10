@@ -374,7 +374,10 @@
             <Datepicker
               start={new Date()}
               end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-              format={'#{l}, #{F} #{j}, #{Y}'}
+              format={$appStore.currentLanguage === 'de' ? $appStore.dateFormat.de : $appStore.dateFormat.en}
+              daysOfWeek={$appStore.currentLanguage === 'de' ? $appStore.daysOfWeek.de : $appStore.daysOfWeek.en}
+              monthsOfYear={$appStore.currentLanguage === 'de' ? $appStore.monthsOfYear.de : $appStore.monthsOfYear.en}
+              weekStart={$appStore.currentLanguage === 'de' ? 1 : 0}
               highlightColor="#047bd7"
               dayBackgroundColor="#efefef"
               dayTextColor="#333"
@@ -407,11 +410,11 @@
         <BtnPanel clipVar={'secondary-fixed'}>
           {#if !loading}
             <NormalBtn
-              text={'Add more'}
+              text={$appStore.languages[0] ? getStr($appStore.languages, '5546a7') : ''}
               type={'normal'}
               on:normalbtnclick={handleNormalBtnClick} />
             <NormalBtn
-              text={'GO !'}
+              text={$appStore.languages[0] ? getStr($appStore.languages, 'f994f3') : ''}
               type={'cta'}
               on:ctabtnclick={handleCTABtnClick} />
           {:else}
@@ -426,20 +429,25 @@
         <div class="title">
           <SimpleField
             name={'Title'}
-            heading={'Title'}
+            heading={$appStore.languages[0] ? getStr($appStore.languages, 'a219a3') : ''}
             required={true}
-            placeholder={'What are you planning?'}
+            placeholder={$appStore.languages[0] ? getStr($appStore.languages, '5da77b') : ''}
             bind:value={eventData.name} />
         </div>
         {#if $appStore.messages.filter(message => message.location === 'inputEventName')[0]}
           <Message location={'inputEventName'} />
         {/if}
         <div class="date">
-          <span class="labelDatepicker">Date</span>
+          <span class="labelDatepicker">
+            <LanguageStr id={'b7220c'} />
+          </span>
           <Datepicker
             start={new Date()}
             end={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30 * 13)}
-            format={'#{l}, #{F} #{j}, #{Y}'}
+            format={$appStore.currentLanguage === 'de' ? $appStore.dateFormat.de : $appStore.dateFormat.en}
+            daysOfWeek={$appStore.currentLanguage === 'de' ? $appStore.daysOfWeek.de : $appStore.daysOfWeek.en}
+            monthsOfYear={$appStore.currentLanguage === 'de' ? $appStore.monthsOfYear.de : $appStore.monthsOfYear.en}
+            weekStart={$appStore.currentLanguage === 'de' ? 1 : 0}
             highlightColor="#047bd7"
             dayBackgroundColor="#efefef"
             dayTextColor="#333"
@@ -452,7 +460,11 @@
               type="button"
               class={`datePickerBtn datePickerBtn--isChosen`}
               on:click={e => e.preventDefault()}>
-              {#if dateChosen}{formattedSelected}{:else}When does it start?{/if}
+              {#if dateChosen}
+                {formattedSelected}
+              {:else}
+                <LanguageStr id={'c0d7b0'} />
+              {/if}
             </button>
           </Datepicker>
           {#if $appStore.messages.filter(message => message.location === 'inputStartDate')[0]}
@@ -516,7 +528,7 @@
       {/if}
       <section>
         <BtnBig
-          text={'GO !'}
+          text={$appStore.languages[0] ? getStr($appStore.languages, 'f994f3') : ''}
           on:bigbtnclick={handleCTABtnClick}
           clipVar={'tertiary-fixed'}
           bind:loading />

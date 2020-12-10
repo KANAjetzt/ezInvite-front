@@ -1,7 +1,8 @@
 <script>
-  import { eventDataStore } from "../stores";
+  import { eventDataStore, appStore } from "../stores";
   import compressImg from "../utils/compressImage.js";
   import AddPhotoIcon from "./Icons/AddPhoto.svelte";
+  import LanguageStr from "../components/LanguageStr.svelte";
 
   const handlePersonImg = async () => {
     const img = document.getElementById("personImgUpload").files[0];
@@ -74,5 +75,7 @@
 
 <label class="personImgUploadBtn" for="personImgUpload">
   <AddPhotoIcon height={50} width={50} fill={'#f9fafb'} />
-  <span>Add profile picture</span>
+  <span>
+    <LanguageStr id={'08ed81'} />
+  </span>
 </label>

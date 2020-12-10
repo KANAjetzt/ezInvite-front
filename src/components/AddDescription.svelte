@@ -1,4 +1,8 @@
 <script>
+  import { appStore } from "../stores.js";
+  import getStr from "../utils/getLanguageStr.js";
+  import LanguageStr from "../components/LanguageStr.svelte";
+
   export let value = undefined;
 </script>
 
@@ -40,12 +44,14 @@
   }
 </style>
 
-<label class="label" for="description">Description</label>
+<label class="label" for="description">
+  <LanguageStr id={'df76f7'} />
+</label>
 <textarea
   name="description"
   id="description"
   class="input"
   cols="30"
   rows="10"
-  placeholder="Describe what you are planning..."
+  placeholder={$appStore.languages[0] ? getStr($appStore.languages, 'd157a6') : ''}
   bind:value />

@@ -9,10 +9,9 @@
     saveLocalStorage,
     deleteLocalStorage
   } from "../utils/localStorageHandler";
+  import getStr from "../utils/getLanguageStr.js";
   import SmileyIcon from "./Icons/Smiley.svelte";
   import NormalBtn from "./NormalBtn.svelte";
-
-  let text = "I like it :)";
 
   const client = getClient();
 
@@ -70,6 +69,9 @@
 
 {#if !$appStore.feedbackGiven}
   <div class="feedback">
-    <NormalBtn {text} type={'cta'} on:ctabtnclick={handleFeedback} />
+    <NormalBtn
+      text={$appStore.languages[0] ? getStr($appStore.languages, '166e58') : ''}
+      type={'cta'}
+      on:ctabtnclick={handleFeedback} />
   </div>
 {/if}
