@@ -6,8 +6,10 @@
   import mapboxgl from "mapbox-gl/dist/mapbox-gl.js";
   import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
-  import { eventDataStore } from "../stores.js";
+  import { appStore, eventDataStore } from "../stores.js";
+  import getStr from "../utils/getLanguageStr.js";
   import SimpleField from "./SimpleField.svelte";
+  import LanguageStr from "../components/LanguageStr.svelte";
 
   let mounted = false;
   let geocoder;
@@ -57,7 +59,9 @@
     geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
-      placeholder: "Where is your event?"
+      placeholder: $appStore.languages[0]
+        ? getStr($appStore.languages, "a160f1")
+        : ""
     });
 
     document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
@@ -237,20 +241,22 @@
 
 <div id="addLocationMapbox" class="mapbox" />
 <div id="geocoder" class="geocoder">
-  <span class="title">Location Address</span>
+  <span class="title">
+    <LanguageStr id={'462e5a'} />
+  </span>
 </div>
 
 <div class="locationName">
   <SimpleField
     name={'locationCustomName'}
-    heading={'Location Name'}
-    placeholder={$eventDataStore.location && $eventDataStore.location.name ? $eventDataStore.location.name : 'Name your location..'}
+    heading={$appStore.languages[0] ? getStr($appStore.languages, '3f7069') : ''}
+    placeholder={$eventDataStore.location && $eventDataStore.location.name ? $eventDataStore.location.name : $appStore.languages[0] ? getStr($appStore.languages, '3f622e') : ''}
     on:simplefieldchange={handleLocationCustomNameChange} />
 </div>
 <div class="locationDescription">
   <SimpleField
     name={'locationDescription'}
-    heading={'Location Description'}
-    placeholder={$eventDataStore.location && $eventDataStore.location.description ? $eventDataStore.location.description : 'Describe your location..'}
+    heading={$appStore.languages[0] ? getStr($appStore.languages, 'c16be9') : ''}
+    placeholder={$eventDataStore.location && $eventDataStore.location.description ? $eventDataStore.location.description : $appStore.languages[0] ? getStr($appStore.languages, '212a78') : ''}
     on:simplefieldchange={handleLocationDescriptionChange} />
 </div>

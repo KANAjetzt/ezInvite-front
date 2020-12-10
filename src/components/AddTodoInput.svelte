@@ -2,6 +2,7 @@
   import { gql } from "apollo-boost";
   import { getClient, mutate } from "svelte-apollo";
 
+  import getStr from "../utils/getLanguageStr.js";
   import { appStore, eventDataStore, todoStore } from "../stores";
   import { addMessage } from "../utils/messageHandler.js";
   import PersonAddBtn from "./PersonAddBtn.svelte";
@@ -284,7 +285,7 @@
     id="thingText"
     class="inputBox"
     type="text"
-    placeholder="Add something.."
+    placeholder={$appStore.languages[0] ? getStr($appStore.languages, '2fb3d7') : ''}
     bind:value={text}
     on:keydown={e => {
       if (e.keyCode === 13) handlePersonAddBtnClick(e);

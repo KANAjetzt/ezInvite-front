@@ -1,4 +1,5 @@
 <script>
+  import LanguageStr from "../components/LanguageStr.svelte";
   export let startTime = undefined;
   export let endTime = undefined;
 </script>
@@ -74,7 +75,9 @@
 
 <div class="startEndTime">
   <div class="startTime">
-    <label class="label">Start Time</label>
+    <label class="label" for="startTime">
+      <LanguageStr id={'17c4d1'} />
+    </label>
     <input
       type="time"
       id="startTime"
@@ -84,7 +87,9 @@
   </div>
   <div class="dash" />
   <div class="endTime">
-    <label class="label">End Time</label>
+    <label class="label" for="endTime">
+      <LanguageStr id={'3235e1'} />
+    </label>
     <input
       type="time"
       id="endTime"

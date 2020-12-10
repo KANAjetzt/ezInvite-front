@@ -2,6 +2,7 @@
   import { getClient, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
+  import getStr from "../utils/getLanguageStr.js";
   import { appStore, eventDataStore } from "../stores";
   import DescriptionBox from "./DescriptionBox.svelte";
   import BtnMinified from "./BtnMinified.svelte";
@@ -99,7 +100,8 @@
       }} />
   {:else}
     <div class="descriptionBox">
-      <DescriptionBox title={'Respond to your invite'} />
+      <DescriptionBox
+        title={$appStore.languages[0] ? getStr($appStore.languages, 'bc97fe') : ''} />
     </div>
     <BtnRespond
       on:confirmbtnclick={handleRespons}

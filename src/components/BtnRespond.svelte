@@ -4,6 +4,7 @@
   import CheckIcon from "./Icons/DoneFilled.svelte";
   import XIcon from "./Icons/Cross.svelte";
   import ArrowIcon from "./Icons/Arrow.svelte";
+  import LanguageStr from "./LanguageStr.svelte";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -98,7 +99,9 @@
     }}>
     <div class="confirmIconWrapper">
       <CheckIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
-      <span class="btnText">confirm</span>
+      <span class="btnText">
+        <LanguageStr id={'b52f37'} />
+      </span>
     </div>
   </button>
 </div>
@@ -109,7 +112,9 @@
   }}>
   <div class="declineIconWrapper">
     <XIcon height={45} width={45} fill={'#f9fafb'} bg={true} />
-    <span class="btnText">decline</span>
+    <span class="btnText">
+      <LanguageStr id={'6f9926'} />
+    </span>
   </div>
 </button>
 

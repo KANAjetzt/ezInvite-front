@@ -4,6 +4,7 @@
   import compressImg from "../utils/compressImage.js";
   import { eventDataStore, appStore } from "../stores";
   import ImgAddIcon from "./Icons/ImgAdd.svelte";
+  import LanguageStr from "../components/LanguageStr.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -94,5 +95,7 @@
 
 <label class="imgsUploadBtn" for="imgs">
   <ImgAddIcon height={50} width={50} fill={'#f9fafb'} />
-  <span>Add more Images</span>
+  <span>
+    <LanguageStr id={'b79b6c'} />
+  </span>
 </label>

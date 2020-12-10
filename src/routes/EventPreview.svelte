@@ -53,7 +53,7 @@
   {#if eventData.imgs}
     <ImageStripe />
   {/if}
-  {#if eventData.location && eventData.location.coordinates[0]}
+  {#if eventData.location && eventData.location.coordinates && eventData.location.coordinates[0]}
     <Map />
   {/if}
   {#if todos.length}

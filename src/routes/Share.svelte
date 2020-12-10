@@ -15,6 +15,7 @@
   } from "../utils/localStorageHandler.js";
   import { addMessage } from "../utils/messageHandler.js";
   import { send, receive } from "../utils/crossfade.js";
+  import getStr from "../utils/getLanguageStr.js";
   import Head from "../components/Head.svelte";
   import PageTransition from "../components/PageTransition.svelte";
   import Hero from "../components/Hero.svelte";
@@ -196,10 +197,11 @@
     </section>
     <section class="descriptionBox">
       {#if !shared}
-        <DescriptionBox title={'Invite your friends to your event!'} />
+        <DescriptionBox
+          title={$appStore.languages[0] ? getStr($appStore.languages, '09df1c') : ''} />
       {:else}
         <DescriptionBox
-          title={'Send your invites out, by sharing the following links with your friends'} />
+          title={$appStore.languages[0] ? getStr($appStore.languages, 'cf3532') : ''} />
       {/if}
     </section>
     <section class="persons">
@@ -229,7 +231,7 @@
     {#if shared}
       <section class="descriptionBoxGlobal">
         <DescriptionBox
-          title={'Use this one to share it with whoever you want'} />
+          title={$appStore.languages[0] ? getStr($appStore.languages, 'd78356') : ''} />
       </section>
       <section class="linkBoxGlobal">
         <LinkBoxGlobal
@@ -237,7 +239,7 @@
       </section>
       <section class="descriptionBoxEdit">
         <DescriptionBox
-          title={'Save this link to eventually edit your event later!'} />
+          title={$appStore.languages[0] ? getStr($appStore.languages, '458e5f') : ''} />
       </section>
       <section class="linkBoxEdit">
         <LinkBoxEdit
@@ -246,10 +248,12 @@
     {/if}
     <section class="btnCta">
       {#if !shared}
-        <BigBtn text={'Share !'} on:bigbtnclick={handleShareBtn} />
+        <BigBtn
+          text={$appStore.languages[0] ? getStr($appStore.languages, '88159b') : ''}
+          on:bigbtnclick={handleShareBtn} />
       {:else}
         <BigBtn
-          text={'Back to your page'}
+          text={$appStore.languages[0] ? getStr($appStore.languages, '94602d') : ''}
           on:bigbtnclick={handleBackBtn}
           minusMargin={5}
           pannelHeight={15}
