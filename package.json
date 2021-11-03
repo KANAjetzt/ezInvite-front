@@ -37,7 +37,7 @@
     "sirv-cli": "^0.4.6",
     "svelte-apollo": "^0.3.0",
     "svelte-routing": "^1.4.2",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "build": "rollup -c",
